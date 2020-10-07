@@ -525,6 +525,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   dodgingDist: 20
+  playerLM:
+    serializedVersion: 2
+    m_Bits: 256
+  sightAngle: 60
+  snowStartLM:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!135 &1663966847
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -728,7 +735,7 @@ GameObject:
   - component: {fileID: 2020532121}
   - component: {fileID: 2020532120}
   - component: {fileID: 2020532119}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -817,7 +824,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2020532118}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.1, y: 0, z: 17.6}
+  m_LocalPosition: {x: -14.3, y: 0, z: 76.3}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -943,7 +950,7 @@ GameObject:
   - component: {fileID: 7195616401391835882}
   - component: {fileID: 5270455523648157540}
   - component: {fileID: 8536248833727780437}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SnowStart
   m_TagString: SnowBall
   m_Icon: {fileID: 0}

@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 enum EnemyState
 {
-    STATE_STANDING,
+    STATE_IDLE,
     STATE_FOLLOWING,
     STATE_ATTACKING,
     STATE_DODGING
@@ -38,6 +38,11 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] LayerMask snowballLM;
     [SerializeField]float dodgingDist = 20.0f;
 
+    [SerializeField] LayerMask playerLM;
+    [SerializeField] float sightAngle = 60.0f;
+
+    [SerializeField] LayerMask snowStartLM;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +52,7 @@ public class EnemyAIScript : MonoBehaviour
             return;
         }
 
-        state = EnemyState.STATE_STANDING;
+        state = EnemyState.STATE_IDLE;
         startPoint = gameObject.transform.position; //실행 시, 현재 서 있는 지점을 StartPoint로 두기
         distBtwPlayer = Vector3.Distance(transform.position, player.transform.position);
         time = 0.0f;
@@ -64,63 +69,19 @@ public class EnemyAIScript : MonoBehaviour
             return;
         }
         snowStartPt = snowStart.transform.position;
-
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         time += Time.deltaTime;
+        distBtwPlayer = Vector3.Distance(transform.position, player.transform.position);
 
-        
         checkState();
-
-        if (state == EnemyState.STATE_STANDING) //정해진 위치에 서있기, 돌아가기
-        {
-            nvAgent.enabled = true;
-            nvAgent.SetDestination(startPoint);
-            nvAgent.stoppingDistance = 2;
-            nvAgent.speed = speed;
-
-            /*
-            if (Vector3.Distance(transform.position, startPoint) > 2)
-            {
-                gameObject.transform.LookAt(startPoint);
-                gameObject.transform.Translate(Vector3.forward * speed);
-            }
-            */
-        }
-
-        else if(state == EnemyState.STATE_FOLLOWING) //이미 플레이어를 인식한 상태 -> 플레이어 따라가기, 다시: 장애물 인식 처리 X, 공격 받았을 때 처리 X
-        {
-            nvAgent.enabled = true;
-            nvAgent.SetDestination(player.transform.position);
-            nvAgent.stoppingDistance = 2;
-            nvAgent.speed = speed;
-
-            //gameObject.transform.LookAt(player.transform);
-            //gameObject.transform.Translate(Vector3.forward * speed);
-        }
-
-        else if(state == EnemyState.STATE_ATTACKING)
-        { 
-            //이미 시야에 장애물이 없다는 것을 판정함
-            //쏘기만 하면 됨.
-            nvAgent.enabled = false;
-            gameObject.transform.LookAt(player.transform);
-
-            
-            snowStartPt = snowStart.transform.position;
-            Vector3 snowballPos = snowStartPt;
-            snowballPos += (transform.rotation * Vector3.forward);
-
-            Instantiate(snowball, snowballPos, transform.rotation, transform);
-            time = 0.0f;
-            
-        }
-
-        /*else if(state == EnemyState.STATE_DODGING) //다시: 피할 확률 집어넣기
+        
+        /*
+        else if(state == EnemyState.STATE_DODGING) //다시: 피할 확률 집어넣기
         {
 
         }*/
@@ -129,62 +90,155 @@ public class EnemyAIScript : MonoBehaviour
 
     } //Update 함수 괄호 삭제X
     
-    void checkState()
+    bool isTargetInSight()
     {
-        distBtwPlayer = Vector3.Distance(transform.position, player.transform.position);
+        Collider[] cols = Physics.OverlapSphere(transform.position, followingDist, playerLM);
 
-        if (player == null || distBtwPlayer > followingDist) //player가 멀어지거나 없으면 제자리
+        if(cols.Length > 0)
         {
-            state = EnemyState.STATE_STANDING;
+            Transform tfPlayer = cols[0].transform;
+
+            Vector3 dir = (tfPlayer.position - transform.position).normalized;
+            float angle = Vector3.Angle(dir, transform.forward);
+
+            if(angle < sightAngle * 0.5f)
+            {
+                if(Physics.Raycast(transform.position, dir, out RaycastHit hit, followingDist, -1-snowballLM-snowStartLM)) //장애물 여부 확인
+                {
+                    if(hit.transform.name == "Player")
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    void idle()
+    {
+
+        if(isTargetInSight())
+        {
+            state = EnemyState.STATE_FOLLOWING;
+            return;
         }
 
+        //정해진 위치로 돌아가기
+        if (Vector3.Distance(transform.position, startPoint) > 2)
+        {
+            nvAgent.enabled = true;
+            nvAgent.SetDestination(startPoint);
+            nvAgent.stoppingDistance = 2;
+            nvAgent.speed = speed;
+        }
         
-        if (distBtwPlayer < followingDist) 
+        return;
+        
+    }
+
+    void follow()
+    {
+        transform.LookAt(player.transform.position);
+
+        if (distBtwPlayer > followingDist) {
+            state = EnemyState.STATE_IDLE;
+            return;
+        }
+
+        if(distBtwPlayer < attackingDist && !isObstacle() && time > attackCoolTime)
+        {
+            state = EnemyState.STATE_ATTACKING;
+            return;
+        }
+
+        nvAgent.enabled = true;
+        nvAgent.SetDestination(player.transform.position);
+        nvAgent.stoppingDistance = 2;
+        nvAgent.speed = speed;
+
+        return;
+    }
+
+    bool isObstacle()
+    {
+        rayDist = distBtwPlayer;
+        Debug.DrawRay(transform.position, transform.forward * rayDist, Color.blue, 0.1f);
+        if (Physics.Raycast(transform.position, transform.forward, out ray, rayDist, -1-snowballLM-snowStartLM))
+        {
+            if (!ray.transform.CompareTag("Player"))
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+        Debug.Log("Raycast error");
+        return false;
+
+    }
+
+    void attack()
+    {
+        if(distBtwPlayer > attackingDist || time < attackCoolTime)
         {
             state = EnemyState.STATE_FOLLOWING;
         }
-        
-        if (distBtwPlayer < attackingDist)
-        {
-            if (time > attackCoolTime)
-            {
-                gameObject.transform.LookAt(player.transform);
-                snowStartPt = snowStart.transform.position;
 
-                rayDist = distBtwPlayer + 1.0f;
-                Debug.DrawRay(snowStartPt, transform.forward * rayDist, Color.blue, 0.1f);
-                if (Physics.Raycast(snowStartPt, transform.forward, out ray, rayDist))
-                {
-                    if (ray.transform.CompareTag("Player"))
-                    {
-                        state = EnemyState.STATE_ATTACKING;
-                    }
-                    else
-                    {
-                        state = EnemyState.STATE_FOLLOWING; //장애물 있으면 플레이어 쫓아가기
-                    }
-                }
-            }
-            else
-            {
-                state = EnemyState.STATE_FOLLOWING; //쿨타임 남으면 플레이어 쫓아가기
-            }
+        nvAgent.enabled = false;
+        gameObject.transform.LookAt(player.transform);
+        
+        if (isObstacle())
+        {
+            state = EnemyState.STATE_FOLLOWING;
+            return;
         }
 
-        //플레이어가 공격 시 피하기...(?)
-        /*Collider[] t_cols = Physics.OverlapSphere(transform.position, dodgingDist);//, snowballLM);
-        if(t_cols.Length > 0)
-        {
-            for(int i = 0; i < t_cols.Length; i++)
-            {
-                if(t_cols[i].transform.IsChildOf(player.transform))
-                {
-                    state = EnemyState.STATE_DODGING;
-                    Debug.Log("Enemy state: " + state);
+        snowStartPt = snowStart.transform.position;
 
-                }
-            }
-        }*/
+        Vector3 snowballPos = snowStartPt;
+        snowballPos += (transform.rotation * Vector3.forward);
+
+        Instantiate(snowball, snowballPos, transform.rotation);
+        time = 0.0f;
+        
     }
 
+    void checkState()
+    {
+        switch (state)
+        {
+            case EnemyState.STATE_IDLE:
+                idle();
+                break;
+
+            case EnemyState.STATE_FOLLOWING:
+                follow();
+                break;
+
+            case EnemyState.STATE_ATTACKING:
+                attack();
+                break;
+                
+        }
+        
+    }
+
+    Vector3 DirFromAngle(float angleInDegrees)
+    {
+        angleInDegrees += transform.eulerAngles.y;
+        return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Vector3 leftBoundary = DirFromAngle(-sightAngle / 2);
+        Vector3 rightBoundary = DirFromAngle(sightAngle / 2);
+        Gizmos.DrawLine(transform.position, transform.position + leftBoundary * followingDist);
+        Gizmos.DrawLine(transform.position, transform.position + rightBoundary * followingDist);
+        Gizmos.DrawWireSphere(transform.position, followingDist);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackingDist);
+    }
+    
 } //스크립트 클래스 괄호 삭제X
