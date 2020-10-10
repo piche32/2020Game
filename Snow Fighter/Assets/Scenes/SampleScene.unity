@@ -519,6 +519,7 @@ MonoBehaviour:
     type: 3}
   followingDist: 80
   attackingDist: 50
+  alertingDist: 20
   speed: 10
   attackCoolTime: 2
   snowballLM:
@@ -532,6 +533,7 @@ MonoBehaviour:
   snowStartLM:
     serializedVersion: 2
     m_Bits: 1024
+  rotateSpeed: -20
 --- !u!135 &1663966847
 SphereCollider:
   m_ObjectHideFlags: 0

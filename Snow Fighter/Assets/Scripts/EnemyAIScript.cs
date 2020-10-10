@@ -18,6 +18,7 @@ public class EnemyAIScript : MonoBehaviour
 
     [SerializeField] float followingDist = 10.0f;
     [SerializeField] float attackingDist = 5.0f;
+    [SerializeField] float alertingDist = 20.0f;
 
     [SerializeField] float speed = 1.0f;
     [SerializeField] float attackCoolTime = 10.0f;
@@ -42,7 +43,9 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] float sightAngle = 60.0f;
 
     [SerializeField] LayerMask snowStartLM;
-    
+
+    [SerializeField] float rotateSpeed = 1.0f;
+    bool wasObstacle;
     // Start is called before the first frame update
     void Start()
     {
@@ -69,7 +72,8 @@ public class EnemyAIScript : MonoBehaviour
             return;
         }
         snowStartPt = snowStart.transform.position;
-        
+
+        wasObstacle = false;
     }
 
     // Update is called once per frame
@@ -129,17 +133,39 @@ public class EnemyAIScript : MonoBehaviour
 
         else //장애물을 등지고 경계
         {
-
+            alert();
         }
         return;
         
+    }
+
+    void alert()
+    {
+        Collider[] cols = Physics.OverlapSphere(transform.position, alertingDist, -1 -snowballLM -snowStartLM);
+
+        if (cols.Length > 0)
+        {
+            Debug.DrawRay(transform.position, transform.forward * alertingDist, Color.blue, 0.1f);
+            if (Physics.Raycast(transform.position, transform.forward, out ray, alertingDist, -1 - snowballLM - snowStartLM))
+            {
+                if (!wasObstacle)
+                {
+                    rotateSpeed = -rotateSpeed;
+                }
+                wasObstacle = true;
+            }
+            else wasObstacle = false;
+            transform.Rotate(0.0f, Time.deltaTime * rotateSpeed, 0.0f);
+        }
+
+        return;
     }
 
     void follow()
     {
         transform.LookAt(player.transform.position);
 
-        if (distBtwPlayer > followingDist) {
+    if (distBtwPlayer > followingDist) {
             state = EnemyState.STATE_IDLE;
             return;
         }
