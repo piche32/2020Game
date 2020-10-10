@@ -87,7 +87,6 @@ public class EnemyAIScript : MonoBehaviour
         }*/
 
         Debug.Log("Enemy state: " + state);
-
     } //Update 함수 괄호 삭제X
     
     bool isTargetInSight()
@@ -103,13 +102,8 @@ public class EnemyAIScript : MonoBehaviour
 
             if(angle < sightAngle * 0.5f)
             {
-                if(Physics.Raycast(transform.position, dir, out RaycastHit hit, followingDist, -1-snowballLM-snowStartLM)) //장애물 여부 확인
-                {
-                    if(hit.transform.name == "Player")
-                    {
-                        return true;
-                    }
-                }
+                if(isTarget("Player", dir, distBtwPlayer)) //Player와 Enemy 사이에 장애물 확인
+                { return true; }
             }
         }
         return false;
@@ -132,7 +126,11 @@ public class EnemyAIScript : MonoBehaviour
             nvAgent.stoppingDistance = 2;
             nvAgent.speed = speed;
         }
-        
+
+        else //장애물을 등지고 경계
+        {
+
+        }
         return;
         
     }
@@ -146,7 +144,9 @@ public class EnemyAIScript : MonoBehaviour
             return;
         }
 
-        if(distBtwPlayer < attackingDist && !isObstacle() && time > attackCoolTime)
+        if(distBtwPlayer < attackingDist 
+            && isTarget("Player", transform.forward, distBtwPlayer) // enemy와 player 사이에 다른 장애물이 존재하는지 여부
+            && time > attackCoolTime)
         {
             state = EnemyState.STATE_ATTACKING;
             return;
@@ -160,22 +160,16 @@ public class EnemyAIScript : MonoBehaviour
         return;
     }
 
-    bool isObstacle()
+    bool isTarget(string targetTag, Vector3 rayDir, float maxDist) //enemy와 target 사이에 다른 물체가 있는지
     {
-        rayDist = distBtwPlayer;
         Debug.DrawRay(transform.position, transform.forward * rayDist, Color.blue, 0.1f);
-        if (Physics.Raycast(transform.position, transform.forward, out ray, rayDist, -1-snowballLM-snowStartLM))
-        {
-            if (!ray.transform.CompareTag("Player"))
-            {
-                return true;
-            }
-            else
-                return false;
+        if(Physics.Raycast(transform.position, rayDir, out ray, maxDist, -1 -snowballLM -snowStartLM)){
+            if (ray.transform.CompareTag(targetTag)) { return true; }
+            else return false;
         }
+
         Debug.Log("Raycast error");
         return false;
-
     }
 
     void attack()
@@ -188,7 +182,7 @@ public class EnemyAIScript : MonoBehaviour
         nvAgent.enabled = false;
         gameObject.transform.LookAt(player.transform);
         
-        if (isObstacle())
+        if (!isTarget("Player", transform.forward, distBtwPlayer)) //Player와 Enemy 사이에 장애물 있는지
         {
             state = EnemyState.STATE_FOLLOWING;
             return;
@@ -221,7 +215,8 @@ public class EnemyAIScript : MonoBehaviour
                 break;
                 
         }
-        
+
+
     }
 
     Vector3 DirFromAngle(float angleInDegrees)
