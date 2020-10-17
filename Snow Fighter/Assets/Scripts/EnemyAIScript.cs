@@ -14,9 +14,10 @@ public class EnemyAIScript : MonoBehaviour
 {
     EnemyState state;
 
-    GameObject player;
+    Transform playerTrans;
+    [SerializeField]Transform snowStartTrans = null;
+
     [SerializeField] GameObject snowball = null;
-    [SerializeField] GameObject snowStart =null;
 
     [SerializeField] LayerMask snowballLM;
     [SerializeField] LayerMask playerLM;
@@ -30,7 +31,6 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] float speed = 1.0f;
     [SerializeField] float rotateSpeed = 1.0f;
     [SerializeField] float sightAngle = 60.0f;
-
     [SerializeField] float attackCoolTime = 10.0f;
 
     float distBtwPlayer; //플레이어까지 거리
@@ -51,16 +51,18 @@ public class EnemyAIScript : MonoBehaviour
     {
         state = EnemyState.STATE_IDLE;
 
-        player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null) {
-            Debug.Log("There's no Player.");
+        playerTrans = GameObject.FindWithTag("Player").transform;
+        if(playerTrans == null)
+        {
+            Debug.Log("ERROR_WITH_PLAYER");
             return;
         }
-        distBtwPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+        distBtwPlayer = Vector3.Distance(transform.position, playerTrans.position);
         time = 0.0f;
 
         startPoint = gameObject.transform.position; //실행 시, 현재 서 있는 지점을 StartPoint로 두기
-        snowStartPt = snowStart.transform.position;
+        snowStartPt = snowStartTrans.position;
 
         nvAgent = GetComponent<NavMeshAgent>();
         nvAgent.enabled = false;
@@ -74,7 +76,7 @@ public class EnemyAIScript : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
-        distBtwPlayer = Vector3.Distance(transform.position, player.transform.position);
+        distBtwPlayer = Vector3.Distance(transform.position, playerTrans.position);
 
         checkState();
         
@@ -147,28 +149,28 @@ public class EnemyAIScript : MonoBehaviour
 
     void alert()
     {
-        Collider[] cols = Physics.OverlapSphere(transform.position, alertingDist, -1 -snowballLM -snowStartLM);
+        
+        Collider[] cols = Physics.OverlapSphere(transform.position, alertingDist, -1 - snowballLM - snowStartLM);
 
-        if (cols.Length > 0)
+        if (cols.Length == 0) return;
+        Debug.DrawRay(transform.position, transform.forward * alertingDist, Color.blue, 0.1f);
+        if (Physics.Raycast(transform.position, transform.forward, out ray, alertingDist, -1 - snowballLM - snowStartLM))
         {
-            Debug.DrawRay(transform.position, transform.forward * alertingDist, Color.blue, 0.1f);
-            if (Physics.Raycast(transform.position, transform.forward, out ray, alertingDist, -1 - snowballLM - snowStartLM))
+            if (!wasObstacle)
             {
-                if (!wasObstacle) {
-                    rotateSpeed = -rotateSpeed;
-                }
-                wasObstacle = true;
+                rotateSpeed = -rotateSpeed;
             }
-            else wasObstacle = false;
-            transform.Rotate(0.0f, Time.deltaTime * rotateSpeed, 0.0f);
+            wasObstacle = true;
         }
+        else wasObstacle = false;
+        transform.Rotate(0.0f, Time.deltaTime * rotateSpeed, 0.0f);
 
-        return;
+
     }
 
     void follow()
     {
-        transform.LookAt(player.transform.position);
+        transform.LookAt(playerTrans.position);
 
     if (distBtwPlayer > followingDist) {
             state = EnemyState.STATE_IDLE;
@@ -184,19 +186,17 @@ public class EnemyAIScript : MonoBehaviour
         }
 
         nvAgent.enabled = true;
-        nvAgent.SetDestination(player.transform.position);
+        nvAgent.SetDestination(playerTrans.position);
         nvAgent.stoppingDistance = 2;
         nvAgent.speed = speed;
-
-        return;
+        
     }
 
     bool isTarget(string targetTag, Vector3 rayDir, float maxDist) //enemy와 target 사이에 다른 물체가 있는지
     {
         Debug.DrawRay(transform.position, transform.forward * rayDist, Color.blue, 0.1f);
         if(Physics.Raycast(transform.position, rayDir, out ray, maxDist, -1 -snowballLM -snowStartLM)){
-            if (ray.transform.CompareTag(targetTag)) { return true; }
-            else return false;
+            return ray.transform.CompareTag(targetTag);
         }
 
         Debug.Log("Raycast error");
@@ -212,7 +212,7 @@ public class EnemyAIScript : MonoBehaviour
         }
 
         nvAgent.enabled = false;
-        gameObject.transform.LookAt(player.transform);
+        gameObject.transform.LookAt(playerTrans);
         
         if (!isTarget("Player", transform.forward, distBtwPlayer)) //Player와 Enemy 사이에 장애물 있는지
         {
@@ -220,7 +220,7 @@ public class EnemyAIScript : MonoBehaviour
             return;
         }
 
-        snowStartPt = snowStart.transform.position;
+        snowStartPt = snowStartTrans.position;
 
         Vector3 snowballPos = snowStartPt;
         snowballPos += (transform.rotation * Vector3.forward);

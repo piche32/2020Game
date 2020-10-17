@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\EnemyAICoroutineScript.cs" />
     <Compile Include="Assets\Scripts\EnemyAIScript.cs" />
     <Compile Include="Assets\Scripts\PlayerScript.cs" />
+    <Compile Include="Assets\Scripts\PlayerSightScript.cs" />
     <Compile Include="Assets\Scripts\SnowBallScript.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Mine/과제/3_2/졸작/Snow Fighter/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
