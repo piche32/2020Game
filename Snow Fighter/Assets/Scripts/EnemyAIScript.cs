@@ -33,6 +33,7 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] float sightAngle = 60.0f;
     [SerializeField] float attackCoolTime = 10.0f;
 
+
     float distBtwPlayer; //플레이어까지 거리
     float time;
 
@@ -45,7 +46,12 @@ public class EnemyAIScript : MonoBehaviour
     float rayDist; //Ray의 길이
     
     bool wasObstacle;
-    
+
+
+    [SerializeField] List<Transform> wayPoints = new List<Transform>();
+    Transform targetWayPoint;
+    int targetWayPointIndex;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,6 +76,9 @@ public class EnemyAIScript : MonoBehaviour
         rayDist = distBtwPlayer;
         
         wasObstacle = false;
+
+        targetWayPointIndex = 0;
+        targetWayPoint = wayPoints[targetWayPointIndex];
     }
 
     // Update is called once per frame
@@ -89,6 +98,7 @@ public class EnemyAIScript : MonoBehaviour
         {
             case EnemyState.STATE_IDLE:
                 idle();
+                patrol();
                 break;
 
             case EnemyState.STATE_FOLLOWING:
@@ -136,6 +146,29 @@ public class EnemyAIScript : MonoBehaviour
         else {//장애물을 등지고 경계
             alert();
         }
+        return;
+    }
+
+    void patrol()
+    {
+        if (isTargetInSight())
+        {
+            state = EnemyState.STATE_FOLLOWING;
+            return;
+        }
+        
+        nvAgent.enabled = true;
+        nvAgent.SetDestination(targetWayPoint.position);
+
+        if (Vector3.Distance(transform.position, targetWayPoint.position) <= 5.0f){
+            targetWayPointIndex++;
+            if(targetWayPointIndex >= wayPoints.Count)
+            {
+                targetWayPointIndex = 0;
+            }
+            targetWayPoint = wayPoints[targetWayPointIndex];
+        }
+        
         return;
     }
 

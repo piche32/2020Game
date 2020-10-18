@@ -441,7 +441,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 804657339}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -24.2, y: 0, z: -152.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2121883964}
@@ -471,7 +471,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 813349019}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: 14.8}
+  m_LocalPosition: {x: 89.8, y: -0.6, z: -71.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2121883964}
@@ -1019,7 +1019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1650103720
 Transform:
   m_ObjectHideFlags: 0
@@ -1087,6 +1087,10 @@ MonoBehaviour:
   rotateSpeed: -20
   sightAngle: 60
   attackCoolTime: 2
+  wayPoints:
+  - {fileID: 1857787595}
+  - {fileID: 804657340}
+  - {fileID: 813349020}
 --- !u!135 &1663966847
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1218,7 +1222,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1679694402
 Transform:
   m_ObjectHideFlags: 0
@@ -1413,7 +1417,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996112519}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.700001, y: 3.72, z: 60.2}
+  m_LocalPosition: {x: -97.3, y: 3.72, z: 87}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 2020532123}
@@ -1495,7 +1499,7 @@ BoxCollider:
   m_GameObject: {fileID: 2020532118}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1667,7 +1671,7 @@ GameObject:
   m_Layer: 0
   m_Name: WayPoint
   m_TagString: WayPoint
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
