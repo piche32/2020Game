@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class EnemyFollowScript : MonoBehaviour
 {
+    EnemyAIScript enemyAI;
     // Start is called before the first frame update
     void Start()
     {
+        enemyAI = this.gameObject.GetComponentInParent<EnemyAIScript>();
     }
 
     // Update is called once per frame
@@ -22,11 +24,12 @@ public class EnemyFollowScript : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (enemyAI.getState() == EnemyState.STATE_ATTACKING) return;
         if (other.tag == "Player")
         {
-            if(this.gameObject.GetComponentInParent<EnemyAIScript>().isTargetInSight())
+            if(enemyAI.isTargetInSight())
             {
-                this.gameObject.GetComponentInParent<EnemyAIScript>().changeState(EnemyState.STATE_FOLLOWING);
+                enemyAI.setState(EnemyState.STATE_FOLLOWING);
             }
         }
     }
@@ -35,7 +38,7 @@ public class EnemyFollowScript : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            this.gameObject.GetComponentInParent<EnemyAIScript>().changeState(EnemyState.STATE_IDLE);
+            enemyAI.setState(EnemyState.STATE_IDLE);
         }
     }
 }

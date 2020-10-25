@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class EnemyAttackScript : MonoBehaviour
 {
+    EnemyAIScript enemyAI;
     // Start is called before the first frame update
     void Start()
     {
-        
+        enemyAI = this.gameObject.GetComponentInParent<EnemyAIScript>();
     }
 
     // Update is called once per frame
@@ -19,7 +20,7 @@ public class EnemyAttackScript : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            this.gameObject.GetComponentInParent<EnemyAIScript>().changeState(EnemyState.STATE_ATTACKING);
+            enemyAI.setState(EnemyState.STATE_ATTACKING);
         }
     }
 
@@ -27,7 +28,7 @@ public class EnemyAttackScript : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            this.gameObject.GetComponentInParent<EnemyAIScript>().changeState(EnemyState.STATE_FOLLOWING);
+            enemyAI.setState(EnemyState.STATE_FOLLOWING);
         }
     }
 }

@@ -23,6 +23,7 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] LayerMask snowballLM;
     [SerializeField] LayerMask playerLM;
     [SerializeField] LayerMask snowStartLM;
+    
 
     [SerializeField] float followingDist = 10.0f;
     [SerializeField] float attackingDist = 5.0f;
@@ -255,11 +256,12 @@ public class EnemyAIScript : MonoBehaviour
         nvAgent.enabled = false;
         gameObject.transform.LookAt(playerTrans);
 
-        if (!isTarget("Player", transform.forward, distBtwPlayer)) //Player와 Enemy 사이에 장애물 있는지
+        if (!isTarget("Player", transform.forward, distBtwPlayer+1)) //Player와 Enemy 사이에 장애물 있는지
         {
             state = EnemyState.STATE_FOLLOWING;
             return;
         }
+
         animator.SetBool("isThrowing", true);
         snowStartPt = snowStartTrans.position;
 
@@ -291,8 +293,13 @@ public class EnemyAIScript : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackingDist);
     }
     
-    public void changeState(EnemyState state)
+    public void setState(EnemyState state)
     {
         this.state = state;
+    }
+
+    public EnemyState getState()
+    {
+        return state;
     }
 } //스크립트 클래스 괄호 삭제X
