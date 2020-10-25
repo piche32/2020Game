@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-enum EnemyState
+public enum EnemyState
 {
     STATE_IDLE,
     STATE_FOLLOWING,
@@ -13,6 +13,7 @@ enum EnemyState
 public class EnemyAIScript : MonoBehaviour
 {
     EnemyState state;
+
 
     Transform playerTrans;
     [SerializeField]Transform snowStartTrans = null;
@@ -52,6 +53,8 @@ public class EnemyAIScript : MonoBehaviour
     Transform targetWayPoint;
     int targetWayPointIndex;
 
+    Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -79,6 +82,9 @@ public class EnemyAIScript : MonoBehaviour
 
         targetWayPointIndex = 0;
         targetWayPoint = wayPoints[targetWayPointIndex];
+        animator = GetComponent<Animator>();
+        animator.SetBool("isRunning", true);
+        animator.SetBool("isThrowing", false);
     }
 
     // Update is called once per frame
@@ -97,7 +103,7 @@ public class EnemyAIScript : MonoBehaviour
         switch (state)
         {
             case EnemyState.STATE_IDLE:
-                idle();
+                //idle();
                 patrol();
                 break;
 
@@ -111,15 +117,15 @@ public class EnemyAIScript : MonoBehaviour
         }
     }
 
-    bool isTargetInSight()
+    public bool isTargetInSight()
     {
-        Collider[] cols = Physics.OverlapSphere(transform.position, followingDist, playerLM);
+        //Collider[] cols = Physics.OverlapSphere(transform.position, followingDist, playerLM);
 
-        if(cols.Length > 0)
-        {
-            Transform tfPlayer = cols[0].transform;
+       // if(cols.Length > 0)
+        //{
+        //    Transform tfPlayer = cols[0].transform;
 
-            Vector3 dir = (tfPlayer.position - transform.position).normalized;
+            Vector3 dir = (playerTrans.position - transform.position).normalized;
             float angle = Vector3.Angle(dir, transform.forward);
 
             if(angle < sightAngle * 0.5f)
@@ -127,7 +133,7 @@ public class EnemyAIScript : MonoBehaviour
                 if(isTarget("Player", dir, distBtwPlayer)) //Player와 Enemy 사이에 장애물 확인
                 { return true; }
             }
-        }
+       // }
         return false;
     }
     
@@ -151,12 +157,14 @@ public class EnemyAIScript : MonoBehaviour
 
     void patrol()
     {
-        if (isTargetInSight())
+        /*if (isTargetInSight())
         {
             state = EnemyState.STATE_FOLLOWING;
             return;
-        }
-        
+        }*/
+
+        animator.SetBool("isRunning", true);
+
         nvAgent.enabled = true;
         nvAgent.SetDestination(targetWayPoint.position);
 
@@ -205,19 +213,19 @@ public class EnemyAIScript : MonoBehaviour
     {
         transform.LookAt(playerTrans.position);
 
-    if (distBtwPlayer > followingDist) {
-            state = EnemyState.STATE_IDLE;
-            return;
-        }
+        /*if (distBtwPlayer > followingDist) {
+                state = EnemyState.STATE_IDLE;
+                return;
+            }*/
 
         if(distBtwPlayer < attackingDist 
-            && isTarget("Player", transform.forward, distBtwPlayer) // enemy와 player 사이에 다른 장애물이 존재하는지 여부
+            && isTarget("Player", transform.forward, distBtwPlayer+1) // enemy와 player 사이에 다른 장애물이 존재하는지 여부
             && time > attackCoolTime)
         {
             state = EnemyState.STATE_ATTACKING;
             return;
         }
-
+        animator.SetBool("isRunning", true);
         nvAgent.enabled = true;
         nvAgent.SetDestination(playerTrans.position);
         nvAgent.stoppingDistance = 2;
@@ -238,7 +246,7 @@ public class EnemyAIScript : MonoBehaviour
 
     void attack()
     {
-        if(distBtwPlayer > attackingDist || time < attackCoolTime)
+        if(time < attackCoolTime)
         {
             state = EnemyState.STATE_FOLLOWING;
             return;
@@ -246,13 +254,13 @@ public class EnemyAIScript : MonoBehaviour
 
         nvAgent.enabled = false;
         gameObject.transform.LookAt(playerTrans);
-        
+
         if (!isTarget("Player", transform.forward, distBtwPlayer)) //Player와 Enemy 사이에 장애물 있는지
         {
             state = EnemyState.STATE_FOLLOWING;
             return;
         }
-
+        animator.SetBool("isThrowing", true);
         snowStartPt = snowStartTrans.position;
 
         Vector3 snowballPos = snowStartPt;
@@ -260,7 +268,7 @@ public class EnemyAIScript : MonoBehaviour
 
         Instantiate(snowball, snowballPos, transform.rotation);
         time = 0.0f;
-        
+        animator.SetBool("isThrowing", false);
     }
 
    
@@ -283,4 +291,8 @@ public class EnemyAIScript : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackingDist);
     }
     
+    public void changeState(EnemyState state)
+    {
+        this.state = state;
+    }
 } //스크립트 클래스 괄호 삭제X

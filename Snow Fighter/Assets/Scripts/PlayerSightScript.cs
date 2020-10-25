@@ -8,7 +8,9 @@ public class PlayerSightScript : MonoBehaviour
     float rx, ry;
     [SerializeField] float maxX = 90.0f; //X축 회전시 범위
     [SerializeField] float minX = -90.0f; //X축 회전시 범위
-    [SerializeField] float rangeY = 90.0f; //Y축 회전시 범위
+   // [SerializeField] float rangeY = 90.0f; //Y축 회전시 범위
+
+    Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +24,9 @@ public class PlayerSightScript : MonoBehaviour
             minX = swap;
         }
 
-        rangeY = Mathf.Abs(rangeY);
-        
+        //rangeY = Mathf.Abs(rangeY);
+
+        rb = this.GetComponentInParent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -45,7 +48,7 @@ public class PlayerSightScript : MonoBehaviour
             ry = minX;
         }
 
-        if(rx >= rangeY)
+        /*if(rx >= rangeY)
         {
             rx = rangeY;
         }
@@ -53,8 +56,13 @@ public class PlayerSightScript : MonoBehaviour
         else if(rx <= -rangeY)
         {
             rx = -rangeY;
-        }
+        }*/
 
+        transform.parent.eulerAngles = new Vector3(0, rx, 0);
+
+        //this.GetComponentInParent<Transform>().eulerAngles = new Vector3(0, rx, 0);
         transform.eulerAngles = new Vector3(-ry, rx, 0);
+
+
     }
 }

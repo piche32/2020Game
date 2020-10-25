@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-
     [SerializeField] GameObject snowball = null;
     float time;
     GameObject enemy;
@@ -17,6 +16,9 @@ public class PlayerScript : MonoBehaviour
     bool isJumping;
 
     [SerializeField] Transform sightCamTrans;
+
+    Animator animator;
+
 
     // Start is called before the first frame update
     void Start()
@@ -43,11 +45,14 @@ public class PlayerScript : MonoBehaviour
 
         groundLM = LayerMask.NameToLayer("Ground");
 
+        animator = GetComponent<Animator>();
+        animator.SetBool("isJumping", false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jump();
@@ -66,7 +71,10 @@ public class PlayerScript : MonoBehaviour
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-       
+
+        Vector3 moveVector = new Vector3(h, 0.0f, v);
+        animator.SetBool("isRunning", moveVector.magnitude > 0);
+
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
         transform.Translate(moveDir.normalized * moveSpeed * Time.deltaTime, Space.Self);
     }
@@ -74,8 +82,10 @@ public class PlayerScript : MonoBehaviour
     void jump()
     {
         if (isJumping) return;
+        animator.Play("Jumping Up");
         GetComponent<Rigidbody>().AddForce(Vector3.up * jumpPower);
         isJumping = true;
+        animator.SetBool("isJumping", true);
     }
 
     void attack()
@@ -85,7 +95,11 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (isJumping && collision.transform.tag == "Ground") isJumping = false;
+        if (isJumping && collision.transform.tag == "Ground")
+        {
+            isJumping = false;
+            animator.SetBool("isJumping", false);
+        }
     }
 
 

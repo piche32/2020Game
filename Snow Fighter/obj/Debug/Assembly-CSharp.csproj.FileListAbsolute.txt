@@ -270,3 +270,11 @@ D:\Mine\과제\3_2\졸작\Snow Fighter\obj\Debug\Assembly-CSharp.csproj.CoreComp
 D:\Mine\과제\3_2\졸작\Snow Fighter\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 D:\Mine\과제\3_2\졸작\Snow Fighter\obj\Debug\Assembly-CSharp.dll
 D:\Mine\과제\3_2\졸작\Snow Fighter\obj\Debug\Assembly-CSharp.pdb
+D:\Mine\과제\3_2\졸작\Snow Fighter\Temp\bin\Debug\Unity.Postprocessing.Editor.dll
+D:\Mine\과제\3_2\졸작\Snow Fighter\Temp\bin\Debug\Unity.Postprocessing.Runtime.dll
+D:\Mine\과제\3_2\졸작\Snow Fighter\Temp\bin\Debug\Unity.Recorder.dll
+D:\Mine\과제\3_2\졸작\Snow Fighter\Temp\bin\Debug\Unity.Recorder.Editor.dll
+D:\Mine\과제\3_2\졸작\Snow Fighter\Temp\bin\Debug\Unity.Recorder.Editor.pdb
+D:\Mine\과제\3_2\졸작\Snow Fighter\Temp\bin\Debug\Unity.Recorder.pdb
+D:\Mine\과제\3_2\졸작\Snow Fighter\Temp\bin\Debug\Unity.Postprocessing.Editor.pdb
+D:\Mine\과제\3_2\졸작\Snow Fighter\Temp\bin\Debug\Unity.Postprocessing.Runtime.pdb

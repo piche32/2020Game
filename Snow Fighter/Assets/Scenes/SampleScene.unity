@@ -1013,6 +1013,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1650103720}
+  - component: {fileID: 1650103721}
   m_Layer: 0
   m_Name: AttackDistCol
   m_TagString: Untagged
@@ -1034,6 +1035,19 @@ Transform:
   m_Father: {fileID: 1663966850}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1650103721
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650103719}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1663966845
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,6 +1230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1679694402}
   - component: {fileID: 1679694403}
+  - component: {fileID: 1679694404}
   m_Layer: 0
   m_Name: FollowDistCol
   m_TagString: Untagged
@@ -1245,11 +1260,23 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1679694401}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 16
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1679694404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679694401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aca14a847d9d624e88e1ab21b29f9bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1857787594
 GameObject:
   m_ObjectHideFlags: 0
