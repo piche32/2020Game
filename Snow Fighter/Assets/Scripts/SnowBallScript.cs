@@ -9,7 +9,7 @@ public class SnowBallScript : MonoBehaviour
     float time;
 
     [SerializeField] float power = 10.0f;
-
+    [SerializeField] float damage = 10.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +35,9 @@ public class SnowBallScript : MonoBehaviour
         if(collision.transform.tag == "Player")
         {
             Destroy(this.gameObject);
+            PlayerScript.instance.Hp -= damage;
+            Debug.Log(PlayerScript.instance.Hp);
+            PlayerScript.instance.checkPlayerState();
         }
     }
 }

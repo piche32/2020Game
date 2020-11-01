@@ -64,7 +64,7 @@ public class EnemyAIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        curState = EnemyState.STATE_FOLLOWING;
+        curState = EnemyState.STATE_IDLE;
         preState = curState;
 
         playerTrans = GameObject.FindWithTag("Player").transform;

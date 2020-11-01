@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    public static PlayerScript instance;
+    private void Awake()
+    {
+        instance = this;
+    }
+
     [SerializeField] GameObject snowball = null;
     float time;
     GameObject enemy;
 
     [SerializeField] float moveSpeed = 10.0f;
     [SerializeField] float jumpPower = 10.0f;
-
+    [SerializeField] float maxHP = 100.0f;
     LayerMask groundLM;
 
     bool isJumping;
@@ -19,6 +25,8 @@ public class PlayerScript : MonoBehaviour
 
     Animator animator;
 
+    private float hp;
+    public float Hp { get { return hp; } set { hp = value; } }
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +55,8 @@ public class PlayerScript : MonoBehaviour
 
         animator = GetComponent<Animator>();
         animator.SetBool("isJumping", false);
+
+        hp = maxHP;
     }
 
     // Update is called once per frame
@@ -102,5 +112,13 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    public void checkPlayerState()
+    {
+        if(hp < 0)
+        {
+            Debug.Log("GameOver");
+
+        }
+    }
 
 }
