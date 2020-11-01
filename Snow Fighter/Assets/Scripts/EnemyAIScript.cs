@@ -39,9 +39,11 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] float sightAngle = 60.0f;
     [SerializeField] float attackCoolTime = 10.0f;
     [SerializeField] float followLimitTime = 30.0f;
+    [SerializeField] float alertLimitTime = 3.0f;
     
     float attackTime;
     float followTime;
+    float alertTime;
 
     Vector3 startPoint;
     Vector3 snowStartPt;
@@ -74,6 +76,7 @@ public class EnemyAIScript : MonoBehaviour
 
         attackTime = 0.0f;
         followTime = 0.0f;
+        alertTime = 0.0f;
 
         startPoint = gameObject.transform.position; //실행 시, 현재 서 있는 지점을 StartPoint로 두기
         snowStartPt = snowStartTrans.position;
@@ -91,17 +94,14 @@ public class EnemyAIScript : MonoBehaviour
 
         animator = GetComponent<Animator>();
         animator.SetBool("isRunning", true);
+        animator.SetBool("isAlerting", false);
     }
 
     // Update is called once per frame
     void Update()
     {
-
         checkState();
-
         attackTime += Time.deltaTime; //attack state가 아닐 때도 시간을 계산(attack cool time을 state 변화로 초기화 시켜 무한히 공격하는 것을 막기 위함)
-
-        Debug.Log(followTime);
     } //Update 함수 괄호 삭제X
 
     void checkState()
@@ -169,14 +169,33 @@ public class EnemyAIScript : MonoBehaviour
             wasObstacle = true;
         }
         else wasObstacle = false;
-        transform.Rotate(0.0f, Time.deltaTime * rotateSpeed, 0.0f);
+        animator.SetFloat("RotateY", Time.deltaTime*rotateSpeed/90.0f); //RotateY의 Max: 1, rotateSpeed의 단위 degree
+        //transform.Rotate(0.0f, Time.deltaTime * rotateSpeed, 0.0f);
 
-
+        if(alertTime > alertLimitTime)
+        {
+            animator.SetBool("isAlerting", false);
+        }
     }
+
     void patrol()
     {
-        if (Vector3.Distance(transform.position, targetWayPoint.position) <= 5.0f)
+        if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance+0.8f)
         {
+            if (alertTime == 0.0f) // 목표지점 도착 직후
+            {
+                animator.SetBool("isAlerting", true); //경계모드 활성화
+                animator.SetTrigger("Alert");
+                alertTime += Time.deltaTime;
+                return;
+            }
+            if (animator.GetBool("isAlerting"))
+            {
+                alert();
+                alertTime += Time.deltaTime;
+                return;
+            }
+            
             targetWayPointIndex++;
             if (targetWayPointIndex >= wayPoints.Count)
             {
@@ -184,6 +203,7 @@ public class EnemyAIScript : MonoBehaviour
             }
             targetWayPoint = wayPoints[targetWayPointIndex];
             nvAgent.SetDestination(targetWayPoint.position);
+            alertTime = 0.0f;
         }
 
         return;
@@ -236,6 +256,7 @@ public class EnemyAIScript : MonoBehaviour
     void followToIdle()
     {
         nvAgent.SetDestination(targetWayPoint.position);
+        alertTime = 0.0f;
         preState = curState;
     }
     void idleToFollow()
