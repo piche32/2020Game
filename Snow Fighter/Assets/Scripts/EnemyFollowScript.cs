@@ -12,33 +12,39 @@ public class EnemyFollowScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+   
     private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag != "Player") return;
+
+        if (enemyAI.getCurState() == EnemyState.STATE_FOLLOWING) return;
+        if (enemyAI.isTargetInSight())
+        {
+            enemyAI.setState(EnemyState.STATE_FOLLOWING);
+        }
+
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (enemyAI.getState() == EnemyState.STATE_ATTACKING) return;
-        if (other.tag == "Player")
+        if (other.tag != "Player") return;
+
+        if ((enemyAI.getCurState() == EnemyState.STATE_FOLLOWING) || (enemyAI.getCurState() == EnemyState.STATE_ATTACKING)) return;
+
+        if (enemyAI.isFollowingTimeOver()) return;
+            if (enemyAI.isTargetInSight())
         {
-            if(enemyAI.isTargetInSight())
-            {
-                enemyAI.setState(EnemyState.STATE_FOLLOWING);
-            }
+            enemyAI.setState(EnemyState.STATE_FOLLOWING);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.tag == "Player")
-        {
-            enemyAI.setState(EnemyState.STATE_IDLE);
-        }
+        if (other.tag != "Player") return;
+
+        if (enemyAI.getCurState() != EnemyState.STATE_FOLLOWING) return;
+
+        enemyAI.setState(EnemyState.STATE_IDLE);
+        
     }
 }

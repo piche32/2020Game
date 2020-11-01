@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,7 +14,8 @@ public enum EnemyState
 
 public class EnemyAIScript : MonoBehaviour
 {
-    EnemyState state;
+    EnemyState curState;
+    EnemyState preState;
 
 
     Transform playerTrans;
@@ -23,7 +26,8 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] LayerMask snowballLM;
     [SerializeField] LayerMask playerLM;
     [SerializeField] LayerMask snowStartLM;
-    
+    [SerializeField] LayerMask enemyLM;
+
 
     [SerializeField] float followingDist = 10.0f;
     [SerializeField] float attackingDist = 5.0f;
@@ -34,10 +38,10 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] float rotateSpeed = 1.0f;
     [SerializeField] float sightAngle = 60.0f;
     [SerializeField] float attackCoolTime = 10.0f;
-
-
-    float distBtwPlayer; //플레이어까지 거리
-    float time;
+    [SerializeField] float followLimitTime = 30.0f;
+    
+    float attackTime;
+    float followTime;
 
     Vector3 startPoint;
     Vector3 snowStartPt;
@@ -45,7 +49,6 @@ public class EnemyAIScript : MonoBehaviour
     NavMeshAgent nvAgent;
 
     RaycastHit ray;
-    float rayDist; //Ray의 길이
     
     bool wasObstacle;
 
@@ -59,7 +62,8 @@ public class EnemyAIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        state = EnemyState.STATE_IDLE;
+        curState = EnemyState.STATE_FOLLOWING;
+        preState = curState;
 
         playerTrans = GameObject.FindWithTag("Player").transform;
         if(playerTrans == null)
@@ -68,44 +72,44 @@ public class EnemyAIScript : MonoBehaviour
             return;
         }
 
-        distBtwPlayer = Vector3.Distance(transform.position, playerTrans.position);
-        time = 0.0f;
+        attackTime = 0.0f;
+        followTime = 0.0f;
 
         startPoint = gameObject.transform.position; //실행 시, 현재 서 있는 지점을 StartPoint로 두기
         snowStartPt = snowStartTrans.position;
 
-        nvAgent = GetComponent<NavMeshAgent>();
-        nvAgent.enabled = false;
-        
-        rayDist = distBtwPlayer;
-        
-        wasObstacle = false;
-
         targetWayPointIndex = 0;
         targetWayPoint = wayPoints[targetWayPointIndex];
+
+        nvAgent = GetComponent<NavMeshAgent>();
+        nvAgent.enabled = true;
+        nvAgent.stoppingDistance = 2;
+        nvAgent.speed = speed;
+        nvAgent.SetDestination(targetWayPoint.position);
+
+        wasObstacle = false;
+
         animator = GetComponent<Animator>();
         animator.SetBool("isRunning", true);
-        animator.SetBool("isThrowing", false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
-        distBtwPlayer = Vector3.Distance(transform.position, playerTrans.position);
 
         checkState();
-        
-      //Debug.Log("Enemy state: " + state);
+
+        attackTime += Time.deltaTime; //attack state가 아닐 때도 시간을 계산(attack cool time을 state 변화로 초기화 시켜 무한히 공격하는 것을 막기 위함)
+
+        Debug.Log(followTime);
     } //Update 함수 괄호 삭제X
 
     void checkState()
     {
-        switch (state)
+        switch (curState)
         {
             case EnemyState.STATE_IDLE:
-                //idle();
-                patrol();
+                idle();
                 break;
 
             case EnemyState.STATE_FOLLOWING:
@@ -120,67 +124,29 @@ public class EnemyAIScript : MonoBehaviour
 
     public bool isTargetInSight()
     {
-        //Collider[] cols = Physics.OverlapSphere(transform.position, followingDist, playerLM);
+        Vector3 dir = (playerTrans.position - transform.position).normalized;
+        float angle = Vector3.Angle(dir, transform.forward);
 
-       // if(cols.Length > 0)
-        //{
-        //    Transform tfPlayer = cols[0].transform;
-
-            Vector3 dir = (playerTrans.position - transform.position).normalized;
-            float angle = Vector3.Angle(dir, transform.forward);
-
-            if(angle < sightAngle * 0.5f)
-            {
-                if(isTarget("Player", dir, distBtwPlayer)) //Player와 Enemy 사이에 장애물 확인
-                { return true; }
-            }
-       // }
+        if (angle < sightAngle * 0.5f)
+        {
+            if (isTarget(playerTrans)) //Player와 Enemy 사이에 장애물 확인
+            { return true; }
+        }
         return false;
     }
-    
-    void idle()
+    bool isTarget(Transform targetTrans) //enemy와 target 사이에 다른 물체가 있는지
     {
-        if(isTargetInSight())
+        Vector3 dir = (targetTrans.position - transform.position).normalized;
+        float maxDist = Vector3.Distance(targetTrans.position, transform.position);
+        Debug.DrawRay(transform.position + transform.up * 0.5f, transform.forward * (maxDist + 1.0f), Color.blue, 0.1f);
+        if (Physics.Raycast(transform.position + transform.up * 0.5f, dir, out ray, maxDist + 1.0f, -1 - snowballLM - snowStartLM - enemyLM))
         {
-            state = EnemyState.STATE_FOLLOWING;
-            return;
+            return ray.transform.CompareTag(targetTrans.tag);
         }
-        
-        //정해진 위치로 돌아가기
-        if (Vector3.Distance(transform.position, startPoint) > 2)  {
-            goBackToStartPt();
-        }
-        else {//장애물을 등지고 경계
-            alert();
-        }
-        return;
+
+        Debug.Log("Raycast error");
+        return false;
     }
-
-    void patrol()
-    {
-        /*if (isTargetInSight())
-        {
-            state = EnemyState.STATE_FOLLOWING;
-            return;
-        }*/
-
-        animator.SetBool("isRunning", true);
-
-        nvAgent.enabled = true;
-        nvAgent.SetDestination(targetWayPoint.position);
-
-        if (Vector3.Distance(transform.position, targetWayPoint.position) <= 5.0f){
-            targetWayPointIndex++;
-            if(targetWayPointIndex >= wayPoints.Count)
-            {
-                targetWayPointIndex = 0;
-            }
-            targetWayPoint = wayPoints[targetWayPointIndex];
-        }
-        
-        return;
-    }
-
     void goBackToStartPt()
     {
         nvAgent.enabled = true;
@@ -188,10 +154,8 @@ public class EnemyAIScript : MonoBehaviour
         nvAgent.stoppingDistance = 2;
         nvAgent.speed = speed;
     }
-
     void alert()
     {
-        
         Collider[] cols = Physics.OverlapSphere(transform.position, alertingDist, -1 - snowballLM - snowStartLM);
 
         if (cols.Length == 0) return;
@@ -209,78 +173,90 @@ public class EnemyAIScript : MonoBehaviour
 
 
     }
+    void patrol()
+    {
+        if (Vector3.Distance(transform.position, targetWayPoint.position) <= 5.0f)
+        {
+            targetWayPointIndex++;
+            if (targetWayPointIndex >= wayPoints.Count)
+            {
+                targetWayPointIndex = 0;
+            }
+            targetWayPoint = wayPoints[targetWayPointIndex];
+            nvAgent.SetDestination(targetWayPoint.position);
+        }
 
+        return;
+    }
+    void idle()
+    {
+        if (preState == EnemyState.STATE_FOLLOWING)
+        { //follow -> idle fn
+            followToIdle();
+            return;
+        }
+
+        patrol();
+    }
     void follow()
     {
-        transform.LookAt(playerTrans.position);
-
-        /*if (distBtwPlayer > followingDist) {
-                state = EnemyState.STATE_IDLE;
-                return;
-            }*/
-
-        if(distBtwPlayer < attackingDist 
-            && isTarget("Player", transform.forward, distBtwPlayer+1) // enemy와 player 사이에 다른 장애물이 존재하는지 여부
-            && time > attackCoolTime)
+        if(preState == EnemyState.STATE_IDLE) //idle -> follow fn
         {
-            state = EnemyState.STATE_ATTACKING;
+            idleToFollow();
             return;
         }
-        animator.SetBool("isRunning", true);
-        nvAgent.enabled = true;
-        nvAgent.SetDestination(playerTrans.position);
-        nvAgent.stoppingDistance = 2;
-        nvAgent.speed = speed;
-        
-    }
 
-    bool isTarget(string targetTag, Vector3 rayDir, float maxDist) //enemy와 target 사이에 다른 물체가 있는지
-    {
-        Debug.DrawRay(transform.position, transform.forward * rayDist, Color.blue, 0.1f);
-        if(Physics.Raycast(transform.position, rayDir, out ray, maxDist, -1 -snowballLM -snowStartLM)){
-            return ray.transform.CompareTag(targetTag);
+        if (isFollowingTimeOver()) //일정시간동안 공격범위에 들어가지 못하고 따라다니기만 했을 경우 Idle 상태로 돌아가기
+        {
+            setState(EnemyState.STATE_IDLE);
+            return;
         }
 
-        Debug.Log("Raycast error");
-        return false;
-    }
+        followTime += Time.deltaTime;
 
+        nvAgent.SetDestination(playerTrans.position);
+    }
     void attack()
     {
-        if(time < attackCoolTime)
-        {
-            state = EnemyState.STATE_FOLLOWING;
-            return;
-        }
+        nvAgent.SetDestination(playerTrans.position);
 
-        nvAgent.enabled = false;
-        gameObject.transform.LookAt(playerTrans);
+        if (attackCoolTime > attackTime) return; //쿨타임 남음
 
-        if (!isTarget("Player", transform.forward, distBtwPlayer+1)) //Player와 Enemy 사이에 장애물 있는지
-        {
-            state = EnemyState.STATE_FOLLOWING;
-            return;
-        }
+        if (!isTarget(playerTrans)) return; //장애물 유무 확인
 
-        animator.SetBool("isThrowing", true);
+        animator.SetTrigger("Throw");
         snowStartPt = snowStartTrans.position;
 
         Vector3 snowballPos = snowStartPt;
         snowballPos += (transform.rotation * Vector3.forward);
 
         Instantiate(snowball, snowballPos, transform.rotation);
-        time = 0.0f;
-        animator.SetBool("isThrowing", false);
+        attackTime = 0.0f;
     }
-
-   
+    void followToIdle()
+    {
+        nvAgent.SetDestination(targetWayPoint.position);
+        preState = curState;
+    }
+    void idleToFollow()
+    {
+        followTime = 0.0f;
+        preState = curState;
+    }
+    void attackToFollow()
+    {
+        preState = curState;
+    }
+    void followToAttack()
+    {
+        preState = curState;
+    }
 
     Vector3 DirFromAngle(float angleInDegrees)
     {
         angleInDegrees += transform.eulerAngles.y;
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -292,14 +268,20 @@ public class EnemyAIScript : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackingDist);
     }
-    
+
     public void setState(EnemyState state)
     {
-        this.state = state;
+        preState = curState;
+        curState = state;
+    }
+    public EnemyState getCurState()
+    {
+        return curState;
+    }
+    public bool isFollowingTimeOver()
+    {
+        if (followTime > followLimitTime) return true;
+        return false;
     }
 
-    public EnemyState getState()
-    {
-        return state;
-    }
 } //스크립트 클래스 괄호 삭제X

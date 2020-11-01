@@ -17,7 +17,7 @@ public class PlayerSightScript : MonoBehaviour
         rx = 0.0f;
         ry = 0.0f;
 
-        if(maxX < minX)
+        if (maxX < minX)
         {
             float swap = maxX;
             maxX = minX;

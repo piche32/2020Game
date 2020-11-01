@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7949498566146004539}
   - component: {fileID: 4948848451031432117}
   - component: {fileID: 8934971491982547588}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SnowBallGraphic
   m_TagString: SnowBall
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 3790252479230656324}
   m_Layer: 9
   m_Name: SnowBall
-  m_TagString: Untagged
+  m_TagString: SnowBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 9084020594133554072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 2013520145943840919}
   m_Father: {fileID: 0}
