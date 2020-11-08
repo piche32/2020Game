@@ -12,6 +12,10 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float moveSpeed = 10.0f;
     [SerializeField] float jumpPower = 10.0f;
     [SerializeField] float maxHP = 100.0f;
+    [Range(1.0f, 5.0f)]
+    [SerializeField] float attackPower = 1.0f;
+    [Range(0.0f, 1.0f)]
+    [SerializeField] float powerIncrease = 0.5f;
     LayerMask groundLM;
 
     bool isJumping;
@@ -69,6 +73,10 @@ public class PlayerScript : MonoBehaviour
         {
             attack();
         }
+        if (Input.GetMouseButton(0))
+        {
+            attackPower += powerIncrease;
+        }
         
     }
     
@@ -95,7 +103,8 @@ public class PlayerScript : MonoBehaviour
 
     void attack()
     {
-        Instantiate(snowball, sightCamTrans.position + (sightCamTrans.forward*(transform.lossyScale.z/2+1)), sightCamTrans.rotation);
+        GameObject sn = Instantiate(snowball, sightCamTrans.position + (sightCamTrans.forward*(transform.lossyScale.z/2+1)), sightCamTrans.rotation);
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -109,10 +118,10 @@ public class PlayerScript : MonoBehaviour
 
     public void checkPlayerState()
     {
-        if(hp < 0)
+        if(hp <= 0)
         {
             Debug.Log("GameOver");
-
+            GameManagerScript.Instance.Gameover();
         }
     }
 

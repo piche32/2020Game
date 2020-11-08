@@ -93,8 +93,8 @@ public class EnemyAIScript : MonoBehaviour
         wasObstacle = false;
 
         animator = GetComponent<Animator>();
-        animator.SetBool("isRunning", true);
         animator.SetBool("isAlerting", false);
+        animator.applyRootMotion = false;
     }
 
     // Update is called once per frame
@@ -175,17 +175,22 @@ public class EnemyAIScript : MonoBehaviour
         if(alertTime > alertLimitTime)
         {
             animator.SetBool("isAlerting", false);
+            animator.applyRootMotion = false;
+
         }
     }
 
     void patrol()
     {
+        
         if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance+0.8f)
         {
             if (alertTime == 0.0f) // 목표지점 도착 직후
             {
                 animator.SetBool("isAlerting", true); //경계모드 활성화
                 animator.SetTrigger("Alert");
+                animator.applyRootMotion = true;
+
                 alertTime += Time.deltaTime;
                 return;
             }

@@ -26,13 +26,13 @@ public class SnowBallScript : MonoBehaviour
 
         time += Time.deltaTime;
 
-        //transform.GetComponent<Rigidbody>().velocity = this.transform.forward * power;
-
         if (time > destroyTime)
             Destroy(this.gameObject);
 
 
     }
+
+    
 
     private void OnCollisionEnter(Collision collision)
     {
