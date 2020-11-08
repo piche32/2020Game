@@ -10,10 +10,14 @@ public class SnowBallScript : MonoBehaviour
 
     [SerializeField] float power = 10.0f;
     [SerializeField] float damage = 10.0f;
+
+    
     // Start is called before the first frame update
     void Start()
     {
         time = 0.0f;
+
+        GetComponent<Rigidbody>().AddForce(transform.forward * power);
     }
 
     // Update is called once per frame
@@ -22,7 +26,7 @@ public class SnowBallScript : MonoBehaviour
 
         time += Time.deltaTime;
 
-        GetComponent<Rigidbody>().AddForce(transform.forward * power, ForceMode.Impulse);
+        //transform.GetComponent<Rigidbody>().velocity = this.transform.forward * power;
 
         if (time > destroyTime)
             Destroy(this.gameObject);
@@ -32,12 +36,16 @@ public class SnowBallScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
         if(collision.transform.tag == "Player")
         {
-            Destroy(this.gameObject);
-            PlayerScript.instance.Hp -= damage;
-            Debug.Log(PlayerScript.instance.Hp);
-            PlayerScript.instance.checkPlayerState();
+            player.GetComponent<PlayerScript>().Hp -= damage;
+            Debug.Log(player.GetComponent<PlayerScript>().Hp);
+            player.GetComponent<PlayerScript>().checkPlayerState();
+
+
         }
+
+        Destroy(this.gameObject);
     }
 }

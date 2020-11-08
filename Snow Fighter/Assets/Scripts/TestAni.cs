@@ -18,7 +18,7 @@ public class TestAni : MonoBehaviour
 
 
         animator.SetFloat("Horizontal", horizontal);
-        animator.SetFloat("Vertical", vertical);
+        animator.SetFloat ("Vertical", vertical);
 
     }
 }

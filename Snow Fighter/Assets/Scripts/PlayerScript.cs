@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    public static PlayerScript instance;
-    private void Awake()
-    {
-        instance = this;
-    }
 
     [SerializeField] GameObject snowball = null;
     float time;
