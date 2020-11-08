@@ -59,6 +59,8 @@ public class EnemyAIScript : MonoBehaviour
 
     Animator animator;
 
+    Transform snow;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -91,6 +93,8 @@ public class EnemyAIScript : MonoBehaviour
         animator = GetComponent<Animator>();
         animator.SetBool("isAlerting", false);
         animator.applyRootMotion = false;
+
+        snow = null;
     }
 
     // Update is called once per frame
@@ -232,9 +236,18 @@ public class EnemyAIScript : MonoBehaviour
         nvAgent.SetDestination(playerTrans.position);
     }
 
-    /*Coroutine controlSnowball()
+    public void createSnow()
     {
-        yield return new WaitForSeconds    }*/
+        snow = SnowBallPoolingScript.Instance.GetObject().transform;
+        snow.transform.SetParent(snowStartTrans);
+    }
+
+    public void throwSnow()
+    {
+        if (snow == null) return;
+        snow.transform.SetParent(null);
+        snow.GetComponent<SnowBallScript>().Initialize("Enemy", power, snowStartTrans.position, snowStartTrans.rotation);
+    }
 
     void attack()
     {
@@ -245,11 +258,10 @@ public class EnemyAIScript : MonoBehaviour
         if (!isTarget(playerTrans)) return; //장애물 유무 확인
 
         animator.SetTrigger("Throw");
-
-        Vector3 snowballPos = snowStartTrans.position;
+        /*Vector3 snowballPos = snowStartTrans.position;
         snowballPos += (snowStartTrans.rotation * Vector3.forward);
 
-        SnowBallPoolingScript.Instance.GetObject().Initialize("Enemy", power, snowballPos, snowStartTrans.rotation);
+        SnowBallPoolingScript.Instance.GetObject().Initialize("Enemy", power, snowballPos, snowStartTrans.rotation);*/
         //Instantiate(snowball, snowballPos, transform.rotation);
         attackTime = 0.0f;
     }

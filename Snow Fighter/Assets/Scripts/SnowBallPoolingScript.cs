@@ -29,19 +29,16 @@ public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
 
     public SnowBallScript GetObject()
     {
-        if(snowballs.Count > 0)
-       //if (Instance.snowballs.Count > 0)
+        if (Instance.snowballs.Count > 0)
         {
-            var obj = snowballs.Dequeue();
-          //var obj = Instance.snowballs.Dequeue();
+            var obj = Instance.snowballs.Dequeue();
             obj.transform.SetParent(null);
-          obj.gameObject.SetActive(true);
+            obj.gameObject.SetActive(true);
             return obj;
         }
         else
         {
-            var newObj = CreateNewObject();
-            //var newObj = Instance.CreateNewObject();
+            var newObj = Instance.CreateNewObject();
             newObj.gameObject.SetActive(true);
             newObj.transform.SetParent(null);
             return newObj;
@@ -51,15 +48,7 @@ public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
     public void ReturnObject(SnowBallScript obj)
     {
         obj.gameObject.SetActive(false);
-      //  obj.transform.SetParent(transform);
         obj.transform.SetParent(Instance.transform);
-        snowballs.Enqueue(obj);
-        //Instance.snowballs.Enqueue(obj);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        Instance.snowballs.Enqueue(obj);
     }
 }

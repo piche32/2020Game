@@ -13,16 +13,31 @@ public class SnowBallScript : MonoBehaviour
     //[SerializeField] float power = 10.0f;
     [SerializeField] float damage = 10.0f;
 
+
+    private void Start()
+    {
+        shooterName = null;
+        time = 0.0f;
+    }
+
+    private void OnEnable()
+    {
+        time = 0.0f;
+
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        if(shooterName != null)
+        Physics.IgnoreCollision(GameObject.FindGameObjectWithTag(shooterName).GetComponent<Collider>(), GetComponentInChildren<Collider>());
+
+    }
+
     public void Initialize(string tag, float power, Vector3 pos, Quaternion rot)
     {
         shooterName = tag;
-        //this.power = power;
         time = 0.0f;
         transform.position = pos;
         transform.rotation = rot;
         
         GetComponent<Rigidbody>().AddForce(transform.forward * power);
-        Time.timeScale = 1.0f;
         Physics.IgnoreCollision(GameObject.FindGameObjectWithTag(tag).GetComponent<Collider>(), GetComponentInChildren<Collider>());
     }
 

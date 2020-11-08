@@ -74,7 +74,6 @@ public class PlayerScript : MonoBehaviour
         {
             if (power > maxPower) power = maxPower;
             else power += powerIncrease;
-            Debug.Log(power);
         }
         if (Input.GetMouseButtonUp(0)){
             attack();
