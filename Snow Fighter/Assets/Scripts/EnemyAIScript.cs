@@ -20,8 +20,8 @@ public class EnemyAIScript : MonoBehaviour
 
     Transform playerTrans;
     [SerializeField]Transform snowStartTrans = null;
+    Transform snow;
 
-    [SerializeField] GameObject snowball = null;
 
     [SerializeField] LayerMask snowballLM;
     [SerializeField] LayerMask playerLM;
@@ -41,7 +41,11 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] float followLimitTime = 30.0f;
     [SerializeField] float alertLimitTime = 3.0f;
     [SerializeField] float power = 300.0f;
-    
+    [SerializeField] float maxHP = 100.0f;
+
+    private float hp;
+    public float Hp { get { return hp; } set { hp = value; } }
+
     float attackTime;
     float followTime;
     float alertTime;
@@ -59,7 +63,6 @@ public class EnemyAIScript : MonoBehaviour
 
     Animator animator;
 
-    Transform snow;
 
     // Start is called before the first frame update
     void Start()
@@ -95,6 +98,8 @@ public class EnemyAIScript : MonoBehaviour
         animator.applyRootMotion = false;
 
         snow = null;
+
+        hp = maxHP;
     }
 
     // Update is called once per frame
@@ -317,4 +322,12 @@ public class EnemyAIScript : MonoBehaviour
         return false;
     }
 
+    public void checkHp()
+    {
+        if(hp <= 0)
+        {
+            Debug.Log("Success");
+            GameManagerScript.Instance.Success();
+        }
+    }
 } //스크립트 클래스 괄호 삭제X

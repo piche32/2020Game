@@ -13,8 +13,11 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] float jumpPower = 10.0f;
     [SerializeField] float maxHP = 100.0f;
     [SerializeField] float initPower = 200.0f;
+    public float InitPower { get { return initPower; } set { initPower = value; } }
     [SerializeField] float powerIncrease = 1.0f;
     [SerializeField] float maxPower = 500.0f;
+    public float MaxPower { get { return maxPower; } set { maxPower = value; } }
+    public float MaxHP { get { return maxHP; } set { maxHP = value; } }
     float power;
     LayerMask groundLM;
 
@@ -74,6 +77,7 @@ public class PlayerScript : MonoBehaviour
         {
             if (power > maxPower) power = maxPower;
             else power += powerIncrease;
+            UIManager.Instance.SetPlayerPowerSlider(power);
         }
         if (Input.GetMouseButtonUp(0)){
             attack();
@@ -107,6 +111,7 @@ public class PlayerScript : MonoBehaviour
         
         SnowBallPoolingScript.Instance.GetObject().Initialize("Player", power, sightCamTrans.position + sightCamTrans.forward*(transform.lossyScale.z/2+1), sightCamTrans.rotation);
         power = initPower;
+        UIManager.Instance.SetPlayerPowerSlider(power);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -118,7 +123,7 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    public void checkPlayerState()
+    public void checkHp()
     {
         if(hp <= 0)
         {

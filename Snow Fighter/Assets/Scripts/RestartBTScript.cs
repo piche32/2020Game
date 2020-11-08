@@ -8,7 +8,6 @@ public class RestartBTScript : MonoBehaviour
     // Start is called before the first frame update
     public void restart()
     {
-        SceneManager.LoadScene("Main");
-        Cursor.lockState = CursorLockMode.Locked;
+        GameManagerScript.Instance.Restart();
     }
 }

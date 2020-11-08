@@ -71,8 +71,10 @@
     <Compile Include="Assets\Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\PlayerSightScript.cs" />
     <Compile Include="Assets\Scripts\RestartBTScript.cs" />
+    <Compile Include="Assets\Scripts\SingleTon.cs" />
     <Compile Include="Assets\Scripts\SnowBallPoolingScript.cs" />
     <Compile Include="Assets\Scripts\SnowBallScript.cs" />
+    <Compile Include="Assets\Scripts\UIManager.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
