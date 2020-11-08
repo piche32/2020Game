@@ -40,13 +40,11 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] float attackCoolTime = 10.0f;
     [SerializeField] float followLimitTime = 30.0f;
     [SerializeField] float alertLimitTime = 3.0f;
+    [SerializeField] float power = 300.0f;
     
     float attackTime;
     float followTime;
     float alertTime;
-
-    Vector3 startPoint;
-    Vector3 snowStartPt;
     
     NavMeshAgent nvAgent;
 
@@ -78,8 +76,6 @@ public class EnemyAIScript : MonoBehaviour
         followTime = 0.0f;
         alertTime = 0.0f;
 
-        startPoint = gameObject.transform.position; //실행 시, 현재 서 있는 지점을 StartPoint로 두기
-        snowStartPt = snowStartTrans.position;
 
         targetWayPointIndex = 0;
         targetWayPoint = wayPoints[targetWayPointIndex];
@@ -147,13 +143,7 @@ public class EnemyAIScript : MonoBehaviour
         Debug.Log("Raycast error");
         return false;
     }
-    void goBackToStartPt()
-    {
-        nvAgent.enabled = true;
-        nvAgent.SetDestination(startPoint);
-        nvAgent.stoppingDistance = 2;
-        nvAgent.speed = speed;
-    }
+    
     void alert()
     {
         Collider[] cols = Physics.OverlapSphere(transform.position, alertingDist, -1 - snowballLM - snowStartLM);
@@ -241,6 +231,11 @@ public class EnemyAIScript : MonoBehaviour
 
         nvAgent.SetDestination(playerTrans.position);
     }
+
+    /*Coroutine controlSnowball()
+    {
+        yield return new WaitForSeconds    }*/
+
     void attack()
     {
         nvAgent.SetDestination(playerTrans.position);
@@ -250,12 +245,12 @@ public class EnemyAIScript : MonoBehaviour
         if (!isTarget(playerTrans)) return; //장애물 유무 확인
 
         animator.SetTrigger("Throw");
-        snowStartPt = snowStartTrans.position;
 
-        Vector3 snowballPos = snowStartPt;
-        snowballPos += (transform.rotation * Vector3.forward);
+        Vector3 snowballPos = snowStartTrans.position;
+        snowballPos += (snowStartTrans.rotation * Vector3.forward);
 
-        Instantiate(snowball, snowballPos, transform.rotation);
+        SnowBallPoolingScript.Instance.GetObject().Initialize("Enemy", power, snowballPos, snowStartTrans.rotation);
+        //Instantiate(snowball, snowballPos, transform.rotation);
         attackTime = 0.0f;
     }
     void followToIdle()

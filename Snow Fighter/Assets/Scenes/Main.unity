@@ -511,7 +511,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 325329055}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.101, z: 0.094}
+  m_LocalPosition: {x: 0, y: 1.101, z: -0.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 194745923}
@@ -619,8 +619,9 @@ MonoBehaviour:
   moveSpeed: 5
   jumpPower: 200
   maxHP: 100
-  attackPower: 1
-  powerIncrease: 0.5
+  initPower: 300
+  powerIncrease: 1
+  maxPower: 500
   sightCamTrans: {fileID: 325329058}
 --- !u!136 &383390557
 CapsuleCollider:
@@ -1188,7 +1189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04d4fc80b15568a4b99143104bd486d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snowStartTrans: {fileID: 886133888}
+  snowStartTrans: {fileID: 1566026302}
   snowball: {fileID: 9084020594133554072, guid: d71ce838b843e1d46b7b88f7b8676f54,
     type: 3}
   snowballLM:
@@ -1212,6 +1213,7 @@ MonoBehaviour:
   attackCoolTime: 5
   followLimitTime: 10
   alertLimitTime: 10
+  power: 200
   wayPoints:
   - {fileID: 783072346}
   - {fileID: 1565396241}
@@ -3441,12 +3443,6 @@ Transform:
   m_Father: {fileID: 2042016685}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &886133888 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -6090975515010625040, guid: b5cb7da3e8a0c2c4dad3a79c60d8024b,
-    type: 3}
-  m_PrefabInstance: {fileID: 1402123529}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &894769809
 GameObject:
   m_ObjectHideFlags: 0
@@ -6204,6 +6200,12 @@ Transform:
   m_Father: {fileID: 2042016685}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1566026302 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2811655200523867634, guid: b5cb7da3e8a0c2c4dad3a79c60d8024b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1402123529}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1603324538
 PrefabInstance:
   m_ObjectHideFlags: 0
