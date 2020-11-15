@@ -8,6 +8,7 @@ TagManager:
   - SnowBall
   - WayPoint
   - Ground
+  - UI
   layers:
   - Default
   - TransparentFX

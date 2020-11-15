@@ -6,8 +6,11 @@ public class PlayerScript : MonoBehaviour
 {
 
     [SerializeField] GameObject snowball = null;
+    [SerializeField] UIManager UI= null;
     float time;
     GameObject enemy;
+    Transform snow;
+    [SerializeField] Transform snowStart = null;
 
     [SerializeField] float moveSpeed = 10.0f;
     [SerializeField] float jumpPower = 10.0f;
@@ -73,11 +76,15 @@ public class PlayerScript : MonoBehaviour
 
         move();
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            ReadyToThrow();
+        }
         if (Input.GetMouseButton(0))
         {
             if (power > maxPower) power = maxPower;
             else power += powerIncrease;
-            UIManager.Instance.SetPlayerPowerSlider(power);
+            UI.SetPlayerPowerSlider(power);
         }
         if (Input.GetMouseButtonUp(0)){
             attack();
@@ -106,12 +113,21 @@ public class PlayerScript : MonoBehaviour
         animator.SetBool("isJumping", true);
     }
 
+    void ReadyToThrow()
+    {
+        animator.SetTrigger("readyToThrow");
+        snow = SnowBallPoolingScript.Instance.GetObject().transform;
+        snow.SetParent(snowStart);
+        snow.position = snowStart.position;
+        snow.rotation = snowStart.rotation;
+    }
     void attack()
     {
-        
-        SnowBallPoolingScript.Instance.GetObject().Initialize("Player", power, sightCamTrans.position + sightCamTrans.forward*(transform.lossyScale.z/2+1), sightCamTrans.rotation);
+        animator.SetTrigger("throw");
+        snow.SetParent(null);
+        snow.GetComponent<SnowBallScript>().Initialize("Player",power, snowStart.position, snowStart.rotation);
         power = initPower;
-        UIManager.Instance.SetPlayerPowerSlider(power);
+        UI.SetPlayerPowerSlider(power);
     }
 
     private void OnCollisionEnter(Collision collision)

@@ -7,19 +7,14 @@ using UnityEngine.SceneManagement;
 public class GameManagerScript : Singleton<GameManagerScript>
 {
     protected GameManagerScript() { }
-    
+
+
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
     }
-
+    
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Gameover()
     {
         SceneManager.LoadScene("GameOver");

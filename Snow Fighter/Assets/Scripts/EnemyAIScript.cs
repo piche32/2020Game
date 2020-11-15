@@ -95,7 +95,9 @@ public class EnemyAIScript : MonoBehaviour
 
         animator = GetComponent<Animator>();
         animator.SetBool("isAlerting", false);
+        animator.SetBool("isMoving", true);
         animator.applyRootMotion = false;
+
 
         snow = null;
 
@@ -174,6 +176,7 @@ public class EnemyAIScript : MonoBehaviour
         if(alertTime > alertLimitTime)
         {
             animator.SetBool("isAlerting", false);
+            animator.SetBool("isMoving", true);
             animator.applyRootMotion = false;
 
         }
@@ -187,7 +190,9 @@ public class EnemyAIScript : MonoBehaviour
             if (alertTime == 0.0f) // 목표지점 도착 직후
             {
                 animator.SetBool("isAlerting", true); //경계모드 활성화
+                animator.SetBool("isMoving", false);
                 animator.SetTrigger("Alert");
+                Debug.Log("Alert");
                 animator.applyRootMotion = true;
 
                 alertTime += Time.deltaTime;
@@ -243,14 +248,16 @@ public class EnemyAIScript : MonoBehaviour
 
     public void createSnow()
     {
-        snow = SnowBallPoolingScript.Instance.GetObject().transform;
-        snow.transform.SetParent(snowStartTrans);
+       snow = SnowBallPoolingScript.Instance.GetObject().transform;
+       snow.SetParent(snowStartTrans);
+        snow.position = snowStartTrans.position;
+        snow.rotation = snowStartTrans.rotation;
     }
 
     public void throwSnow()
     {
         if (snow == null) return;
-        snow.transform.SetParent(null);
+        snow.SetParent(null);
         snow.GetComponent<SnowBallScript>().Initialize("Enemy", power, snowStartTrans.position, snowStartTrans.rotation);
     }
 
@@ -262,7 +269,16 @@ public class EnemyAIScript : MonoBehaviour
 
         if (!isTarget(playerTrans)) return; //장애물 유무 확인
 
-        animator.SetTrigger("Throw");
+        if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance)
+        {
+            animator.SetBool("isMoving", false);
+        }
+        else
+        {
+            if(!animator.GetBool("isMoving"))
+                animator.SetBool("isMoving", true);
+        }
+            animator.SetTrigger("Throw");
         /*Vector3 snowballPos = snowStartTrans.position;
         snowballPos += (snowStartTrans.rotation * Vector3.forward);
 
@@ -278,6 +294,10 @@ public class EnemyAIScript : MonoBehaviour
     }
     void idleToFollow()
     {
+        if (animator.GetBool("isAlerting"))
+        {
+            animator.SetBool("isAlerting", false);
+        }
         followTime = 0.0f;
         preState = curState;
     }

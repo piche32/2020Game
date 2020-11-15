@@ -51,8 +51,8 @@ public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
     public void ReturnObject(SnowBallScript obj)
     {
         obj.gameObject.SetActive(false);
-        obj.transform.SetParent(transform);
+        obj.transform.SetParent(this.transform);
         //obj.transform.SetParent(Instance.transform);
-        Instance.snowballs.Enqueue(obj);
+        snowballs.Enqueue(obj);
     }
 }
