@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public enum EnemyState
 {
@@ -45,6 +46,11 @@ public class EnemyAIScript : MonoBehaviour
 
     private float hp;
     public float Hp { get { return hp; } set { hp = value; } }
+    [SerializeField]
+    Slider hpSlider;
+    public Slider HpSlider { get { return hpSlider; } set { hpSlider = value; } }
+
+
 
     float attackTime;
     float followTime;
@@ -102,6 +108,9 @@ public class EnemyAIScript : MonoBehaviour
         snow = null;
 
         hp = maxHP;
+
+        GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().InitEnemyHPSlider(this.transform, maxHP);
+
     }
 
     // Update is called once per frame
@@ -192,7 +201,7 @@ public class EnemyAIScript : MonoBehaviour
                 animator.SetBool("isAlerting", true); //경계모드 활성화
                 animator.SetBool("isMoving", false);
                 animator.SetTrigger("Alert");
-                Debug.Log("Alert");
+               // Debug.Log("Alert");
                 animator.applyRootMotion = true;
 
                 alertTime += Time.deltaTime;
@@ -258,7 +267,7 @@ public class EnemyAIScript : MonoBehaviour
     {
         if (snow == null) return;
         snow.SetParent(null);
-        snow.GetComponent<SnowBallScript>().Initialize("Enemy", power, snowStartTrans.position, snowStartTrans.rotation);
+        snow.GetComponent<SnowBallScript>().Initialize("Enemy", power, snowStartTrans.position, snowStartTrans.rotation, playerTrans);
     }
 
     void attack()

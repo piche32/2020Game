@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Slider playerHP = null;
     [SerializeField] Slider power = null;
+    [SerializeField] Image reticle = null;
     // Start is called before the first frame update
 
     private void Start()
@@ -29,5 +30,23 @@ public class UIManager : MonoBehaviour
     public void SetPlayerPowerSlider(float power)
     {
         this.power.value = power;
+    }
+
+    public void SetEnemyHPSlider(Transform enemy, float hp)
+    {
+        Slider HP = enemy.GetComponent<EnemyAIScript>().HpSlider;
+        HP.value = hp;
+    }
+
+    public void InitEnemyHPSlider(Transform enemy, float maxHP)
+    {
+        Slider HP = enemy.GetComponent<EnemyAIScript>().HpSlider;
+        HP.maxValue = maxHP;
+        HP.value = HP.maxValue;
+    }
+
+    public void SetTarget()
+    {
+        reticle.color = Color.red;
     }
 }

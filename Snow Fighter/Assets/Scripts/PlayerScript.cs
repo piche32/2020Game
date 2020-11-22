@@ -33,9 +33,13 @@ public class PlayerScript : MonoBehaviour
     private float hp;
     public float Hp { get { return hp; } set { hp = value; } }
 
+    Transform target;
+
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+
         time = 0.0f;
 
         if(snowball == null)
@@ -121,13 +125,23 @@ public class PlayerScript : MonoBehaviour
         snow.position = snowStart.position;
         snow.rotation = snowStart.rotation;
     }
+    void ThrowSnow()
+    {
+        snow.SetParent(null);
+        power = initPower;
+        if (target != null) { 
+            snow.GetComponent<SnowBallScript>().Initialize("Player", power, snowStart.position, snowStart.rotation, target.transform);
+        }
+       else snow.GetComponent<SnowBallScript>().Initialize("Player", power, snowStart.position, snowStart.rotation);
+        
+        UI.SetPlayerPowerSlider(power);
+       // target = null;
+        Debug.Log(snowStart.position);
+    }
     void attack()
     {
         animator.SetTrigger("throw");
-        snow.SetParent(null);
-        snow.GetComponent<SnowBallScript>().Initialize("Player",power, snowStart.position, snowStart.rotation);
-        power = initPower;
-        UI.SetPlayerPowerSlider(power);
+       
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -148,4 +162,9 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
+        Debug.Log(target.name);
+    }
 }

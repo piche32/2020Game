@@ -13,6 +13,7 @@ public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
     // Start is called before the first frame update
     void Start()
     {
+        snowball = GameObject.Find("SnowBall");
         for (int i = 0; i < amount; i++)
         {
             snowballs.Enqueue(CreateNewObject());
@@ -32,16 +33,16 @@ public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
         if(snowballs.Count > 0)
         //if (Instance.snowballs.Count > 0)
         {
-            var obj = snowballs.Dequeue();
-            // obj = Instance.snowballs.Dequeue();
+            //var obj = snowballs.Dequeue();
+             var obj = Instance.snowballs.Dequeue();
             obj.transform.SetParent(null);
             obj.gameObject.SetActive(true);
             return obj;
         }
         else
         {
-            var newObj = CreateNewObject();
-            //var newObj = Instance.CreateNewObject();
+            //var newObj = CreateNewObject();
+            var newObj = Instance.CreateNewObject();
             newObj.gameObject.SetActive(true);
             newObj.transform.SetParent(null);
             return newObj;
@@ -51,8 +52,11 @@ public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
     public void ReturnObject(SnowBallScript obj)
     {
         obj.gameObject.SetActive(false);
-        obj.transform.SetParent(this.transform);
-        //obj.transform.SetParent(Instance.transform);
-        snowballs.Enqueue(obj);
+        //obj.transform.SetParent(this.transform);
+        obj.transform.SetParent(Instance.transform);
+        //snowballs.Enqueue(obj);
+        Instance.snowballs.Enqueue(obj);
     }
+
+    
 }

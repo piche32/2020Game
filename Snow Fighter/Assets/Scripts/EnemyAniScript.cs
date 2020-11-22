@@ -23,7 +23,7 @@ public class EnemyAniScript : MonoBehaviour
     {
         //Vector3 v = (nvAgent.nextPosition - transform.position) * Time.deltaTime;
         animator.SetFloat("Speed", nvAgent.speed);
-        Debug.Log(nvAgent.speed);
+      //  Debug.Log(nvAgent.speed);
         //Vector3 v = (nvAgent.nextPosition - transform.position) * Time.deltaTime;
     }
 

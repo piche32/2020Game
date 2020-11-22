@@ -76,6 +76,9 @@
     <Compile Include="Assets\Scripts\SnowBallScript.cs" />
     <Compile Include="Assets\Scripts\SnowParticle.cs" />
     <Compile Include="Assets\Scripts\SnowParticlePooling.cs" />
+    <Compile Include="Assets\Scripts\Test\EnemyMove.cs" />
+    <Compile Include="Assets\Scripts\Test\PlayerMove.cs" />
+    <Compile Include="Assets\Scripts\Test\Trajectory.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
