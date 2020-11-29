@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7949498566146004539}
   - component: {fileID: 4948848451031432117}
   - component: {fileID: 8934971491982547588}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: SnowBallGraphic
   m_TagString: SnowBall
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 2742860324901154542}
   - component: {fileID: 136123722932540244}
   - component: {fileID: 2598837080516214652}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,9 +198,9 @@ GameObject:
   - component: {fileID: 6978019788099130686}
   - component: {fileID: 5244111547031682105}
   - component: {fileID: 3790252479230656324}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: SnowBall
-  m_TagString: SnowBall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -249,7 +249,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c66a3067dd41734e856f62bf0ded287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particle: {fileID: 4626765535754505486, guid: 05e808f031dd33949b99b40b78bc3c78,
-    type: 3}
   destroyTime: 10
   damage: 10

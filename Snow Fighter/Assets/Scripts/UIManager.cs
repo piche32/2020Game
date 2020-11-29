@@ -8,19 +8,29 @@ public class UIManager : MonoBehaviour
     protected UIManager() { }
 
     [SerializeField] Slider playerHP = null;
+    [SerializeField] Canvas enemyCanvas = null;
     [SerializeField] Slider power = null;
     [SerializeField] Image reticle = null;
     // Start is called before the first frame update
 
+    Transform player;
+
     private void Start()
     {
-        PlayerScript player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
-        playerHP.maxValue = player.MaxHP;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        PlayerScript playerScirpt = player.GetComponent<PlayerScript>();
+        playerHP.maxValue = playerScirpt.MaxHP;
         playerHP.value = playerHP.maxValue;
 
-        power.maxValue = player.MaxPower;
-        power.minValue = player.InitPower;
-        power.value = player.InitPower;
+        power.maxValue = playerScirpt.MaxPower;
+        power.minValue = playerScirpt.InitPower;
+        power.value = playerScirpt.InitPower;
+
+    }
+
+    public void Update()
+    {
+        enemyCanvas.transform.LookAt(player);
     }
     public void SetPlayerHPSlider(float hp)
     {
@@ -29,6 +39,7 @@ public class UIManager : MonoBehaviour
 
     public void SetPlayerPowerSlider(float power)
     {
+        if (this.power == null) return;
         this.power.value = power;
     }
 
@@ -45,8 +56,11 @@ public class UIManager : MonoBehaviour
         HP.value = HP.maxValue;
     }
 
-    public void SetTarget()
+    public void SetTarget(bool isTarget)
     {
-        reticle.color = Color.red;
+        if (isTarget)
+            reticle.color = Color.red;
+        else
+            reticle.color = Color.white;
     }
 }

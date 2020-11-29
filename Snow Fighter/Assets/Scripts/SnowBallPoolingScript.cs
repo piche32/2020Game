@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
+public class SnowBallPoolingScript : SingletonWithoutDontDistroy<SnowBallPoolingScript>
 {
     protected SnowBallPoolingScript() { }
     [SerializeField] GameObject snowball;
@@ -13,7 +13,7 @@ public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
     // Start is called before the first frame update
     void Start()
     {
-        snowball = GameObject.Find("SnowBall");
+       // snowball = GameObject.Find("SnowBall");
         for (int i = 0; i < amount; i++)
         {
             snowballs.Enqueue(CreateNewObject());
@@ -25,6 +25,7 @@ public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
         var newObj = Instantiate(snowball).GetComponent<SnowBallScript>();
         newObj.gameObject.SetActive(false);
         newObj.transform.SetParent(transform);
+        newObj.transform.GetComponentInChildren<Collider>().isTrigger = true;
         return newObj;
     }
 

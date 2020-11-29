@@ -7,7 +7,7 @@ public class PlayerScript : MonoBehaviour
 
     [SerializeField] GameObject snowball = null;
     [SerializeField] UIManager UI= null;
-    float time;
+    
     GameObject enemy;
     Transform snow;
     [SerializeField] Transform snowStart = null;
@@ -29,18 +29,23 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] Transform sightCamTrans;
 
     Animator animator;
+    bool isThrowing;
+    bool isReadyToThrowing;
+    float throwingCoolTime;
+    float throwingTime;
+
 
     private float hp;
     public float Hp { get { return hp; } set { hp = value; } }
 
     Transform target;
+    public Transform Target { get { return target; } set { target = value; } }
 
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
 
-        time = 0.0f;
 
         if(snowball == null)
         {
@@ -59,6 +64,10 @@ public class PlayerScript : MonoBehaviour
         }
 
         isJumping = false;
+        isThrowing = false;
+        isReadyToThrowing = false;
+        throwingCoolTime = 0.5f;
+        throwingTime = 0.0f;
 
         groundLM = LayerMask.NameToLayer("Ground");
 
@@ -82,7 +91,10 @@ public class PlayerScript : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            ReadyToThrow();
+            if (isThrowing == false && isReadyToThrowing == false)
+            {
+                ReadyToThrow();
+            }
         }
         if (Input.GetMouseButton(0))
         {
@@ -94,6 +106,18 @@ public class PlayerScript : MonoBehaviour
             attack();
         }
         
+        if(isThrowing == true)
+        {
+            if(throwingCoolTime < throwingTime)
+            {
+                throwingTime = 0.0f;
+                isThrowing = false;
+                isReadyToThrowing = false;
+            }
+            else
+                throwingTime += Time.deltaTime;
+            Debug.Log("throwingTime: " + throwingTime);
+        }
     }
     
     void move()
@@ -119,6 +143,7 @@ public class PlayerScript : MonoBehaviour
 
     void ReadyToThrow()
     {
+        isReadyToThrowing = true;
         animator.SetTrigger("readyToThrow");
         snow = SnowBallPoolingScript.Instance.GetObject().transform;
         snow.SetParent(snowStart);
@@ -127,13 +152,34 @@ public class PlayerScript : MonoBehaviour
     }
     void ThrowSnow()
     {
+        if (isThrowing == true) return;
+        isThrowing = true;
         snow.SetParent(null);
         power = initPower;
-        if (target != null) { 
-            snow.GetComponent<SnowBallScript>().Initialize("Player", power, snowStart.position, snowStart.rotation, target.transform);
+        if (target != null)
+        {
+            snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform, target.transform);
         }
-       else snow.GetComponent<SnowBallScript>().Initialize("Player", power, snowStart.position, snowStart.rotation);
-        
+        else
+        {
+           
+            RaycastHit[] hits = Physics.RaycastAll(sightCamTrans.position, sightCamTrans.forward, 7, -1 - this.gameObject.layer);
+            if (hits == null)
+            {
+            snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform);
+            }
+            foreach (RaycastHit hit in hits)
+            {
+                if (hit.collider.gameObject.tag == "Enemy")
+                {
+                    if (hit.collider.gameObject.name == "FollowColl" || hit.collider.gameObject.name == "AttackColl") continue;
+                snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform, hit.collider.transform);
+
+                    return;
+                }
+            }
+            snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform);
+        }
         UI.SetPlayerPowerSlider(power);
        // target = null;
         Debug.Log(snowStart.position);
@@ -162,9 +208,6 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    public void SetTarget(Transform target)
-    {
-        this.target = target;
-        Debug.Log(target.name);
-    }
+
+
 }

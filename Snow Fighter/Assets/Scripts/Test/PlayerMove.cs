@@ -6,7 +6,7 @@ public class PlayerMove : MonoBehaviour
 {
     public float moveSpeed = 10.0f;
     public GameObject snow;
-    public Animator animator;
+    public Animator animator =null;
     public Transform snowStart;
 
     // Start is called before the first frame update
@@ -35,14 +35,14 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             snow.GetComponentInChildren<Collider>().enabled = true;
-
-            animator.SetTrigger("throw");
+            ThrowSnow();
+            //animator.SetTrigger("throw");
         }
     }
 
     void ReadyToThrow()
     {
-        animator.SetTrigger("readyToThrow");
+       // animator.SetTrigger("readyToThrow");
         snow.transform.SetParent(snowStart);
         snow.transform.position = snowStart.position;
         snow.transform.rotation = snowStart.rotation;

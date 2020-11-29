@@ -267,7 +267,7 @@ public class EnemyAIScript : MonoBehaviour
     {
         if (snow == null) return;
         snow.SetParent(null);
-        snow.GetComponent<SnowBallScript>().Initialize("Enemy", power, snowStartTrans.position, snowStartTrans.rotation, playerTrans);
+        snow.GetComponent<SnowBallScript>().Initialize( power, snowStartTrans.position, snowStartTrans.rotation, transform , playerTrans);
     }
 
     void attack()

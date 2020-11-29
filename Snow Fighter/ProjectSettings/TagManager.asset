@@ -5,10 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - SnowBall
   - WayPoint
   - Ground
   - UI
+  - PlayerSnowBall
+  - EnemySnowBall
+  - SnowBall
   layers:
   - Default
   - TransparentFX
@@ -19,12 +21,12 @@ TagManager:
   - 
   - 
   - Player
-  - SnowBall
+  - PlayerSnowBall
   - SnowStart
   - Ground
   - Obstacle
   - Enemy
-  - 
+  - EnemySnowBall
   - 
   - 
   - 

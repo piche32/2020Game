@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\PlayerSightScript.cs" />
     <Compile Include="Assets\Scripts\RestartBTScript.cs" />
     <Compile Include="Assets\Scripts\SingleTon.cs" />
+    <Compile Include="Assets\Scripts\SingleTonWithoutDontDistroy.cs" />
     <Compile Include="Assets\Scripts\SnowBallPoolingScript.cs" />
     <Compile Include="Assets\Scripts\SnowBallScript.cs" />
     <Compile Include="Assets\Scripts\SnowParticle.cs" />
