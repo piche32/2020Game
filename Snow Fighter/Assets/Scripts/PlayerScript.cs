@@ -27,6 +27,7 @@ public class PlayerScript : MonoBehaviour
     bool isJumping;
 
     [SerializeField] Transform sightCamTrans;
+    public Transform SightCamTrans { get { return sightCamTrans; } }
 
     Animator animator;
     bool isThrowing;
@@ -116,7 +117,7 @@ public class PlayerScript : MonoBehaviour
             }
             else
                 throwingTime += Time.deltaTime;
-            Debug.Log("throwingTime: " + throwingTime);
+           // Debug.Log("throwingTime: " + throwingTime);
         }
     }
     

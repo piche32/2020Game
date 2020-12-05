@@ -119,19 +119,19 @@ public class PlayerSightScript : MonoBehaviour
         //    return ray.transform.CompareTag(obj.tag);
         //}
         
-        Debug.Log("Raycast error, obj.tag: " + obj.tag + "obj.name: " +obj.name);
+      //  Debug.Log("Raycast error, obj.tag: " + obj.tag + "obj.name: " +obj.name);
         return false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Enemy" || other.name == "FollowColl" || other.name == "AttackColl") return;
-        
+
+        target = other.transform;
         if (!isTargetInSight(other.transform))
         {
             return;
         }
-        target = other.transform;
         this.GetComponentInParent<PlayerScript>().Target = other.transform;
         GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(true);
     }

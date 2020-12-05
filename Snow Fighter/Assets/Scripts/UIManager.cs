@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
 
     public void Update()
     {
-        enemyCanvas.transform.LookAt(player);
+        enemyCanvas.transform.rotation = player.GetComponent<PlayerScript>().SightCamTrans.rotation;
     }
     public void SetPlayerHPSlider(float hp)
     {

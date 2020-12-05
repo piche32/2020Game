@@ -38,8 +38,19 @@ public class Trajectory : MonoBehaviour
     {
         if (moving == true)
         {
+            GetComponent<Rigidbody>().useGravity = true;
+
             time += Time.deltaTime;
             this.transform.position = Move();
+        }
+        else
+        {
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            time = 0.0f;
+            startPos = transform.position;
+            destPos = enemy.position;
+            PreCalcultate();
         }
     }
 
@@ -101,7 +112,6 @@ public class Trajectory : MonoBehaviour
 
         if (time > dat)
         {
-
             return this.transform.position;
         }
 

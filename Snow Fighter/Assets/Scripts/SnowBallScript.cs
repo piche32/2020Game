@@ -124,7 +124,7 @@ public class SnowBallScript : MonoBehaviour
        // time = 0.0f;
        // isMoving = true;
         transform.position = pos;
-        transform.rotation = rot;
+        transform.rotation = Quaternion.Euler(Vector3.zero);
         GetComponent<Rigidbody>().useGravity =true;
 
         if (target != null)
@@ -179,10 +179,10 @@ public class SnowBallScript : MonoBehaviour
             if (other.name == "Sight Camera") return;
             if (shooter.tag == "Enemy" && other.tag == "Player")
             {
-                SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
-                GameObject destroyedEffect = particles.GetObject();
-                destroyedEffect.transform.position = transform.position;
-                destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
+                //SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
+                //GameObject destroyedEffect = particles.GetObject();
+                //destroyedEffect.transform.position = transform.position;
+                //destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
 
                 PlayerScript player = other.transform.GetComponent<PlayerScript>();
                 player.Hp -= damage;
@@ -193,10 +193,10 @@ public class SnowBallScript : MonoBehaviour
             }
             if (shooter.tag == "Player" && other.tag == "Enemy")
             {
-                SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
-                GameObject destroyedEffect = particles.GetObject();
-                destroyedEffect.transform.position = transform.position;
-                destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
+                //SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
+                //GameObject destroyedEffect = particles.GetObject();
+                //destroyedEffect.transform.position = transform.position;
+                //destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
 
                 EnemyAIScript enemy = other.transform.GetComponent<EnemyAIScript>();
                 enemy.Hp -= damage;
@@ -206,15 +206,17 @@ public class SnowBallScript : MonoBehaviour
             }
         }
 
-        if (other.tag != "Player" || other.tag != "Enemy")
-        {
             SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
             GameObject destroyedEffect = particles.GetObject();
             destroyedEffect.transform.position = transform.position;
-            destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
+        //destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
+        Debug.Log("trigger point: "+other.ClosestPointOnBounds(transform.position)+" transform.position: "+transform.position);
+
+        destroyedEffect.transform.LookAt(Vector3.Normalize(other.ClosestPointOnBounds(transform.position) - transform.position) + transform.position);
+
 
             SnowBallPoolingScript.Instance.ReturnObject(this);
-        }
+      
 
     }
     //private void OnCollisionEnter(Collision collision)
