@@ -171,19 +171,13 @@ public class SnowBallScript : MonoBehaviour
     {
 
         if (other.tag != null || other.tag != "")
-
-        {
+        { 
             if (shooter.tag == other.tag) return;
             if (other.transform.parent != null)if(shooter.tag == other.transform.parent.tag) return;
             if (other.name == "FollowColl" || other.name == "AttackColl") return;
             if (other.name == "Sight Camera") return;
             if (shooter.tag == "Enemy" && other.tag == "Player")
             {
-                //SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
-                //GameObject destroyedEffect = particles.GetObject();
-                //destroyedEffect.transform.position = transform.position;
-                //destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
-
                 PlayerScript player = other.transform.GetComponent<PlayerScript>();
                 player.Hp -= damage;
                 player.checkHp();
@@ -193,21 +187,14 @@ public class SnowBallScript : MonoBehaviour
             }
             if (shooter.tag == "Player" && other.tag == "Enemy")
             {
-                //SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
-                //GameObject destroyedEffect = particles.GetObject();
-                //destroyedEffect.transform.position = transform.position;
-                //destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
-
                 EnemyAIScript enemy = other.transform.GetComponent<EnemyAIScript>();
-                enemy.Hp -= damage;
-                Debug.Log(enemy.GetComponent<EnemyAIScript>().Hp);
-                enemy.checkHp();
-                GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetEnemyHPSlider(enemy.transform, enemy.Hp);
+                enemy.Hit(damage);
             }
         }
 
             SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
-            GameObject destroyedEffect = particles.GetObject();
+         
+        GameObject destroyedEffect = particles.GetObject();
             destroyedEffect.transform.position = transform.position;
         //destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
         Debug.Log("trigger point: "+other.ClosestPointOnBounds(transform.position)+" transform.position: "+transform.position);

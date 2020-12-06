@@ -11,9 +11,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] Canvas enemyCanvas = null;
     [SerializeField] Slider power = null;
     [SerializeField] Image reticle = null;
-    // Start is called before the first frame update
+    [SerializeField] float enemyHPAniTime = 20.0f;
 
+    float time = 0.0f;
     Transform player;
+    bool enemyHPAni;
+    bool isBlinking;
+    Slider enemyHP;
 
     private void Start()
     {
@@ -26,11 +30,13 @@ public class UIManager : MonoBehaviour
         power.minValue = playerScirpt.InitPower;
         power.value = playerScirpt.InitPower;
 
+        enemyHPAni = false;
+        isBlinking = false;
     }
 
     public void Update()
     {
-        enemyCanvas.transform.rotation = player.GetComponent<PlayerScript>().SightCamTrans.rotation;
+        enemyHPUpdate();
     }
     public void SetPlayerHPSlider(float hp)
     {
@@ -45,15 +51,22 @@ public class UIManager : MonoBehaviour
 
     public void SetEnemyHPSlider(Transform enemy, float hp)
     {
-        Slider HP = enemy.GetComponent<EnemyAIScript>().HpSlider;
-        HP.value = hp;
+        enemyHPAni = true;
+        
+        enemyHP.value = hp;
+        setHPRender(true);
+        time = 0.0f;
+        StopBlinking();
+        isBlinking = false;
     }
 
     public void InitEnemyHPSlider(Transform enemy, float maxHP)
     {
-        Slider HP = enemy.GetComponent<EnemyAIScript>().HpSlider;
-        HP.maxValue = maxHP;
-        HP.value = HP.maxValue;
+        enemyHP = enemy.GetComponentInChildren<Slider>(); //enemyCanvas.GetComponentInChildren<Slider>();
+        enemyHP.maxValue = maxHP;
+        enemyHP.value = enemyHP.maxValue;
+
+        setHPRender(false);
     }
 
     public void SetTarget(bool isTarget)
@@ -62,5 +75,74 @@ public class UIManager : MonoBehaviour
             reticle.color = Color.red;
         else
             reticle.color = Color.white;
+    }
+
+    void setHPRender(bool isOn)
+    {
+        MaskableGraphic[] sliderUI = enemyHP.GetComponentsInChildren<MaskableGraphic>();
+            foreach(MaskableGraphic ui in sliderUI)
+            {
+                ui.enabled = isOn;
+            }
+    }
+
+    void blinkHP()
+    {
+            MaskableGraphic[] sliderUI = enemyHP.GetComponentsInChildren<MaskableGraphic>();
+            foreach (MaskableGraphic ui in sliderUI)
+            {
+                ui.enabled = !ui.enabled;
+            }
+    }
+
+    void enemyHPUpdate()
+    {
+        if (enemyHPAni)
+        {
+            enemyCanvas.transform.rotation = player.GetComponent<PlayerScript>().SightCamTrans.rotation;
+            if (enemyCanvas.transform.gameObject.GetComponentInParent<EnemyAIScript>().Hp > 20)
+            {
+                time += Time.deltaTime;
+                if (time > enemyHPAniTime)
+                {
+                    if (isBlinking)
+                    {
+                        isBlinking = false;
+                        StopBlinking();
+                    }
+                    setHPRender(false);
+                    enemyHPAni = false;
+                }
+                else if (time > enemyHPAniTime - 3)
+                {
+                    if (isBlinking) return;
+                    isBlinking = true;
+                    StartBlinking();
+                }
+            }
+            else
+            {
+                enemyHP.fillRect.transform.GetComponent<Image>().color = Color.red;
+            }
+        }
+    }
+    IEnumerator Blink()
+    {
+        while (true)
+        {
+            blinkHP();
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    void StartBlinking()
+    {
+        StopAllCoroutines();
+        StartCoroutine("Blink");
+    }
+
+    void StopBlinking()
+    {
+        StopAllCoroutines();
     }
 }

@@ -105,7 +105,6 @@ GameObject:
   - component: {fileID: 8945119955662807423}
   - component: {fileID: 2742860324901154542}
   - component: {fileID: 136123722932540244}
-  - component: {fileID: 2598837080516214652}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -174,19 +173,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &2598837080516214652
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6981143510603300046}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9084020594133554072
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,9 +184,10 @@ GameObject:
   - component: {fileID: 6978019788099130686}
   - component: {fileID: 5244111547031682105}
   - component: {fileID: 3790252479230656324}
+  - component: {fileID: 6337949608628726255}
   m_Layer: 0
   m_Name: SnowBall
-  m_TagString: Untagged
+  m_TagString: SnowBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -251,3 +238,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyTime: 10
   damage: 10
+--- !u!135 &6337949608628726255
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9084020594133554072}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.7
+  m_Center: {x: 0, y: 0, z: 0}

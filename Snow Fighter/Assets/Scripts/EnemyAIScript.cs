@@ -68,6 +68,7 @@ public class EnemyAIScript : MonoBehaviour
     int targetWayPointIndex;
 
     Animator animator;
+    
 
 
     // Start is called before the first frame update
@@ -90,10 +91,9 @@ public class EnemyAIScript : MonoBehaviour
 
         targetWayPointIndex = 0;
         targetWayPoint = wayPoints[targetWayPointIndex];
-
         nvAgent = GetComponent<NavMeshAgent>();
         nvAgent.enabled = true;
-        nvAgent.stoppingDistance = 2;
+        nvAgent.stoppingDistance = 4;
         nvAgent.speed = speed;
         nvAgent.SetDestination(targetWayPoint.position);
 
@@ -103,7 +103,7 @@ public class EnemyAIScript : MonoBehaviour
         animator.SetBool("isAlerting", false);
         animator.SetBool("isMoving", true);
         animator.applyRootMotion = false;
-
+        animator.SetBool("IsReadyToThrow", false);
 
         snow = null;
 
@@ -273,27 +273,40 @@ public class EnemyAIScript : MonoBehaviour
     void attack()
     {
         nvAgent.SetDestination(playerTrans.position);
-
-        if (attackCoolTime > attackTime) return; //쿨타임 남음
-
-        if (!isTarget(playerTrans)) return; //장애물 유무 확인
-
-        if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance)
+        if (animator.GetBool("IsReadyToThrow") == false)
         {
-            animator.SetBool("isMoving", false);
+            animator.SetBool("IsReadyToThrow", true);
+         //   if (attackCoolTime > attackTime) return; //쿨타임 남음
+
+          //  if (!isTarget(playerTrans)) return; //장애물 유무 확인
+
+
+            //if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance)
+            //{
+            //    animator.SetBool("isMoving", false);
+            //}
+            //else
+            //{
+            //    if (!animator.GetBool("isMoving"))
+            //        animator.SetBool("isMoving", true);
+            //}
+
+            //animator.SetTrigger("ReadyToThrow");
+            /*Vector3 snowballPos = snowStartTrans.position;
+            snowballPos += (snowStartTrans.rotation * Vector3.forward);
+
+            SnowBallPoolingScript.Instance.GetObject().Initialize("Enemy", power, snowballPos, snowStartTrans.rotation);*/
+            //Instantiate(snowball, snowballPos, transform.rotation);
+            //attackTime = 0.0f;
         }
         else
         {
-            if(!animator.GetBool("isMoving"))
-                animator.SetBool("isMoving", true);
-        }
+            if (attackCoolTime > attackTime) return; //쿨타임 남음
+            if (!isTarget(playerTrans)) return; //장애물 유무 확인
+            attackTime = 0.0f;
+            animator.SetBool("IsReadyToThrow", false);
             animator.SetTrigger("Throw");
-        /*Vector3 snowballPos = snowStartTrans.position;
-        snowballPos += (snowStartTrans.rotation * Vector3.forward);
-
-        SnowBallPoolingScript.Instance.GetObject().Initialize("Enemy", power, snowballPos, snowStartTrans.rotation);*/
-        //Instantiate(snowball, snowballPos, transform.rotation);
-        attackTime = 0.0f;
+        }
     }
     void followToIdle()
     {
@@ -355,8 +368,16 @@ public class EnemyAIScript : MonoBehaviour
     {
         if(hp <= 0)
         {
-            Debug.Log("Success");
-            GameManagerScript.Instance.Success();
+            animator.SetTrigger("Dying");
+           // GameManagerScript.Instance.Success();
         }
+    }
+
+    public void Hit(float damage)
+    {
+        hp -= damage;
+        checkHp();
+        GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetEnemyHPSlider(this.transform, hp);
+        animator.SetTrigger("Hit");
     }
 } //스크립트 클래스 괄호 삭제X
