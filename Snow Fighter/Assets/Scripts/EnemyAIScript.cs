@@ -10,7 +10,8 @@ public enum EnemyState
 {
     STATE_IDLE,
     STATE_FOLLOWING,
-    STATE_ATTACKING
+    STATE_ATTACKING,
+    STATE_DIE,
 }
 
 public class EnemyAIScript : MonoBehaviour
@@ -68,8 +69,8 @@ public class EnemyAIScript : MonoBehaviour
     int targetWayPointIndex;
 
     Animator animator;
-    
 
+    int blinkCount;
 
     // Start is called before the first frame update
     void Start()
@@ -109,7 +110,8 @@ public class EnemyAIScript : MonoBehaviour
 
         hp = maxHP;
 
-        GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().InitEnemyHPSlider(this.transform, maxHP);
+        hpSlider.GetComponent<EnemyHPScript>().InitEnemyHPSlider(this.transform, maxHP);
+        blinkCount = 0;
 
     }
 
@@ -135,7 +137,49 @@ public class EnemyAIScript : MonoBehaviour
             case EnemyState.STATE_ATTACKING:
                 attack();
                 break;
+
+            case EnemyState.STATE_DIE:
+                died();
+                break;
         }
+    }
+
+    void died()
+    {
+        if (preState != curState)
+        {
+            Collider[] cors = this.GetComponentsInChildren<Collider>();
+            foreach (Collider cor in cors)
+            {
+                cor.enabled = false;
+            }
+            preState = curState;
+        }
+
+        if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f)
+        {
+            if (this.enabled == true)
+            {
+                this.enabled = false;
+                StartCoroutine("Blink");
+            }
+
+        }
+
+    }
+
+    IEnumerator Blink()
+    {
+        while (blinkCount < 15)
+        {
+            blinkCount += 1;
+            this.GetComponentInChildren<Renderer>().enabled = !this.GetComponentInChildren<Renderer>().enabled;
+            yield return new WaitForSeconds(0.1f);
+        }
+            this.GetComponentInChildren<Renderer>().enabled = false;
+        yield return null;
+
+
     }
 
     public bool isTargetInSight()
@@ -369,6 +413,8 @@ public class EnemyAIScript : MonoBehaviour
         if(hp <= 0)
         {
             animator.SetTrigger("Dying");
+            preState = curState;
+            curState = EnemyState.STATE_DIE;
            // GameManagerScript.Instance.Success();
         }
     }
@@ -377,7 +423,7 @@ public class EnemyAIScript : MonoBehaviour
     {
         hp -= damage;
         checkHp();
-        GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetEnemyHPSlider(this.transform, hp);
+        hpSlider.GetComponent<EnemyHPScript>().SetEnemyHPSlider(hp);
         animator.SetTrigger("Hit");
     }
 } //스크립트 클래스 괄호 삭제X
