@@ -10,25 +10,22 @@ public class GameManagerScript : Singleton<GameManagerScript>
 
 
     // Start is called before the first frame update
-    void Start()
-    {
-    }
-    
+
     // Update is called once per frame
     public void Gameover()
     {
         SceneManager.LoadScene("GameOver");
-        Cursor.lockState = CursorLockMode.None;
+       // Cursor.lockState = CursorLockMode.None;
     }
 
     public void Success()
     {
         SceneManager.LoadScene("Success");
-        Cursor.lockState = CursorLockMode.None;
+       // Cursor.lockState = CursorLockMode.None;
     }
     public void Restart()
     {
         SceneManager.LoadScene("Main");
-        Cursor.lockState = CursorLockMode.Locked;
+      //  Cursor.lockState = CursorLockMode.Locked;
     }
 }

@@ -26,9 +26,9 @@ public class UIManager : MonoBehaviour
         playerHP.maxValue = playerScirpt.MaxHP;
         playerHP.value = playerHP.maxValue;
 
-        power.maxValue = playerScirpt.MaxPower;
-        power.minValue = playerScirpt.InitPower;
-        power.value = playerScirpt.InitPower;
+       // power.maxValue = playerScirpt.MaxPower;
+       // power.minValue = playerScirpt.InitPower;
+      //  power.value = playerScirpt.InitPower;
 
        // enemyHPAni = false;
       //  isBlinking = false;
