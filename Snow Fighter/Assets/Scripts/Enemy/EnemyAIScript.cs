@@ -118,7 +118,7 @@ public class EnemyAIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkState();
+        //checkState();
         attackTime += Time.deltaTime; //attack state가 아닐 때도 시간을 계산(attack cool time을 state 변화로 초기화 시켜 무한히 공격하는 것을 막기 위함)
     } //Update 함수 괄호 삭제X
 
@@ -208,7 +208,7 @@ public class EnemyAIScript : MonoBehaviour
         return false;
     }
     
-    void alert()
+    public void alert()
     {
         Collider[] cols = Physics.OverlapSphere(transform.position, alertingDist, -1 - snowballLM - snowStartLM);
 
@@ -270,7 +270,7 @@ public class EnemyAIScript : MonoBehaviour
 
         return;
     }
-    void idle()
+    public void idle()
     {
         if(preState == EnemyState.STATE_ATTACKING)
         {
@@ -325,13 +325,13 @@ public class EnemyAIScript : MonoBehaviour
         snow.GetComponent<SnowBallScript>().Initialize( power, snowStartTrans.position, snowStartTrans.rotation, transform , playerTrans);
     }
 
-    void attack()
+    public void attack()
     {
-        if(preState == EnemyState.STATE_FOLLOWING)
-        {
-            followToAttack();
-            return;
-        }
+        //if (preState == EnemyState.STATE_FOLLOWING)
+        //{
+        //    followToAttack();
+        //    return;
+        //}
         nvAgent.SetDestination(playerTrans.position);
         if (animator.GetBool("IsReadyToThrow") == false)
         {

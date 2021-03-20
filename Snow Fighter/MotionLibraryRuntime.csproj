@@ -278,6 +278,12 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="BBEditor">
+      <HintPath>D:/Mine/과제/3_2/졸작/2/Snow Fighter/Assets/BehaviorBricks/Editor/Bin/BBEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="BehaviorBricks">
+      <HintPath>D:/Mine/과제/3_2/졸작/2/Snow Fighter/Assets/BehaviorBricks/Runtime/BehaviorBricks.dll</HintPath>
+    </Reference>
     <Reference Include="AWSSDK.CognitoIdentity">
       <HintPath>D:/Mine/과제/3_2/졸작/2/Snow Fighter/Assets/Rokoko/MotionLibrary/Plugins/AWSSDK.CognitoIdentity.dll</HintPath>
     </Reference>

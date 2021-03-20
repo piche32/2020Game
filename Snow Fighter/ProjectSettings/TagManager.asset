@@ -11,6 +11,7 @@ TagManager:
   - PlayerSnowBall
   - EnemySnowBall
   - SnowBall
+  - MainLight
   layers:
   - Default
   - TransparentFX

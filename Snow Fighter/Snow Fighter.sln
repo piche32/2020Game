@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{615F6AD7-C42C-AE48-AAA3-70AB894D7352}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{0A6E9D1A-356B-ADE5-8D8B-666014950E43}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotionLibraryRuntime", "MotionLibraryRuntime.csproj", "{DAC547F8-C9FD-6FF5-4E05-2ABB941A34D6}"
 EndProject
 Global
@@ -15,6 +17,10 @@ Global
 		{615F6AD7-C42C-AE48-AAA3-70AB894D7352}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{615F6AD7-C42C-AE48-AAA3-70AB894D7352}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{615F6AD7-C42C-AE48-AAA3-70AB894D7352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A6E9D1A-356B-ADE5-8D8B-666014950E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A6E9D1A-356B-ADE5-8D8B-666014950E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A6E9D1A-356B-ADE5-8D8B-666014950E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A6E9D1A-356B-ADE5-8D8B-666014950E43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DAC547F8-C9FD-6FF5-4E05-2ABB941A34D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DAC547F8-C9FD-6FF5-4E05-2ABB941A34D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAC547F8-C9FD-6FF5-4E05-2ABB941A34D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
