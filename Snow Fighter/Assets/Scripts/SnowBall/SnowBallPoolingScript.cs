@@ -54,7 +54,7 @@ public class SnowBallPoolingScript : SingletonWithoutDontDistroy<SnowBallPooling
     {
         obj.gameObject.SetActive(false);
         //obj.transform.SetParent(this.transform);
-        obj.transform.SetParent(Instance.transform);
+        obj.transform.SetParent(this.transform);
         //snowballs.Enqueue(obj);
         Instance.snowballs.Enqueue(obj);
     }

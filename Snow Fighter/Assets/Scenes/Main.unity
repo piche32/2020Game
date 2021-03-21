@@ -131,12 +131,12 @@ PrefabInstance:
     - target: {fileID: -6339029339012965436, guid: 166d507c496e40c408a17541c1ba8524,
         type: 3}
       propertyPath: blackboard.objectParams.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -6339029339012965436, guid: 166d507c496e40c408a17541c1ba8524,
         type: 3}
       propertyPath: blackboard.objectParamsNames.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -6339029339012965436, guid: 166d507c496e40c408a17541c1ba8524,
         type: 3}
@@ -152,6 +152,16 @@ PrefabInstance:
         type: 3}
       propertyPath: blackboard.objectParamsNames.Array.data[1]
       value: wayPiont
+      objectReference: {fileID: 0}
+    - target: {fileID: -6339029339012965436, guid: 166d507c496e40c408a17541c1ba8524,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6339029339012965436, guid: 166d507c496e40c408a17541c1ba8524,
+        type: 3}
+      propertyPath: blackboard.objectParamsNames.Array.data[0]
+      value: player
       objectReference: {fileID: 0}
     - target: {fileID: 4115692793035342419, guid: 166d507c496e40c408a17541c1ba8524,
         type: 3}
@@ -211,8 +221,13 @@ PrefabInstance:
     - target: {fileID: 4115692793976548588, guid: 166d507c496e40c408a17541c1ba8524,
         type: 3}
       propertyPath: speed
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4115692793976548588, guid: 166d507c496e40c408a17541c1ba8524,
+        type: 3}
+      propertyPath: hpSlider
+      value: 
+      objectReference: {fileID: 1032994866}
     - target: {fileID: 6013766483779770852, guid: 166d507c496e40c408a17541c1ba8524,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -933,7 +948,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 383390552}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28.03, y: 0.16, z: 32.94}
+  m_LocalPosition: {x: 26.06, y: 0.16, z: 46.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5006512736210990046}

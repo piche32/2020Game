@@ -22,7 +22,7 @@ public class EnemyAIScript : MonoBehaviour
 
     Transform playerTrans;
     [SerializeField]Transform snowStartTrans = null;
-    Transform snow;
+    SnowBallScript snow;
 
 
     [SerializeField] LayerMask snowballLM;
@@ -75,8 +75,8 @@ public class EnemyAIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        curState = EnemyState.STATE_IDLE;
-        preState = curState;
+    //    curState = EnemyState.STATE_IDLE;
+    //    preState = curState;
 
         playerTrans = GameObject.FindWithTag("Player").transform;
         if(playerTrans == null)
@@ -124,7 +124,7 @@ public class EnemyAIScript : MonoBehaviour
 
     void checkState()
     {
-        switch (curState)
+       /* switch (curState)
         {
             case EnemyState.STATE_IDLE:
                 idle();
@@ -141,20 +141,20 @@ public class EnemyAIScript : MonoBehaviour
             case EnemyState.STATE_DIE:
                 died();
                 break;
-        }
+        }*/
     }
 
     void died()
     {
-        if (preState != curState)
-        {
+       // if (preState != curState)
+     //   {
             Collider[] cors = this.GetComponentsInChildren<Collider>();
             foreach (Collider cor in cors)
             {
                 cor.enabled = false;
             }
-            preState = curState;
-        }
+       //     preState = curState;
+      //  }
 
         if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f)
         {
@@ -237,7 +237,6 @@ public class EnemyAIScript : MonoBehaviour
 
     void patrol()
     {
-        
         if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance+0.8f)
         {
             if (alertTime == 0.0f) // 목표지점 도착 직후
@@ -267,12 +266,13 @@ public class EnemyAIScript : MonoBehaviour
             nvAgent.SetDestination(targetWayPoint.position);
             alertTime = 0.0f;
         }
+        
 
         return;
     }
     public void idle()
     {
-        if(preState == EnemyState.STATE_ATTACKING)
+         if (preState == EnemyState.STATE_ATTACKING)
         {
             attackToIdle();
             return;
@@ -282,11 +282,13 @@ public class EnemyAIScript : MonoBehaviour
             followToIdle();
             return;
         }
-        
+
+        if (this.GetComponentInChildren<SnowBallScript>())
+            SnowBallPoolingScript.Instance.ReturnObject(this.GetComponentInChildren<SnowBallScript>());
 
         patrol();
     }
-    void follow()
+    public void follow()
     {
         if(preState == EnemyState.STATE_IDLE) //idle -> follow fn
         {
@@ -311,27 +313,37 @@ public class EnemyAIScript : MonoBehaviour
 
     public void createSnow()
     {
-       snow = SnowBallPoolingScript.Instance.GetObject().transform;
-       snow.SetParent(snowStartTrans);
-        snow.position = snowStartTrans.position;
-        snow.rotation = snowStartTrans.rotation;
+       snow = SnowBallPoolingScript.Instance.GetObject();
+       snow.gameObject.transform.SetParent(snowStartTrans);
+        snow.gameObject.transform.position = snowStartTrans.position;
+        snow.gameObject.transform.rotation = snowStartTrans.rotation;
     }
 
     public void throwSnow()
     {
+        snow = GetComponentInChildren <SnowBallScript>();
         if (snow == null) return;
-        snow.SetParent(null);
+        snow.gameObject.transform.SetParent(null);
         snow.GetComponent<SnowBallScript>().IsFired = true;
         snow.GetComponent<SnowBallScript>().Initialize( power, snowStartTrans.position, snowStartTrans.rotation, transform , playerTrans);
+        animator.SetBool("IsReadyToThrow", false);
+
     }
 
     public void attack()
     {
-        //if (preState == EnemyState.STATE_FOLLOWING)
-        //{
-        //    followToAttack();
-        //    return;
-        //}
+        if (preState == EnemyState.STATE_FOLLOWING)
+        {
+            followToAttack();
+            return;
+        }
+        if(preState == EnemyState.STATE_IDLE) //Idle=>Attack
+        {
+            preState = EnemyState.STATE_ATTACKING;
+        //    preState = curState;
+         //   curState = EnemyState.STATE_ATTACKING;
+        }
+
         nvAgent.SetDestination(playerTrans.position);
         if (animator.GetBool("IsReadyToThrow") == false)
         {
@@ -364,7 +376,6 @@ public class EnemyAIScript : MonoBehaviour
             if (attackCoolTime > attackTime) return; //쿨타임 남음
             if (!isTarget(playerTrans)) return; //장애물 유무 확인
             attackTime = 0.0f;
-            animator.SetBool("IsReadyToThrow", false);
             animator.SetTrigger("Throw");
         }
     }
@@ -372,8 +383,31 @@ public class EnemyAIScript : MonoBehaviour
     {
         nvAgent.SetDestination(targetWayPoint.position);
         alertTime = 0.0f;
-        preState = curState;
+        preState = EnemyState.STATE_IDLE;
     }
+    void attackToIdle()
+    {
+        animator.SetBool("IsReadyToThrow", false);
+        preState = EnemyState.STATE_IDLE;
+        //SnowBallScript snowball = GetComponentInChildren<SnowBallScript>();
+        //if (snowball)
+        //{
+        //    SnowBallPoolingScript.Instance.ReturnObject(snowball);
+        //}
+
+        snow = GetComponentInChildren<SnowBallScript>();
+        if (snow)
+        {
+            SnowBallPoolingScript.Instance.ReturnObject(snow);
+            snow = null;
+        }
+
+        nvAgent.SetDestination(targetWayPoint.position);
+        alertTime = 0.0f;
+        preState = EnemyState.STATE_IDLE;
+    }
+
+
     void idleToFollow()
     {
         if (animator.GetBool("isAlerting"))
@@ -381,34 +415,33 @@ public class EnemyAIScript : MonoBehaviour
             animator.SetBool("isAlerting", false);
         }
         followTime = 0.0f;
-        preState = curState;
+        preState = EnemyState.STATE_FOLLOWING;
+       // preState = curState;
     }
     void attackToFollow()
     {
         animator.SetBool("IsReadyToThrow", false);
-        preState = curState;
-        SnowBallScript snowball = GetComponentInChildren<SnowBallScript>();
-        if (snowball)
+        // preState = curState;
+        preState = EnemyState.STATE_FOLLOWING;
+        //SnowBallScript snowball = GetComponentInChildren<SnowBallScript>();
+        //if (snowball)
+        //{
+        //    SnowBallPoolingScript.Instance.ReturnObject(snowball);
+
+        //}
+
+        snow.GetComponentInChildren<SnowBallScript>();
+        if (snow)
         {
-            SnowBallPoolingScript.Instance.ReturnObject(snowball);
+            SnowBallPoolingScript.Instance.ReturnObject(snow);
+            snow = null;
         }
     }
     void followToAttack()
     {
-        preState = curState;
+       preState = EnemyState.STATE_ATTACKING;
+        //preState = curState;
     }
-
-    void attackToIdle()
-    {
-        animator.SetBool("IsReadyToThrow", false);
-        preState = curState;
-        SnowBallScript snowball = GetComponentInChildren<SnowBallScript>();
-        if (snowball)
-        {
-            SnowBallPoolingScript.Instance.ReturnObject(snowball);
-        }
-    }
-
 
     Vector3 DirFromAngle(float angleInDegrees)
     {

@@ -293,6 +293,7 @@ public class SnowBallScript : MonoBehaviour
         destroyedEffect.transform.LookAt(Vector3.Normalize(other.ClosestPointOnBounds(transform.position) - transform.position) + transform.position);
 
         SnowBallPoolingScript.Instance.ReturnObject(this);
+        
     }
 
     Vector3 GetVelocity() //Trajectory를 위한 속도 구하기

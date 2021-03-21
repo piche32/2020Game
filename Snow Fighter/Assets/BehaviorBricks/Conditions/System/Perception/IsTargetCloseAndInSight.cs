@@ -34,6 +34,7 @@ namespace BBUnity.Conditions
 		public override bool Check()
         {
             Vector3 dir = (target.transform.position - gameObject.transform.position);
+            Debug.Log("dist: " + Vector3.Distance(dir, Vector3.zero));
             if (dir.sqrMagnitude > closeDistance * closeDistance)
                 return false;
             RaycastHit hit;

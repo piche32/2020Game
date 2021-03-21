@@ -107,11 +107,11 @@
     <Compile Include="Assets\BehaviorBricks\Samples\ProgrammersQuickStartGuide\Done\DoneSleepForever.cs" />
     <Compile Include="Assets\BehaviorBricks\Samples\QuickStartGuide\Done\Resources\MassSpawner.cs" />
     <Compile Include="Assets\BehaviorBricks\Samples\QuickStartGuide\Done\Resources\Spawner.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Behavior Tree Node\Alert.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Behavior Tree Node\Arrived.cs" />
     <Compile Include="Assets\Scripts\Enemy\Behavior Tree Node\Attack.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Behavior Tree Node\Follow.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Behavior Tree Node\Idle.cs" />
     <Compile Include="Assets\Scripts\Enemy\Behavior Tree Node\InitVariable.cs" />
-    <Compile Include="Assets\Scripts\Enemy\Behavior Tree Node\Patrol.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Behavior Tree Node\_IsTargetCloseAndInSight.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAIScript.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAniScript.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAttackScript.cs" />
