@@ -260,7 +260,6 @@ public class SnowBallScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.tag != null || other.tag != "")
         {
             if (shooter.tag == other.tag) return;
@@ -273,8 +272,6 @@ public class SnowBallScript : MonoBehaviour
                 player.Hp -= damage;
                 player.checkHp();
                 GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetPlayerHPSlider(player.Hp);
-                //Debug.Log(player.Hp);
-
             }
             if (shooter.tag == "Player" && other.tag == "Enemy")
             {

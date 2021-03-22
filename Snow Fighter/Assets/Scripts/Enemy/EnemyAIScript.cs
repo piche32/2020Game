@@ -32,13 +32,16 @@ public class EnemyAIScript : MonoBehaviour
 
 
     [SerializeField] float followingDist = 10.0f;
+    public float FollowingDist { get { return followingDist; } }
     [SerializeField] float attackingDist = 5.0f;
+    public float AttackingDist { get { return attackingDist; } }
     [SerializeField] float alertingDist = 20.0f;
 //  [SerializeField] float dodgingDist = 20.0f;
 
     [SerializeField] float speed = 1.0f;
     [SerializeField] float rotateSpeed = 1.0f;
     [SerializeField] float sightAngle = 60.0f;
+    public float SightAngle { get{ return sightAngle; } }
     [SerializeField] float attackCoolTime = 10.0f;
     [SerializeField] float followLimitTime = 30.0f;
     [SerializeField] float alertLimitTime = 3.0f;
@@ -144,39 +147,50 @@ public class EnemyAIScript : MonoBehaviour
         }*/
     }
 
-    void died()
+    public void died()
     {
-       // if (preState != curState)
-     //   {
+        if (preState != EnemyState.STATE_DIE)
+        {
+            animator.SetTrigger("Dying");
+            preState = EnemyState.STATE_DIE;
+            animator.SetBool("IsReadyToThrow", false);
+            animator.SetBool("isMoving", false);
+            animator.SetBool("isAlerting", false);
+
             Collider[] cors = this.GetComponentsInChildren<Collider>();
             foreach (Collider cor in cors)
             {
                 cor.enabled = false;
             }
-       //     preState = curState;
-      //  }
-
-        if(animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f)
+        }
+        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f)
         {
             if (this.enabled == true)
             {
-                this.enabled = false;
+                //this.enabled = false;
+                //GetComponent<BehaviorExecutor>().enabled = false;
                 StartCoroutine("Blink");
             }
 
         }
 
+
     }
 
     IEnumerator Blink()
     {
-        while (blinkCount < 15)
+        while (blinkCount < 30)
         {
             blinkCount += 1;
             this.GetComponentInChildren<Renderer>().enabled = !this.GetComponentInChildren<Renderer>().enabled;
             yield return new WaitForSeconds(0.1f);
         }
+            if(blinkCount >= 30)
+        {
             this.GetComponentInChildren<Renderer>().enabled = false;
+            this.enabled = false;
+            
+        }
         yield return null;
 
 
@@ -430,7 +444,7 @@ public class EnemyAIScript : MonoBehaviour
 
         //}
 
-        snow.GetComponentInChildren<SnowBallScript>();
+        snow = GetComponentInChildren<SnowBallScript>();
         if (snow)
         {
             SnowBallPoolingScript.Instance.ReturnObject(snow);
@@ -475,18 +489,9 @@ public class EnemyAIScript : MonoBehaviour
         return false;
     }
 
-    public void checkHp()
+    public bool checkHp()
     {
-        if(hp <= 0)
-        {
-            animator.SetTrigger("Dying");
-            preState = curState;
-            curState = EnemyState.STATE_DIE;
-            animator.SetBool("IsReadyToThrow", false);
-            animator.SetBool("isMoving", false);
-            animator.SetBool("isAlerting", false);
-           // GameManagerScript.Instance.Success();
-        }
+        return hp <= 0;
     }
 
     public void Hit(float damage)

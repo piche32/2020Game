@@ -181,7 +181,7 @@ PrefabInstance:
     - target: {fileID: 4115692793976548585, guid: 166d507c496e40c408a17541c1ba8524,
         type: 3}
       propertyPath: m_Speed
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4115692793976548588, guid: 166d507c496e40c408a17541c1ba8524,
         type: 3}
@@ -852,7 +852,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 50
-  field of view: 60
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
