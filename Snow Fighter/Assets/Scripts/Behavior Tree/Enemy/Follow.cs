@@ -15,6 +15,7 @@ public class Follow : GOAction
 
     private EnemyAIScript enemyAISc;
 
+
     public override void OnStart()
     {
         if (player == null)
@@ -31,9 +32,26 @@ public class Follow : GOAction
     public override TaskStatus OnUpdate()
     {
         if (player == null) return TaskStatus.FAILED;
-        enemyAISc.follow();
+        //enemyAISc.follow();
 
-        return base.OnUpdate();
+        if (enemyAISc.PreState == EnemyState.STATE_IDLE) { //idle -> follow fn
+            enemyAISc.idleToFollow();
+            return TaskStatus.RUNNING;
+
+        }
+        if (enemyAISc.PreState == EnemyState.STATE_ATTACKING) {
+            enemyAISc.attackToFollow();
+            return TaskStatus.RUNNING;
+        }
+        if (enemyAISc.isFollowingTimeOver()) {//일정시간동안 공격범위에 들어가지 못하고 따라다니기만 했을 경우 Idle 상태로 돌아가기
+            return TaskStatus.RUNNING;
+        }
+
+        enemyAISc.FollowTime += Time.deltaTime;
+
+        enemyAISc.NvAgent.SetDestination(player.transform.position);
+
+        return TaskStatus.RUNNING;
     }
 
 }

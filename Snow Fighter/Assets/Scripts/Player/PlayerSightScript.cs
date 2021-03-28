@@ -56,7 +56,7 @@ public class PlayerSightScript : MonoBehaviour
             tempTouch = Input.GetTouch(i);
 
             //드래그 영역 제어
-            if (tempTouch.position.x < Screen.width / 2) continue;
+            //if (tempTouch.position.x < Screen.width / 2) continue;
 
             //UI 터치 시 작동 막기
             if (EventSystem.current.IsPointerOverGameObject(i)) continue;

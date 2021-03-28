@@ -23,6 +23,8 @@ public class Died : GOAction
     public override TaskStatus OnUpdate()
     {
         enemyAISc.died();
-        return base.OnUpdate();
+        //Debug.Break();
+        if (enemyAISc.IsDied) return TaskStatus.COMPLETED;
+        return TaskStatus.RUNNING;
     }
 }

@@ -23,6 +23,7 @@ public class Idle : GOAction
     public override TaskStatus OnUpdate()
     {
         enemyAISc.idle();
-        return TaskStatus.COMPLETED;
+        return TaskStatus.RUNNING;
+        //return TaskStatus.FAILED;
     }
 }
