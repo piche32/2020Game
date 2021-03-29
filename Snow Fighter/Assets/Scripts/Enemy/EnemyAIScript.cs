@@ -44,7 +44,7 @@ public class EnemyAIScript : MonoBehaviour
     [SerializeField] float attackCoolTime = 10.0f;
     [SerializeField] float followLimitTime = 30.0f;
     [SerializeField] float alertLimitTime = 3.0f;
-    [SerializeField] float power = 300.0f;
+    [SerializeField] float power = 20.0f;
     [SerializeField] float maxHP = 100.0f;
 
     private float hp;
@@ -158,9 +158,9 @@ public class EnemyAIScript : MonoBehaviour
         if (preState != EnemyState.STATE_DIE)
         {
             preState = EnemyState.STATE_DIE;
-            animator.SetBool("IsReadyToThrow", false);
-            animator.SetBool("isMoving", false);
-            animator.SetBool("isAlerting", false);
+            //animator.SetBool("IsReadyToThrow", false);
+            //animator.SetBool("isMoving", false);
+            //animator.SetBool("isAlerting", false);
             animator.SetTrigger("Dying");
             animator.SetBool("IsDying", true);
             //nvAgent.enabled = false;

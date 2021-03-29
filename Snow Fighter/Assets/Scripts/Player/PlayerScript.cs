@@ -35,7 +35,7 @@ public class PlayerScript : MonoBehaviour
     public bool IsJumping { get { return isJumping; } set { isJumping = value; } }
 
     private float hp;
-    public float Hp { get { return hp; } set { hp = value; } }
+    public float Hp { get { return hp; }}
 
     Rigidbody rb;
     Animator animator;
@@ -69,14 +69,21 @@ public class PlayerScript : MonoBehaviour
         hp = maxHP;
     }
 
-    public void checkHp()
+    void checkHp()
     {
         if (hp <= 0)
         {
+            hp = 0f;
             Debug.Log("GameOver");
             GameManagerScript.Instance.Gameover();
         }
     }
 
+    public void setHP(float value)
+    {
+        hp += value;
+        checkHp();
+        UI.SetPlayerHPSlider(hp);
+    }
 
 }

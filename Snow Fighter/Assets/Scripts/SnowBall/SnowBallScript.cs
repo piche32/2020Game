@@ -189,26 +189,20 @@ public class SnowBallScript : MonoBehaviour
     //    Gizmos.DrawLine(transform.position, destPos);
     //}
 
-    [SerializeField] float destroyTime = 10.0f;
     float time;
     Transform shooter;
 
     [SerializeField] float damage = 10.0f;
 
-    //포물선 운동
-    Transform target;
-
     bool isFired;
     public bool IsFired { get { return isFired; } set { isFired = value; } }
-
-    float initialAngle; //나중에 각도도 바꿔보기
+    private float power = 10.0f;
 
     Rigidbody rb;
+
+    Vector3 interpolationSight; //시야각 보간
     private void OnEnable()
     {
-
-        initialAngle = 20f;
-
         time = 0.0f;
         isFired = false;
 
@@ -222,10 +216,14 @@ public class SnowBallScript : MonoBehaviour
         shooter = null;
 
         this.gameObject.layer = LayerMask.NameToLayer("Default");
+
+        interpolationSight = Vector3.zero;
+        power = 10.0f;
     }
 
-    public void Initialize(float power, Vector3 pos, Quaternion rot, Transform shooter, Transform target = null)
+    public void Initialize(float power, Vector3 pos, Quaternion rot, Transform shooter, Transform target = null, Vector3 deltaSight = new Vector3()) //deltaSight: 시야각 보간 벡터
     {
+        interpolationSight = deltaSight;
         rb.isKinematic = false;
         this.shooter = shooter;
         if (shooter.tag == "Player")
@@ -269,9 +267,7 @@ public class SnowBallScript : MonoBehaviour
             if (shooter.tag == "Enemy" && other.tag == "Player")
             {
                 PlayerScript player = other.transform.GetComponent<PlayerScript>();
-                player.Hp -= damage;
-                player.checkHp();
-                GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetPlayerHPSlider(player.Hp);
+                player.setHP(-damage);
             }
             if (shooter.tag == "Player" && other.tag == "Enemy")
             {
@@ -293,14 +289,14 @@ public class SnowBallScript : MonoBehaviour
         
     }
 
-    Vector3 GetVelocity() //Trajectory를 위한 속도 구하기
+    Vector3 GetVelocity()
     {
         Vector3 finalVelocity;
         if (shooter.CompareTag("Player"))
         {
-            finalVelocity = shooter.GetComponentInChildren<PlayerSightScript>().transform.forward * 10;
+            finalVelocity = shooter.GetComponentInChildren<PlayerSightScript>().transform.forward * power + interpolationSight;
         }
-        else finalVelocity = shooter.transform.forward * 10;
+        else finalVelocity = shooter.transform.forward * power + interpolationSight;
 
         Vector3 shooterVel = shooter.GetComponent<Rigidbody>().velocity;
         finalVelocity += shooterVel;

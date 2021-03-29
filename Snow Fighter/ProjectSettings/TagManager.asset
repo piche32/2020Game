@@ -12,6 +12,7 @@ TagManager:
   - EnemySnowBall
   - SnowBall
   - MainLight
+  - Item
   layers:
   - Default
   - TransparentFX
