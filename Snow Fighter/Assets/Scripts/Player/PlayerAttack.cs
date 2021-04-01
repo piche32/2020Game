@@ -20,14 +20,11 @@ public class PlayerAttack : MonoBehaviour
 
     float power;
 
+    Vector3 target;
+    public Vector3 Target { get { return target; } set { target = value; } }
 
-    Transform target;
-    public Transform Target { get { return target; } set { target = value; } }
-
-    float throwingCoolTime;
+    [SerializeField]float throwingCoolTime = 0.5f;
     float throwingTime;
-
-    Vector3 interpolationSight;
 
     // Start is called before the first frame update
 
@@ -36,8 +33,6 @@ public class PlayerAttack : MonoBehaviour
         playerSc = this.GetComponent<PlayerScript>();
         animator = this.GetComponent<Animator>();
 
-
-        throwingCoolTime = 0.5f;
         throwingTime = 0.0f;
     }
 
@@ -85,9 +80,14 @@ public class PlayerAttack : MonoBehaviour
         snow.SetParent(null);
         snow.GetComponent<SnowBallScript>().IsFired = true;
 
+       target = this.GetComponentInChildren<PlayerSightScript>().GetTarget();
+
+       snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform, target);
+       
+        /*
         if(target != null) //목표물 없을 때
         {
-            snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform, target.transform);
+            snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform, target.transform.position);
         }
         else
         {
@@ -110,6 +110,7 @@ public class PlayerAttack : MonoBehaviour
             snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform);
         }
         UI.SetPlayerPowerSlider(power);
+        */
     }
 
     public void Attack()

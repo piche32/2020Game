@@ -349,7 +349,7 @@ public class EnemyAIScript : MonoBehaviour
         if (snow == null) return;
         snow.gameObject.transform.SetParent(null);
         snow.GetComponent<SnowBallScript>().IsFired = true;
-        snow.GetComponent<SnowBallScript>().Initialize( power, snowStartTrans.position, snowStartTrans.rotation, transform , playerTrans);
+        snow.GetComponent<SnowBallScript>().Initialize( power, snowStartTrans.position, snowStartTrans.rotation, transform , playerTrans.position);
         animator.SetBool("IsReadyToThrow", false);
     }
 

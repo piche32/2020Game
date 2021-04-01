@@ -24,7 +24,7 @@ public class Attack : GOAction
 
     public override void OnStart()
     {
-        attackTime = 0;
+        attackTime = attackCoolTime;
         if(player == null)
         { 
             player = GameObject.FindGameObjectWithTag("Player");

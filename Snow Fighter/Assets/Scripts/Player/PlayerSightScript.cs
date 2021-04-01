@@ -17,8 +17,10 @@ public class PlayerSightScript : MonoBehaviour
 
     [SerializeField] LayerMask playerLM;
     Transform target;
+    [SerializeField] float targetingDist = 10f;
+    [SerializeField] float defaultTarget = 10f;
 
-
+    public float offset = 5;
     
     // Start is called before the first frame update
     void Start()
@@ -42,7 +44,7 @@ public class PlayerSightScript : MonoBehaviour
 
         SetCameraRot(); //카메라 회전
 
-        CheckTarget();
+        //CheckTarget();
     }
 
     void SetCameraRot()
@@ -88,7 +90,19 @@ public class PlayerSightScript : MonoBehaviour
 
     }
 
-    void CheckTarget()
+    public Vector3 GetTarget()
+    {
+        Vector3 dir = transform.forward;
+        RaycastHit ray;
+        if(Physics.Raycast(transform.position, dir, out ray, targetingDist))
+        {
+            return ray.transform.position + Vector3.up * offset;
+        }
+        return transform.position + dir * defaultTarget;
+        
+    }
+
+   /* void CheckTarget()
     {
         if (target == null) return; //(다시)Enemy가 여러명으로 늘어날 때는 우선 순위 큐로 만들어서 계산
         if (isTargetInSight(target))
@@ -171,6 +185,6 @@ public class PlayerSightScript : MonoBehaviour
             this.GetComponentInParent<PlayerAttack>().Target =null;
         GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(false);
     }
-
+   */
 
 }
