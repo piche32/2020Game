@@ -19,9 +19,9 @@ public class PlayerSightScript : MonoBehaviour
     Transform target;
     [SerializeField] float targetingDist = 10f;
     [SerializeField] float defaultTarget = 10f;
-
-    public float offset = 5;
-    
+    Rigidbody rb;
+    public float offset = 10;
+    public GameObject rayPointDiscript = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +36,9 @@ public class PlayerSightScript : MonoBehaviour
         }
 
         target = null;
+
+        rb = this.GetComponentInParent<Rigidbody>();
+
     }
 
     // Update is called once per frame
@@ -90,16 +93,23 @@ public class PlayerSightScript : MonoBehaviour
 
     }
 
-    public Vector3 GetTarget()
+    public Vector3 GetTarget(Vector3 snowStart)
     {
         Vector3 dir = transform.forward;
         RaycastHit ray;
         if(Physics.Raycast(transform.position, dir, out ray, targetingDist))
         {
-            return ray.transform.position + Vector3.up * offset;
+            rayPointDiscript.transform.position = ray.point;
+            return ray.point + transform.forward * offset;
+            //return ray.transform.position + Vector3.up * offset;
         }
-        return transform.position + dir * defaultTarget;
-        
+
+        //target이 없을 때, default target에 플레이어 움직이는 속도 더해주기
+        //Vector3 interpolation;
+        //if (rb.velocity.z > 0) interpolation = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z);
+        //else interpolation = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z); 
+        // return transform.position + dir * defaultTarget + interpolation; //+ rb.velocity;// + interpolation;
+        return Vector3.negativeInfinity;
     }
 
    /* void CheckTarget()

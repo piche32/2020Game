@@ -145,6 +145,8 @@ public class SnowBallScript : MonoBehaviour
     public float firingAngle = 45.0f; //포물선 각도
     float gravity = 9.8f;
 
+    public float offset = 2.0f; //디폴트 눈 던지는 높이
+
     Coroutine projectileCoroutine;
 
     private void OnEnable()
@@ -194,9 +196,10 @@ public class SnowBallScript : MonoBehaviour
 
         this.target = target;
 
-
-        projectileCoroutine = StartCoroutine(projectile());
-       // Fire();
+        if(Vector3.Equals(target, Vector3.negativeInfinity))
+            Fire();
+        else
+            projectileCoroutine = StartCoroutine(projectile());
 
     }
 
@@ -204,12 +207,15 @@ public class SnowBallScript : MonoBehaviour
     void Update()
     {
         time += Time.deltaTime;
+        //필드 밖으로 떨어졌을 경우, 삭제
+        if(time > 30) SnowBallPoolingScript.Instance.ReturnObject(this);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != null || other.tag != "")
         {
+            if (other.name == "<multi>wall") return;
             if (shooter.tag == other.tag) return;
             if (other.transform.parent != null) if (shooter.tag == other.transform.parent.tag) return;
             if (other.name == "FollowColl" || other.name == "AttackColl") return;
@@ -231,11 +237,10 @@ public class SnowBallScript : MonoBehaviour
         GameObject destroyedEffect = particles.GetObject();
         destroyedEffect.transform.position = transform.position;
         //destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));
-        Debug.Log("trigger point: " + other.ClosestPointOnBounds(transform.position) + " transform.position: " + transform.position);
+        //Debug.Log("trigger point: " + other.ClosestPointOnBounds(transform.position) + " transform.position: " + transform.position);
 
         destroyedEffect.transform.LookAt(Vector3.Normalize(other.ClosestPointOnBounds(transform.position) - transform.position) + transform.position);
-
-        StopCoroutine(projectileCoroutine);
+        
         SnowBallPoolingScript.Instance.ReturnObject(this);
 
     }
@@ -288,6 +293,7 @@ public class SnowBallScript : MonoBehaviour
 
         Vector3 shooterVel = shooter.GetComponent<Rigidbody>().velocity;
         finalVelocity += shooterVel;
+        finalVelocity += Vector3.up * offset;
 
         return finalVelocity;
     }

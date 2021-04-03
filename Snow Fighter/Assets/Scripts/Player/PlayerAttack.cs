@@ -80,7 +80,7 @@ public class PlayerAttack : MonoBehaviour
         snow.SetParent(null);
         snow.GetComponent<SnowBallScript>().IsFired = true;
 
-       target = this.GetComponentInChildren<PlayerSightScript>().GetTarget();
+       target = this.GetComponentInChildren<PlayerSightScript>().GetTarget(snowStart.position);
 
        snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform, target);
        
