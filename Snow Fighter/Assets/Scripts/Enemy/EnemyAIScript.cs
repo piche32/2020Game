@@ -20,30 +20,35 @@ public class EnemyAIScript : MonoBehaviour
     EnemyState preState;
     public EnemyState PreState { get { return preState; } }
 
-
     Transform playerTrans;
     [SerializeField] Transform snowStartTrans = null;
     SnowBallScript snow;
 
     [SerializeField] LayerMask snowballLM;
-    [SerializeField] LayerMask playerLM;
     [SerializeField] LayerMask snowStartLM;
     [SerializeField] LayerMask enemyLM;
+    private List<LayerMask> ignoreLM;
+    public List<LayerMask> IgnoreLM { get { return ignoreLM; } }
 
     [SerializeField] float followingDist = 10.0f;
     public float FollowingDist { get { return followingDist; } }
     [SerializeField] float attackingDist = 5.0f;
     public float AttackingDist { get { return attackingDist; } }
     [SerializeField] float alertingDist = 20.0f;
+    public float AlertingDist { get { return alertingDist; } }
     //  [SerializeField] float dodgingDist = 20.0f;
 
     [SerializeField] float speed = 1.0f;
     [SerializeField] float rotateSpeed = 1.0f;
+    public float RotateSpeed { get { return rotateSpeed; } set { rotateSpeed = value; } }
     [SerializeField] float sightAngle = 60.0f;
     public float SightAngle { get { return sightAngle; } }
     [SerializeField] float attackCoolTime = 10.0f;
+    public float AttackCoolTime { get { return attackCoolTime; } }
     [SerializeField] float followLimitTime = 30.0f;
     [SerializeField] float alertLimitTime = 3.0f;
+    public float AlertLimitTime { get { return alertLimitTime; } }
+
     [SerializeField] float power = 20.0f;
     [SerializeField] float maxHP = 100.0f;
 
@@ -53,12 +58,11 @@ public class EnemyAIScript : MonoBehaviour
     Slider hpSlider;
     public Slider HpSlider { get { return hpSlider; } set { hpSlider = value; } }
 
-
-
     float attackTime;
     float followTime;
     public float FollowTime { get { return followTime; } set { followTime = value; } }
     float alertTime;
+    public float AlertTime { get { return alertTime; } }
 
     NavMeshAgent nvAgent;
     public NavMeshAgent NvAgent{get{return nvAgent; }}
@@ -66,7 +70,7 @@ public class EnemyAIScript : MonoBehaviour
     RaycastHit ray;
     
     bool wasObstacle;
-
+    public bool WasObstacle { get { return wasObstacle; } set { wasObstacle = value; } }
 
     [SerializeField] List<Transform> wayPoints = new List<Transform>();
     Transform targetWayPoint;
@@ -122,6 +126,10 @@ public class EnemyAIScript : MonoBehaviour
 
         isDied = false;
 
+        ignoreLM = new List<LayerMask>();
+        ignoreLM.Add(enemyLM);
+        ignoreLM.Add(snowStartLM);
+        ignoreLM.Add(snowballLM);
     }
 
     // Update is called once per frame
@@ -403,13 +411,13 @@ public class EnemyAIScript : MonoBehaviour
             animator.SetTrigger("Throw");
         }
     }
-    void followToIdle()
+    public void followToIdle()
     {
         nvAgent.SetDestination(targetWayPoint.position);
         alertTime = 0.0f;
         preState = EnemyState.STATE_IDLE;
     }
-    void attackToIdle()
+    public void attackToIdle()
     {
         animator.SetBool("IsReadyToThrow", false);
         preState = EnemyState.STATE_IDLE;

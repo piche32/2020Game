@@ -112,6 +112,8 @@
     <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Died.cs" />
     <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Follow.cs" />
     <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Idle.cs" />
+    <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Search.cs" />
+    <Compile Include="Assets\Scripts\Behavior Tree\Enemy\WasAttackedOrFollowed.cs" />
     <Compile Include="Assets\Scripts\Behavior Tree\_IsTargetCloseAndInSight.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAIScript.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAniScript.cs" />

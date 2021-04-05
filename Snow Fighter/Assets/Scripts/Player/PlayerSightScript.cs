@@ -12,30 +12,21 @@ public class PlayerSightScript : MonoBehaviour
     [SerializeField] float rotSpeed = 150.0f; //각도
     [SerializeField] float maxX = 90.0f; //X축 회전시 범위
     [SerializeField] float minX = -90.0f; //X축 회전시 범위
-    
-    [SerializeField] float targetingAngle = 15.0f;
 
-    [SerializeField] LayerMask playerLM;
-    Transform target;
     [SerializeField] float targetingDist = 10f;
-    [SerializeField] float defaultTarget = 10f;
     Rigidbody rb;
     public float offset = 10;
-    public GameObject rayPointDiscript = null;
     // Start is called before the first frame update
     void Start()
     {
         rx = 0.0f;
         ry = 0.0f;
 
-        if (maxX < minX)
-        {
+        if (maxX < minX) {
             float swap = maxX;
             maxX = minX;
             minX = swap;
         }
-
-        target = null;
 
         rb = this.GetComponentInParent<Rigidbody>();
 
@@ -47,7 +38,7 @@ public class PlayerSightScript : MonoBehaviour
 
         SetCameraRot(); //카메라 회전
 
-        //CheckTarget();
+        CheckTarget();
     }
 
     void SetCameraRot()
@@ -93,18 +84,14 @@ public class PlayerSightScript : MonoBehaviour
 
     }
 
-    public Vector3 GetTarget(Vector3 snowStart)
+    //눈 발사 시 자동 타겟팅.
+    public Vector3 GetTarget()
     {
         Vector3 dir = transform.forward;
         RaycastHit ray;
         if(Physics.Raycast(transform.position, dir, out ray, targetingDist))
-        {
-            rayPointDiscript.transform.position = ray.point;
             return ray.point + transform.forward * offset;
-            //return ray.transform.position + Vector3.up * offset;
-        }
-
-        //target이 없을 때, default target에 플레이어 움직이는 속도 더해주기
+        //target이 없을 때, default target에 플레이어 움직이는 속도 더해주기 => 방법 바꿔줌
         //Vector3 interpolation;
         //if (rb.velocity.z > 0) interpolation = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z);
         //else interpolation = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z); 
@@ -112,89 +99,21 @@ public class PlayerSightScript : MonoBehaviour
         return Vector3.negativeInfinity;
     }
 
-   /* void CheckTarget()
+
+    void CheckTarget()
     {
-        if (target == null) return; //(다시)Enemy가 여러명으로 늘어날 때는 우선 순위 큐로 만들어서 계산
-        if (isTargetInSight(target))
+        Vector3 dir = transform.forward;
+        RaycastHit ray;
+        if (Physics.Raycast(transform.position, dir, out ray, targetingDist))
         {
-            this.GetComponentInParent<PlayerAttack>().Target = target;
-            GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(true);
-            return;
+            if (!ray.transform.CompareTag("Enemy"))
+                GameObject.Find("UIManager").GetComponent<UIManager>().SetTarget(false);
+            else
+                GameObject.Find("UIManager").GetComponent<UIManager>().SetTarget(true);
         }
-        this.GetComponentInParent<PlayerAttack>().Target = null;
-        GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(false);
+        else
+            GameObject.Find("UIManager").GetComponent<UIManager>().SetTarget(false);
+
     }
-
-     bool isTargetInSight(Transform obj)
-    {
-        Vector3 dir = (obj.position - transform.position).normalized;
-        float angle = Vector3.Angle(dir, new Vector3(transform.forward.x, dir.y, transform.forward.z)); //y가 같은 평면 상의 각도 구하기
-        //float angleY = Vector3.Angle(dir, new Vector3(dir.x, 0, dir.z)); //y가 같은 평면 상의 각도 구하기
-
-        float dist = Vector3.Distance(obj.position, transform.position);
-
-        if (dist < 3) targetingAngle = 50.0f;
-        else targetingAngle = 15.0f;
-
-        if ( angle <targetingAngle)
-        {
-            if (isTarget(obj))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    bool isTarget(Transform obj)
-    {
-        //RaycastHit ray;
-        Vector3 dir = (obj.position - transform.position).normalized;
-        float maxDist = Vector3.Distance(obj.position, transform.position);
-        Debug.DrawRay(transform.position, transform.forward * maxDist, Color.blue, 0.1f);
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward, maxDist, -1 - playerLM);
-        if(hits == null)
-        {
-            return false;
-        }
-        foreach (RaycastHit hit in hits)
-        {
-           if(hit.collider.gameObject.tag == "Enemy")
-            {
-                if (hit.collider.gameObject.name == "FollowColl" || hit.collider.gameObject.name == "AttackColl") continue;
-                return true;
-            }
-        }
-        //if (Physics.Raycast(transform.position + transform.up * 0.5f, dir, out ray, maxDist, -1 -playerLM))
-        //{
-        //   // if (ray.transform.name == "FollowColl" || ray.transform.name == "AttackColl") return false;
-        //    return ray.transform.CompareTag(obj.tag);
-        //}
-        
-      //  Debug.Log("Raycast error, obj.tag: " + obj.tag + "obj.name: " +obj.name);
-        return false;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag != "Enemy" || other.name == "FollowColl" || other.name == "AttackColl") return;
-
-        target = other.transform;
-        if (!isTargetInSight(other.transform))
-        {
-            return;
-        }
-        this.GetComponentInParent<PlayerAttack>().Target = other.transform;
-        GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(true);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag != "Enemy" || other.name == "FollowColl" || other.name == "AttackColl") return;
-       target = null;
-            this.GetComponentInParent<PlayerAttack>().Target =null;
-        GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(false);
-    }
-   */
 
 }
