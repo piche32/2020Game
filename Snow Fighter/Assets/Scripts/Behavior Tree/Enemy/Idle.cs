@@ -16,7 +16,7 @@ public class Idle : GOAction
 
     public override void OnStart()
     {
-        enemyAISc = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyAIScript>();
+        enemyAISc = gameObject.GetComponent<EnemyAIScript>();
 
         base.OnStart();
     }

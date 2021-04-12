@@ -54,7 +54,7 @@ public class EnemyAIScript : MonoBehaviour
 
     private float hp;
     public float Hp { get { return hp; } set { hp = value; } }
-    [SerializeField]
+
     Slider hpSlider;
     public Slider HpSlider { get { return hpSlider; } set { hpSlider = value; } }
 
@@ -83,6 +83,7 @@ public class EnemyAIScript : MonoBehaviour
     bool isDied;
     public bool IsDied { get { return isDied; } }
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -100,12 +101,26 @@ public class EnemyAIScript : MonoBehaviour
         followTime = 0.0f;
         alertTime = 0.0f;
 
+        if(wayPoints.Count == 0) {
+            for(int i = 0; i < 2; i++) {
+                GameObject wayPoint = new GameObject();
+                wayPoint.name = this.name + "'s " + (i + 1);
+                wayPoint.layer = LayerMask.NameToLayer("TransparentFX");
+                if (i == 0)
+                    wayPoint.transform.position = new Vector3(this.transform.position.x + Random.Range(0.0f, 7.0f), this.transform.position.y, this.transform.position.z);
+                else
+                    wayPoint.transform.position = new Vector3(this.transform.position.x - Random.Range(0.0f, 7.0f), this.transform.position.y, this.transform.position.z);
+                wayPoint.tag = "WayPoint";
+                wayPoint.transform.SetParent(GameObject.Find("wayPoints").transform);
+                wayPoints.Add(wayPoint.transform);
+            }
+        }
 
         targetWayPointIndex = 0;
         targetWayPoint = wayPoints[targetWayPointIndex];
         nvAgent = GetComponent<NavMeshAgent>();
         nvAgent.enabled = true;
-        nvAgent.stoppingDistance = 4;
+        nvAgent.stoppingDistance = 2;
         nvAgent.speed = speed;
         nvAgent.SetDestination(targetWayPoint.position);
 
@@ -121,6 +136,8 @@ public class EnemyAIScript : MonoBehaviour
 
         hp = maxHP;
 
+        hpSlider = GameObject.Instantiate(GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().EnemyHPPrefab.GetComponent<Slider>());
+        hpSlider.GetComponent<EnemyHPScript>().enabled = true;
         hpSlider.GetComponent<EnemyHPScript>().InitEnemyHPSlider(this.transform, maxHP);
         blinkCount = 0;
 
@@ -130,40 +147,19 @@ public class EnemyAIScript : MonoBehaviour
         ignoreLM.Add(enemyLM);
         ignoreLM.Add(snowStartLM);
         ignoreLM.Add(snowballLM);
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //checkState();
         attackTime += Time.deltaTime; //attack state가 아닐 때도 시간을 계산(attack cool time을 state 변화로 초기화 시켜 무한히 공격하는 것을 막기 위함)
     } //Update 함수 괄호 삭제X
 
-    void checkState()
-    {
-       /* switch (curState)
-        {
-            case EnemyState.STATE_IDLE:
-                idle();
-                break;
-
-            case EnemyState.STATE_FOLLOWING:
-                follow();
-                break;
-
-            case EnemyState.STATE_ATTACKING:
-                attack();
-                break;
-
-            case EnemyState.STATE_DIE:
-                died();
-                break;
-        }*/
-    }
-
     public void died()
     {
-        if (preState != EnemyState.STATE_DIE)
+        if (preState != EnemyState.STATE_DIE) //처음 죽었을 때
         {
             preState = EnemyState.STATE_DIE;
             //animator.SetBool("IsReadyToThrow", false);
@@ -177,6 +173,9 @@ public class EnemyAIScript : MonoBehaviour
             {
                 cor.enabled = false;
             }
+            --StageManager.Instance.EnemyCount;
+            GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetEnemyCountText();
+
         }
         if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f)
         {
@@ -207,6 +206,10 @@ public class EnemyAIScript : MonoBehaviour
             GetComponent<BehaviorExecutor>().enabled = false;
             isDied = true;
             //  this.enabled = false;
+            if(StageManager.Instance.EnemyCount == 0)
+            {
+                GameManagerScript.Instance.Success();
+            }
 
         }
         yield return null;
@@ -269,14 +272,13 @@ public class EnemyAIScript : MonoBehaviour
 
     void patrol()
     {
-        if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance+0.8f)
+        if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance + 0.8f)
         {
             if (alertTime == 0.0f) // 목표지점 도착 직후
             {
                 animator.SetBool("isAlerting", true); //경계모드 활성화
                 animator.SetBool("isMoving", false);
                 animator.SetTrigger("Alert");
-               // Debug.Log("Alert");
                 animator.applyRootMotion = true;
 
                 alertTime += Time.deltaTime;

@@ -8,7 +8,7 @@ public class RestartBTScript : MonoBehaviour
     // Start is called before the first frame update
     public void restart()
     {
-        Debug.Log(GameManagerScript.Instance);
+        GameManagerScript.Instance.Stage = GameManagerScript.Instance.PreStage + 1;
         GameManagerScript.Instance.Restart();
     }
 }

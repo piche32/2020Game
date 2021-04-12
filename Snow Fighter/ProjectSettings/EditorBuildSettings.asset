@@ -9,12 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Start.unity
     guid: a08506fb476bc94409d78af650cc9b09
   - enabled: 1
-    path: Assets/Scenes/Main.unity
-    guid: 056b7b6896dffce4d987d876b3e9d80c
-  - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: 241acbdf75e09f349a75b4e752ea749c
   - enabled: 1
     path: Assets/Scenes/Success.unity
     guid: 2e8f44630cc149b4397e31be1986fef9
+  - enabled: 1
+    path: Assets/Scenes/Stage/Tutorial.unity
+    guid: 056b7b6896dffce4d987d876b3e9d80c
+  - enabled: 1
+    path: Assets/Scenes/Stage/Stage 1.unity
+    guid: 49bb7d4250dbd0d48b60d9b659969716
   m_configObjects: {}

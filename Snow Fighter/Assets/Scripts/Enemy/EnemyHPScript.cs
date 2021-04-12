@@ -31,11 +31,11 @@ public class EnemyHPScript : MonoBehaviour
         enemy = null;
         player = GameObject.FindGameObjectWithTag("Player").transform;
 
-        canvas = GetComponentInParent<Canvas>();
+        canvas = GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().HpCanvas;
+        transform.SetParent(canvas.transform);
         hpCamera = canvas.worldCamera;
         rectParent = canvas.GetComponent<RectTransform>();
         rectHp = GetComponent<RectTransform>();
-
     }
 
 
@@ -60,7 +60,7 @@ public class EnemyHPScript : MonoBehaviour
             }
             else
             {
-                rectHp.localScale = Vector3.one*(10.0f- Vector3.Distance(player.position, enemy.position)) / 10.0f;
+                rectHp.localScale = Vector3.one * (10.0f- Vector3.Distance(player.position, enemy.position)) / 10.0f;
             }
 
             Vector2 localPos = Vector2.zero;

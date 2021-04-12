@@ -55,6 +55,10 @@ public class PlayerAttack : MonoBehaviour
 
     public void ReadyToThrow()
     {
+        //카메라 회전 시 버튼 작동 막기
+
+
+
         Debug.Log("ReadyToThrow");
         if (playerSc.IsThrowing == true || playerSc.IsReadyToThrowing == true) return;
 
@@ -83,7 +87,8 @@ public class PlayerAttack : MonoBehaviour
        target = this.GetComponentInChildren<PlayerSightScript>().GetTarget();
 
        snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform, target);
-       
+
+        StageManager.Instance.setAttackedCount();
         /*
         if(target != null) //목표물 없을 때
         {

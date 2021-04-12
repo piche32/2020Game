@@ -14,6 +14,7 @@ public class Attack : GOAction
     [InParam("player")]
     public GameObject player;
 
+
     private EnemyAIScript enemyAISc;
 
     [InParam("attackCoolTime")]
@@ -31,8 +32,9 @@ public class Attack : GOAction
             if (player == null)
                 Debug.LogWarning("Player not specified. Attack will not work for" + gameObject.name);
         }
+         
 
-        enemyAISc = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyAIScript>();
+        enemyAISc = gameObject.GetComponent<EnemyAIScript>();
 
         base.OnStart();
     }

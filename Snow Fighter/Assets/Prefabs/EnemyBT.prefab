@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxTasksPerTick: 500
-  behavior: {fileID: 11400000, guid: b16e86808de07c847b8b653d80a94440, type: 2}
+  behavior: {fileID: 0}
   paused: 0
   restartWhenFinished: 0
   blackboard:
@@ -74,7 +74,8 @@ PrefabInstance:
     - target: {fileID: 688194993, guid: 4f399c10a21f1f349beac7a56c611806, type: 3}
       propertyPath: hpSlider
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3862762318139236185, guid: 97448e77f8e7c804d827e84b24a59172,
+        type: 3}
     - target: {fileID: 688194993, guid: 4f399c10a21f1f349beac7a56c611806, type: 3}
       propertyPath: wayPoints.Array.data[0]
       value: 

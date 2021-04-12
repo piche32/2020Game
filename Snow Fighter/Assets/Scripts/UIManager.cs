@@ -2,43 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     protected UIManager() { }
-
-    [SerializeField] Slider playerHP = null;
- //   [SerializeField] Canvas enemyCanvas = null;
-    [SerializeField] Slider power = null;
-    [SerializeField] Image reticle = null;
-  //  [SerializeField] float enemyHPAniTime = 20.0f;
-
-  //  float time = 0.0f;
+    
     Transform player;
-  //  bool enemyHPAni;
-   // bool isBlinking;
-   // Slider enemyHP;
 
-    private void Start()
+    Slider playerHP = null;
+    Image reticle = null;
+     GameObject enemyHPPrefab = null;
+    public GameObject EnemyHPPrefab { get { return enemyHPPrefab; } }
+
+     Canvas hpCanvas = null;
+    public Canvas HpCanvas { get { return hpCanvas; } }
+
+    TextMeshProUGUI enemyCount = null;
+    public TextMeshProUGUI EnemyCount { get { return enemyCount; } set { enemyCount = value; } }
+    
+    private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         PlayerScript playerScirpt = player.GetComponent<PlayerScript>();
+
+        playerHP = GameObject.Find("HP").GetComponent<Slider>();
         playerHP.maxValue = playerScirpt.MaxHP;
         playerHP.value = playerHP.maxValue;
 
-       // power.maxValue = playerScirpt.MaxPower;
-       // power.minValue = playerScirpt.InitPower;
-      //  power.value = playerScirpt.InitPower;
-
-       // enemyHPAni = false;
-      //  isBlinking = false;
-
+        reticle = GameObject.Find("Reticle").GetComponent<Image>();
         reticle.color = Color.gray;
-    }
 
-    public void Update()
-    {
-        //enemyHPUpdate();
+        enemyHPPrefab = GameObject.Find("EnemyHP");
+        hpCanvas = GameObject.Find("HPCanvas").GetComponent<Canvas>();
+        EnemyCount = GameObject.Find("EnemyCount").GetComponent<TextMeshProUGUI>();
+
+
+        enemyCount.text = StageManager.Instance.EnemyCount + " / " + StageManager.Instance.TotalEnemyCount;
+
     }
 
     public void SetTarget(bool isTarget)
@@ -54,10 +55,9 @@ public class UIManager : MonoBehaviour
         playerHP.value = hp;
     }
 
-    public void SetPlayerPowerSlider(float power)
+    public void SetEnemyCountText()
     {
-        if (this.power == null) return;
-        this.power.value = power;
+        enemyCount.text = (StageManager.Instance.TotalEnemyCount - StageManager.Instance.EnemyCount) + " / " + StageManager.Instance.TotalEnemyCount;
     }
 
     //public void SetEnemyHPSlider(Slider enemyHP, float hp)

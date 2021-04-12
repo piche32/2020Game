@@ -24,7 +24,7 @@ public class Follow : GOAction
             if (player == null) Debug.LogWarning("Player not specified. Attack will not work for" + gameObject.name);
         }
 
-        enemyAISc = GameObject.FindGameObjectWithTag("Enemy").GetComponent<EnemyAIScript>();
+        enemyAISc = gameObject.GetComponent<EnemyAIScript>();
 
         base.OnStart();
     }

@@ -47,7 +47,7 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>4.8.2.0</UnityProjectGeneratorVersion>
+    <UnityProjectGeneratorVersion>4.9.1.0</UnityProjectGeneratorVersion>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2019.3.5f1</UnityVersion>
@@ -131,11 +131,12 @@
     <Compile Include="Assets\Scripts\Player\PlayerSightScript.cs" />
     <Compile Include="Assets\Scripts\RestartBTScript.cs" />
     <Compile Include="Assets\Scripts\SingleTon.cs" />
-    <Compile Include="Assets\Scripts\SingleTonWithoutDontDistroy.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowBallPoolingScript.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowBallScript.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowParticle.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowParticlePooling.cs" />
+    <Compile Include="Assets\Scripts\StageManager.cs" />
+    <Compile Include="Assets\Scripts\SuccessStage.cs" />
     <Compile Include="Assets\Scripts\Test\EnemyMove.cs" />
     <Compile Include="Assets\Scripts\Test\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\Test\Trajectory.cs" />

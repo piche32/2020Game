@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class SnowBallPoolingScript : SingletonWithoutDontDistroy<SnowBallPoolingScript>
+public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
 {
     protected SnowBallPoolingScript() { }
-    [SerializeField] GameObject snowball;
+    GameObject snowball;
     [SerializeField] int amount = 30;
     Queue<SnowBallScript> snowballs = new Queue<SnowBallScript>();
 
     // Start is called before the first frame update
     void Start()
     {
-       // snowball = GameObject.Find("SnowBall");
+       snowball = GameObject.Find("SnowBall");
         for (int i = 0; i < amount; i++)
         {
             snowballs.Enqueue(CreateNewObject());
