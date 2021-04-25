@@ -23,8 +23,9 @@ MonoBehaviour:
     type=\"System.Single\" isBlackboard=\"False\" value=\"120\" />\r\n          <entry
     name=\"followDist\" type=\"System.Single\" isBlackboard=\"False\" value=\"20\"
     />\r\n          <entry name=\"attackCoolTime\" type=\"System.Single\" isBlackboard=\"False\"
-    value=\"10\" />\r\n        </inputValues>\r\n      </inputParams>\r\n      <outputParams
-    />\r\n      <localParams />\r\n    </BehaviorTree>\r\n    <PrioritySelectorNode
+    value=\"10\" />\r\n          <entry name=\"AttackStoppingDist\" type=\"System.Single\"
+    isBlackboard=\"False\" value=\"0\" />\r\n        </inputValues>\r\n      </inputParams>\r\n     
+    <outputParams />\r\n      <localParams />\r\n    </BehaviorTree>\r\n    <PrioritySelectorNode
     id=\"25\">\r\n      <children>\r\n        <elem>\r\n          <GuardAndNode>\r\n           
     <guard>\r\n              <ConditionEvalNode id=\"26\" />\r\n            </guard>\r\n           
     <child>\r\n              <ActionNode id=\"21\" />\r\n            </child>\r\n         
@@ -52,9 +53,10 @@ MonoBehaviour:
     <localParams />\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"5\" action=\"Enemy/Attack\">\r\n     
     <inputParams>\r\n        <inputValues>\r\n          <entry name=\"player\" type=\"UnityEngine.GameObject\"
     isBlackboard=\"True\" blackboard=\"player\" />\r\n          <entry name=\"attackCoolTime\"
-    type=\"System.Single\" isBlackboard=\"True\" blackboard=\"attackCoolTime\" />\r\n       
-    </inputValues>\r\n      </inputParams>\r\n      <outputParams />\r\n      <localParams
-    />\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"28\" policy=\"WAIT_UNTIL_TRUE_AND_COMPLETE\"
+    type=\"System.Single\" isBlackboard=\"True\" blackboard=\"attackCoolTime\" />\r\n         
+    <entry name=\"StoppingDist\" type=\"System.Single\" isBlackboard=\"True\" blackboard=\"AttackStoppingDist\"
+    />\r\n        </inputValues>\r\n      </inputParams>\r\n      <outputParams />\r\n     
+    <localParams />\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"28\" policy=\"WAIT_UNTIL_TRUE_AND_COMPLETE\"
     name=\"Perception/_IsTargetCloseAndInSight\">\r\n      <inputParams>\r\n       
     <inputValues>\r\n          <entry name=\"target\" type=\"UnityEngine.GameObject\"
     isBlackboard=\"True\" blackboard=\"player\" />\r\n          <entry name=\"closeDistance\"
@@ -86,59 +88,60 @@ MonoBehaviour:
     id=\"28\" />\r\n          <ConditionEvalNode id=\"29\" />\r\n          <ConditionEvalNode
     id=\"26\" />\r\n        </nodes>\r\n      </_nodes>\r\n    </BehaviorTree>\r\n   
     <PrioritySelectorNode id=\"25\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"525.7197 382.5048\" name=\"Priority Selector\"
+    selected=\"False\" position=\"591.4237 258.1131\" name=\"Priority Selector\"
     description=\"\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <PrioritySelectorNode id=\"25\" />\r\n        </data>\r\n     
     </_data>\r\n    </PrioritySelectorNode>\r\n    <ConditionEvalNode id=\"26\">\r\n     
-    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"291.7934
-    861.1641\" name=\"Enemy/CheckHP\" description=\"Eval\" cardinality=\"1\" hasParent=\"True\">\r\n         
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"203.1643
+    844.1061\" name=\"Enemy/CheckHP\" description=\"Eval\" cardinality=\"1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"0\" />\r\n          <ConditionEvalNode id=\"26\" />\r\n         
     <PrioritySelectorNode id=\"25\" />\r\n        </data>\r\n      </_data>\r\n   
     </ConditionEvalNode>\r\n    <ActionNode id=\"21\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"37.1395 652.0987\" name=\"Enemy/Died\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"-51.48973 635.0405\" name=\"Enemy/Died\"
     description=\"Enemy Died\" cardinality=\"0\" hasParent=\"False\">\r\n         
     <BehaviorTree id=\"21\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n   
     <ConditionEvalNode id=\"27\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"557.5534 757.7045\" name=\"Perception/_IsTargetCloseAndInSight\"
+    selected=\"False\" position=\"600.9236 666.6462\" name=\"Perception/_IsTargetCloseAndInSight\"
     description=\"Eval\" cardinality=\"1\" hasParent=\"True\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"27\" />\r\n          <PrioritySelectorNode
     id=\"25\" />\r\n        </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n   
     <ActionNode id=\"5\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"341.9337 624.7004\" name=\"Enemy/Attack\" description=\"Attack player\"
+    position=\"385.3043 533.6416\" name=\"Enemy/Attack\" description=\"Attack player\"
     cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree id=\"5\" />\r\n       
     </data>\r\n      </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"28\">\r\n     
-    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"1008.994
-    759.652\" name=\"Perception/_IsTargetCloseAndInSight\" description=\"Eval\" cardinality=\"1\"
-    hasParent=\"True\">\r\n          <BehaviorTree id=\"0\" />\r\n          <ConditionEvalNode
-    id=\"28\" />\r\n          <PrioritySelectorNode id=\"25\" />\r\n        </data>\r\n     
-    </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"12\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"728.128 627.936\" name=\"Enemy/Follow\"
-    description=\"Follow player\" cardinality=\"0\" hasParent=\"False\">\r\n         
-    <BehaviorTree id=\"12\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n   
-    <ConditionEvalNode id=\"29\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"1415.453 768.053\" name=\"AlwaysTrue\" description=\"Eval\"
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"1076.366
+    658.5936\" name=\"Perception/_IsTargetCloseAndInSight\" description=\"Eval\"
     cardinality=\"1\" hasParent=\"True\">\r\n          <BehaviorTree id=\"0\" />\r\n         
-    <ConditionEvalNode id=\"29\" />\r\n          <PrioritySelectorNode id=\"25\"
+    <ConditionEvalNode id=\"28\" />\r\n          <PrioritySelectorNode id=\"25\"
     />\r\n        </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode
-    id=\"14\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"1071.798 632.6842\" name=\"Enemy/Idle\" description=\"Idle\" cardinality=\"0\"
-    hasParent=\"False\">\r\n          <BehaviorTree id=\"14\" />\r\n        </data>\r\n     
-    </_data>\r\n    </ActionNode>\r\n  </editorInfo>\r\n  <runtimeInfo>\r\n    <BehaviorTree
-    id=\"21\" nextId=\"1\">\r\n      <inputParams />\r\n      <outputParams />\r\n     
-    <localParams />\r\n    </BehaviorTree>\r\n    <BehaviorTree id=\"5\" nextId=\"1\">\r\n     
-    <inputParams />\r\n      <outputParams />\r\n      <localParams />\r\n    </BehaviorTree>\r\n   
-    <BehaviorTree id=\"12\" nextId=\"1\">\r\n      <inputParams />\r\n      <outputParams
-    />\r\n      <localParams />\r\n    </BehaviorTree>\r\n    <BehaviorTree id=\"14\"
+    id=\"12\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
+    position=\"795.4966 526.8772\" name=\"Enemy/Follow\" description=\"Follow player\"
+    cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree id=\"12\" />\r\n       
+    </data>\r\n      </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"29\">\r\n     
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"1482.824
+    666.9948\" name=\"AlwaysTrue\" description=\"Eval\" cardinality=\"1\" hasParent=\"True\">\r\n         
+    <BehaviorTree id=\"0\" />\r\n          <ConditionEvalNode id=\"29\" />\r\n         
+    <PrioritySelectorNode id=\"25\" />\r\n        </data>\r\n      </_data>\r\n   
+    </ConditionEvalNode>\r\n    <ActionNode id=\"14\">\r\n      <_data>\r\n       
+    <data breakpoint=\"0\" selected=\"False\" position=\"1139.169 531.6257\" name=\"Enemy/Idle\"
+    description=\"Idle\" cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree
+    id=\"14\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n  </editorInfo>\r\n 
+    <runtimeInfo>\r\n    <BehaviorTree id=\"21\" nextId=\"1\">\r\n      <inputParams
+    />\r\n      <outputParams />\r\n      <localParams />\r\n    </BehaviorTree>\r\n   
+    <BehaviorTree id=\"5\" nextId=\"1\">\r\n      <inputParams />\r\n      <outputParams
+    />\r\n      <localParams />\r\n    </BehaviorTree>\r\n    <BehaviorTree id=\"12\"
     nextId=\"1\">\r\n      <inputParams />\r\n      <outputParams />\r\n      <localParams
-    />\r\n    </BehaviorTree>\r\n  </runtimeInfo>\r\n  <editorInfo>\r\n    <BehaviorTree
-    id=\"21\" _removeIfClosed=\"False\">\r\n      <_rootList />\r\n      <_nodes>\r\n       
-    <nodes />\r\n      </_nodes>\r\n    </BehaviorTree>\r\n    <BehaviorTree id=\"5\"
-    _removeIfClosed=\"False\">\r\n      <_rootList />\r\n      <_nodes>\r\n       
-    <nodes />\r\n      </_nodes>\r\n    </BehaviorTree>\r\n    <BehaviorTree id=\"12\"
-    _removeIfClosed=\"False\">\r\n      <_rootList />\r\n      <_nodes>\r\n       
-    <nodes />\r\n      </_nodes>\r\n    </BehaviorTree>\r\n    <BehaviorTree id=\"14\"
-    _removeIfClosed=\"False\">\r\n      <_rootList />\r\n      <_nodes>\r\n       
-    <nodes />\r\n      </_nodes>\r\n    </BehaviorTree>\r\n  </editorInfo>\r\n</BehaviorBricks>"
-  zoom: 0.5
+    />\r\n    </BehaviorTree>\r\n    <BehaviorTree id=\"14\" nextId=\"1\">\r\n     
+    <inputParams />\r\n      <outputParams />\r\n      <localParams />\r\n    </BehaviorTree>\r\n 
+    </runtimeInfo>\r\n  <editorInfo>\r\n    <BehaviorTree id=\"21\" _removeIfClosed=\"False\">\r\n     
+    <_rootList />\r\n      <_nodes>\r\n        <nodes />\r\n      </_nodes>\r\n   
+    </BehaviorTree>\r\n    <BehaviorTree id=\"5\" _removeIfClosed=\"False\">\r\n     
+    <_rootList />\r\n      <_nodes>\r\n        <nodes />\r\n      </_nodes>\r\n   
+    </BehaviorTree>\r\n    <BehaviorTree id=\"12\" _removeIfClosed=\"False\">\r\n     
+    <_rootList />\r\n      <_nodes>\r\n        <nodes />\r\n      </_nodes>\r\n   
+    </BehaviorTree>\r\n    <BehaviorTree id=\"14\" _removeIfClosed=\"False\">\r\n     
+    <_rootList />\r\n      <_nodes>\r\n        <nodes />\r\n      </_nodes>\r\n   
+    </BehaviorTree>\r\n  </editorInfo>\r\n</BehaviorBricks>"
+  zoom: 0.8
   subslist: []
   _guid: 7fb4eb3ea8643d64ab9d84566e3fe83d

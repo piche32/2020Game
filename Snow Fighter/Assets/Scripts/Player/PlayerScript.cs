@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour
 
    
     [SerializeField] float maxHP = 100.0f;
-    [SerializeField] float powerIncrease = 1.0f;
+ //   [SerializeField] float powerIncrease = 1.0f;
     [SerializeField] float maxPower = 500.0f;
     public float MaxPower { get { return maxPower; } set { maxPower = value; } }
     public float MaxHP { get { return maxHP; } set { maxHP = value; } }

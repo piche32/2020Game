@@ -1,0 +1,30 @@
+//This Behavior Tree controls the 'Enemy'
+
+tree("Root")
+	//Root behavior for all Enemys: Be alive or die.
+	fallback
+		sequence
+			isDied
+			died
+		sequence
+			isPlayerInAttackingSight
+			tree("Attack")
+		sequence
+			isPlayerInFollowingSight
+			follow
+		idle
+
+tree("Attack")
+	fallback
+		//Attack Cool Time
+		while
+			not
+				isTimeToAttack
+			takeAttackCoolTime
+		
+		sequence
+			//isn't There obstacle
+			isThereTarget
+			attack
+
+

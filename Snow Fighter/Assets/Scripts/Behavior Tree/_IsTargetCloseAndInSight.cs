@@ -6,7 +6,8 @@ using Pada1.BBCore;
 using BBUnity.Conditions;
 
 [Condition("Perception/_IsTargetCloseAndInSight")]
-[Help("This is custom condition node. Using tag, checks whether a target is close depending on a given distance and in sight")]
+[Help("This is custom condition node. Using tag, checks whether " +
+    "a target is close depending on a given distance and in sight")]
 public class _IsTargetCloseAndInSight : GOCondition
 {
     [InParam("target")]
@@ -32,7 +33,8 @@ public class _IsTargetCloseAndInSight : GOCondition
         RaycastHit ray;
         if(angle < sightAngle * 0.5f)
         {
-            if(Physics.Raycast(gameObject.transform.position + gameObject.transform.up * 0.5f, dir, out ray, dir.magnitude))
+            if(Physics.Raycast(gameObject.transform.position + 
+                gameObject.transform.up * 0.5f, dir, out ray, dir.magnitude))
             {
                 return ray.transform.CompareTag(target.tag);
             }

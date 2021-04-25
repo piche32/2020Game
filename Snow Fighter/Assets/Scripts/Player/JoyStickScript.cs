@@ -5,7 +5,7 @@ using UnityEngine.EventSystems; //키보드, 마우스, 터치를 이벤트로 �
 public class JoyStickScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     PlayerScript playerSc;
-     
+
     [SerializeField]
     private RectTransform mLever;
     private RectTransform mRectTransform;
@@ -29,7 +29,7 @@ public class JoyStickScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        playerSc.IsMoving = true; 
+        playerSc.IsMoving = true;
         ControlJoystickLever(eventData);
     }
 
@@ -38,7 +38,7 @@ public class JoyStickScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         ControlJoystickLever(eventData);
     }
-     
+
     public void OnEndDrag(PointerEventData eventData)
     {
         playerSc.IsMoving = false;
@@ -47,7 +47,8 @@ public class JoyStickScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     private void ControlJoystickLever(PointerEventData eventData)
     {
-         Vector3 leverPos = new Vector3 (eventData.position.x, eventData.position.y, mLever.position.z);
+        TouchManager.Instance.setMove(true);
+        Vector3 leverPos = new Vector3(eventData.position.x, eventData.position.y, mLever.position.z);
         mLever.position = leverPos;
         mLever.anchoredPosition = mLever.anchoredPosition.magnitude < mLeverRange ?
             mLever.anchoredPosition : mLever.anchoredPosition.normalized * mLeverRange;

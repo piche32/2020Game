@@ -8,10 +8,12 @@ using UnityEngine.UI;
 
 public enum EnemyState
 {
+    STATE_NONE,
     STATE_IDLE,
     STATE_FOLLOWING,
     STATE_ATTACKING,
     STATE_DIE,
+    NUM,
 }
 
 public class EnemyAIScript : MonoBehaviour
@@ -19,9 +21,11 @@ public class EnemyAIScript : MonoBehaviour
     EnemyState curState;
     EnemyState preState;
     public EnemyState PreState { get { return preState; } }
+    public EnemyState CurState { get { return curState; } }
 
     Transform playerTrans;
     [SerializeField] Transform snowStartTrans = null;
+    //공격용 눈덩이 받아두는 용도
     SnowBallScript snow;
 
     [SerializeField] LayerMask snowballLM;
@@ -30,12 +34,15 @@ public class EnemyAIScript : MonoBehaviour
     private List<LayerMask> ignoreLM;
     public List<LayerMask> IgnoreLM { get { return ignoreLM; } }
 
-    [SerializeField] float followingDist = 10.0f;
-    public float FollowingDist { get { return followingDist; } }
-    [SerializeField] float attackingDist = 5.0f;
-    public float AttackingDist { get { return attackingDist; } }
+    //[SerializeField] float followingDist = 10.0f;
+    //public float FollowingDist { get { return followingDist; } }
+    //[SerializeField] float attackingDist = 5.0f;
+    //public float AttackingDist { get { return attackingDist; } }
+
+    //경계할 때 Player를 발견할 수 있는 거리
     [SerializeField] float alertingDist = 20.0f;
     public float AlertingDist { get { return alertingDist; } }
+
     //  [SerializeField] float dodgingDist = 20.0f;
 
     [SerializeField] float speed = 1.0f;
@@ -43,9 +50,12 @@ public class EnemyAIScript : MonoBehaviour
     public float RotateSpeed { get { return rotateSpeed; } set { rotateSpeed = value; } }
     [SerializeField] float sightAngle = 60.0f;
     public float SightAngle { get { return sightAngle; } }
+    
     [SerializeField] float attackCoolTime = 10.0f;
     public float AttackCoolTime { get { return attackCoolTime; } }
     [SerializeField] float followLimitTime = 30.0f;
+    public float FollowLimitTime { get { return followLimitTime; } }
+
     [SerializeField] float alertLimitTime = 3.0f;
     public float AlertLimitTime { get { return alertLimitTime; } }
 
@@ -59,8 +69,6 @@ public class EnemyAIScript : MonoBehaviour
     public Slider HpSlider { get { return hpSlider; } set { hpSlider = value; } }
 
     float attackTime;
-    float followTime;
-    public float FollowTime { get { return followTime; } set { followTime = value; } }
     float alertTime;
     public float AlertTime { get { return alertTime; } }
 
@@ -87,7 +95,8 @@ public class EnemyAIScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        curState = EnemyState.STATE_IDLE;
+        //처음에 아무것도 안 넣어 주기
+        curState = EnemyState.STATE_NONE;
         preState = curState;
 
         playerTrans = GameObject.FindWithTag("Player").transform;
@@ -98,7 +107,7 @@ public class EnemyAIScript : MonoBehaviour
         }
 
         attackTime = 0.0f;
-        followTime = 0.0f;
+       // followTime = 0.0f;
         alertTime = 0.0f;
 
         if(wayPoints.Count == 0) {
@@ -165,29 +174,31 @@ public class EnemyAIScript : MonoBehaviour
             //animator.SetBool("IsReadyToThrow", false);
             //animator.SetBool("isMoving", false);
             //animator.SetBool("isAlerting", false);
-            animator.SetTrigger("Dying");
-            animator.SetBool("IsDying", true);
+            //animator.SetTrigger("Dying");
+            //animator.SetBool("IsDying", true);
             //nvAgent.enabled = false;
-            Collider[] cors = this.GetComponentsInChildren<Collider>();
-            foreach (Collider cor in cors)
-            {
-                cor.enabled = false;
-            }
-            --StageManager.Instance.EnemyCount;
-            GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetEnemyCountText();
+            animator.enabled = false; 
+           // Collider[] cors = this.GetComponentsInChildren<Collider>();
+          //  foreach (Collider cor in cors)
+         //   {
+         //       cor.enabled = false;
+         //   }
+                                                                                                                                                                                                                                                                                                                                                  --StageManager.Instance.EnemyCount;
+        //    GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetEnemyCountText();
+            StartCoroutine("Blink");
 
         }
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f)
-        {
-            //if (this.enabled == true)
-           // {
-                //this.enabled = false;
-                //GetComponent<BehaviorExecutor>().enabled = false;
-                StartCoroutine("Blink");
-          //  }
+        //if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1.0f)
+        //else
+        // {
+        //if (this.enabled == true)
+        // {
+        //this.enabled = false;
+        //GetComponent<BehaviorExecutor>().enabled = false;
+        //  }
 
-        }
-        
+        // }
+
 
     }
 
@@ -202,13 +213,13 @@ public class EnemyAIScript : MonoBehaviour
         if (blinkCount >= 30) {
             if (this.GetComponentInChildren<SnowBallScript>())
                 SnowBallPoolingScript.Instance.ReturnObject(this.GetComponentInChildren<SnowBallScript>());
+            isDied = true;
             this.GetComponentInChildren<Renderer>().enabled = false;
             GetComponent<BehaviorExecutor>().enabled = false;
-            isDied = true;
             //  this.enabled = false;
             if(StageManager.Instance.EnemyCount == 0)
             {
-                GameManagerScript.Instance.Success();
+             //   GameManagerScript.Instance.Success();
             }
 
         }
@@ -242,7 +253,7 @@ public class EnemyAIScript : MonoBehaviour
         Debug.Log("Raycast error");
         return false;
     }
-    
+
     public void alert()
     {
         Collider[] cols = Physics.OverlapSphere(transform.position, alertingDist, -1 - snowballLM - snowStartLM);
@@ -258,10 +269,19 @@ public class EnemyAIScript : MonoBehaviour
             wasObstacle = true;
         }
         else wasObstacle = false;
-        animator.SetFloat("RotateY", Time.deltaTime*rotateSpeed/90.0f); //RotateY의 Max: 1, rotateSpeed의 단위 degree
+        animator.SetFloat("RotateY", Time.deltaTime * rotateSpeed / 90.0f); //RotateY의 Max: 1, rotateSpeed의 단위 degree
         //transform.Rotate(0.0f, Time.deltaTime * rotateSpeed, 0.0f);
 
-        if(alertTime > alertLimitTime)
+        //애니메이션 설정
+        if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Hit")
+        {
+            animator.applyRootMotion = false;
+        }
+        else animator.applyRootMotion = true;
+
+        if (!animator.applyRootMotion) animator.applyRootMotion = true;
+
+        if (alertTime > alertLimitTime)
         {
             animator.SetBool("isAlerting", false);
             animator.SetBool("isMoving", true);
@@ -274,12 +294,12 @@ public class EnemyAIScript : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance + 0.8f)
         {
-            if (alertTime == 0.0f) // 목표지점 도착 직후
+            if (alertTime == 0.0f) // 목표지점 도착 직 후
             {
                 animator.SetBool("isAlerting", true); //경계모드 활성화
                 animator.SetBool("isMoving", false);
                 animator.SetTrigger("Alert");
-                animator.applyRootMotion = true;
+               animator.applyRootMotion = true;
 
                 alertTime += Time.deltaTime;
                 return;
@@ -290,7 +310,7 @@ public class EnemyAIScript : MonoBehaviour
                 alertTime += Time.deltaTime;
                 return;
             }
-            
+
             targetWayPointIndex++;
             if (targetWayPointIndex >= wayPoints.Count)
             {
@@ -300,50 +320,41 @@ public class EnemyAIScript : MonoBehaviour
             nvAgent.SetDestination(targetWayPoint.position);
             alertTime = 0.0f;
         }
-        
+
         return;
     }
+
     public void idle()
     {
-         if (preState == EnemyState.STATE_ATTACKING)
-        {
-            attackToIdle();
-            return;
-        }
-        if (preState == EnemyState.STATE_FOLLOWING)
-        { //follow -> idle fn
-            followToIdle();
-            return;
-        }
-
+        //(다시) 눈덩이 있을 때 리턴 시켜주기
         if (this.GetComponentInChildren<SnowBallScript>())
             SnowBallPoolingScript.Instance.ReturnObject(this.GetComponentInChildren<SnowBallScript>());
 
-
         patrol();
     }
-    public void follow()
-    {
-        if(preState == EnemyState.STATE_IDLE) //idle -> follow fn
-        {
-            idleToFollow();
-            return;
-        }
-        if (preState == EnemyState.STATE_ATTACKING)
-        {
-            attackToFollow();
-            return;
-        }
-        if (isFollowingTimeOver()) //일정시간동안 공격범위에 들어가지 못하고 따라다니기만 했을 경우 Idle 상태로 돌아가기
-        {
-            setState(EnemyState.STATE_IDLE);
-            
-        }
 
-        followTime += Time.deltaTime;
+    //public void follow()
+    //{
+    //    if(preState == EnemyState.STATE_IDLE) //idle -> follow fn
+    //    {
+    //        idleToFollow();
+    //        return;
+    //    }
+    //    if (preState == EnemyState.STATE_ATTACKING)
+    //    {
+    //        attackToFollow();
+    //        return;
+    //    }
+    //    if (isFollowingTimeOver()) //일정시간동안 공격범위에 들어가지 못하고 따라다니기만 했을 경우 Idle 상태로 돌아가기
+    //    {
+    //        setState(EnemyState.STATE_IDLE);
 
-        nvAgent.SetDestination(playerTrans.position);
-    }
+    //    }
+
+    //    followTime += Time.deltaTime;
+
+    //    nvAgent.SetDestination(playerTrans.position);
+    //}
 
     public void createSnow()
     {
@@ -363,62 +374,72 @@ public class EnemyAIScript : MonoBehaviour
         animator.SetBool("IsReadyToThrow", false);
     }
 
-    public void attack()
+    //public void attack()
+    //{
+    //    if (preState == EnemyState.STATE_FOLLOWING)
+    //    {
+    //        followToAttack();
+    //        return;
+    //    }
+    //    if(preState == EnemyState.STATE_IDLE) //Idle=>Attack
+    //    {
+    //        preState = EnemyState.STATE_ATTACKING;
+    //        return;
+    //    //    preState = curState;
+    //     //   curState = EnemyState.STATE_ATTACKING;
+    //    }
+
+    //    nvAgent.SetDestination(playerTrans.position);
+    //    if (animator.GetBool("IsReadyToThrow") == false)
+    //    {
+    //        animator.SetBool("IsReadyToThrow", true);
+    //     //   if (attackCoolTime > attackTime) return; //쿨타임 남음
+
+    //      //  if (!isTarget(playerTrans)) return; //장애물 유무 확인
+
+
+    //        //if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance)
+    //        //{
+    //        //    animator.SetBool("isMoving", false);
+    //        //}
+    //        //else
+    //        //{
+    //        //    if (!animator.GetBool("isMoving"))
+    //        //        animator.SetBool("isMoving", true);
+    //        //}
+
+    //        //animator.SetTrigger("ReadyToThrow");
+    //        /*Vector3 snowballPos = snowStartTrans.position;
+    //        snowballPos += (snowStartTrans.rotation * Vector3.forward);
+
+    //        SnowBallPoolingScript.Instance.GetObject().Initialize("Enemy", power, snowballPos, snowStartTrans.rotation);*/
+    //        //Instantiate(snowball, snowballPos, transform.rotation);
+    //        //attackTime = 0.0f;
+    //    }
+    //    else
+    //    {
+    //        if (attackCoolTime > attackTime) return; //쿨타임 남음
+    //        if (!isTarget(playerTrans)) return; //장애물 유무 확인
+    //        attackTime = 0.0f;
+    //        animator.SetTrigger("Throw");
+    //    }
+    //}
+
+    public void otherToIdle()
     {
-        if (preState == EnemyState.STATE_FOLLOWING)
-        {
-            followToAttack();
-            return;
-        }
-        if(preState == EnemyState.STATE_IDLE) //Idle=>Attack
-        {
-            preState = EnemyState.STATE_ATTACKING;
-            return;
-        //    preState = curState;
-         //   curState = EnemyState.STATE_ATTACKING;
-        }
-
-        nvAgent.SetDestination(playerTrans.position);
-        if (animator.GetBool("IsReadyToThrow") == false)
-        {
-            animator.SetBool("IsReadyToThrow", true);
-         //   if (attackCoolTime > attackTime) return; //쿨타임 남음
-
-          //  if (!isTarget(playerTrans)) return; //장애물 유무 확인
-
-
-            //if (Vector3.Distance(transform.position, targetWayPoint.position) <= nvAgent.stoppingDistance)
-            //{
-            //    animator.SetBool("isMoving", false);
-            //}
-            //else
-            //{
-            //    if (!animator.GetBool("isMoving"))
-            //        animator.SetBool("isMoving", true);
-            //}
-
-            //animator.SetTrigger("ReadyToThrow");
-            /*Vector3 snowballPos = snowStartTrans.position;
-            snowballPos += (snowStartTrans.rotation * Vector3.forward);
-
-            SnowBallPoolingScript.Instance.GetObject().Initialize("Enemy", power, snowballPos, snowStartTrans.rotation);*/
-            //Instantiate(snowball, snowballPos, transform.rotation);
-            //attackTime = 0.0f;
-        }
-        else
-        {
-            if (attackCoolTime > attackTime) return; //쿨타임 남음
-            if (!isTarget(playerTrans)) return; //장애물 유무 확인
-            attackTime = 0.0f;
-            animator.SetTrigger("Throw");
-        }
+        nvAgent.SetDestination(targetWayPoint.position);
+        alertTime = 0.0f;
     }
+    /*
     public void followToIdle()
     {
         nvAgent.SetDestination(targetWayPoint.position);
         alertTime = 0.0f;
         preState = EnemyState.STATE_IDLE;
     }
+    */
+
+    /*
     public void attackToIdle()
     {
         animator.SetBool("IsReadyToThrow", false);
@@ -440,18 +461,46 @@ public class EnemyAIScript : MonoBehaviour
         alertTime = 0.0f;
         preState = EnemyState.STATE_IDLE;
     }
+    */
 
-
-    public void idleToFollow()
+    public void IdleToOther()
     {
         if (animator.GetBool("isAlerting"))
         {
             animator.SetBool("isAlerting", false);
         }
-        followTime = 0.0f;
-        preState = EnemyState.STATE_FOLLOWING;
-       // preState = curState;
+        //followTime = 0.0f;
     }
+
+
+    public void attackToOther()
+    {
+        animator.SetBool("IsReadyToThrow", false);
+        snow = GetComponentInChildren<SnowBallScript>();
+        if (snow)
+        {
+            SnowBallPoolingScript.Instance.ReturnObject(snow);
+            snow = null;
+        }
+    }
+
+
+
+    //public void idleToFollow()
+    //{
+    //    if (animator.GetBool("isAlerting"))
+    //    {
+    //        animator.SetBool("isAlerting", false);
+    //    }
+    //    followTime = 0.0f;
+    //    preState = EnemyState.STATE_FOLLOWING;
+    //   // preState = curState;
+    //}
+
+    //attack에서 다른 상태로 바꼈을 때
+
+
+    /*
     public void attackToFollow()
     {
         animator.SetBool("IsReadyToThrow", false);
@@ -471,48 +520,42 @@ public class EnemyAIScript : MonoBehaviour
             snow = null;
         }
     }
-    public void followToAttack()
+    */
+
+    /*public void followToAttack()
     {
-       preState = EnemyState.STATE_ATTACKING;
-        //preState = curState;
     }
 
     public void idleToAttack()
     {
-        preState = EnemyState.STATE_ATTACKING;
     }
+    */
 
     Vector3 DirFromAngle(float angleInDegrees)
     {
         angleInDegrees += transform.eulerAngles.y;
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Vector3 leftBoundary = DirFromAngle(-sightAngle / 2);
-        Vector3 rightBoundary = DirFromAngle(sightAngle / 2);
-        Gizmos.DrawLine(transform.position, transform.position + leftBoundary * followingDist);
-        Gizmos.DrawLine(transform.position, transform.position + rightBoundary * followingDist);
-        Gizmos.DrawWireSphere(transform.position, followingDist);
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackingDist);
-    }
+    //
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.yellow;
+    //    Vector3 leftBoundary = DirFromAngle(-sightAngle / 2);
+    //    Vector3 rightBoundary = DirFromAngle(sightAngle / 2);
+    //    Gizmos.DrawLine(transform.position, transform.position + leftBoundary * followingDist);
+    //    Gizmos.DrawLine(transform.position, transform.position + rightBoundary * followingDist);
+    //    Gizmos.DrawWireSphere(transform.position, followingDist);
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, attackingDist);
+    //}
 
     public void setState(EnemyState state)
     {
         preState = curState;
         curState = state;
     }
-    public EnemyState getCurState()
-    {
-        return curState;
-    }
-    public bool isFollowingTimeOver()
-    {
-        if (followTime > followLimitTime) return true;
-        return false;
-    }
+    
+    
 
     public bool checkHp()
     {
@@ -525,5 +568,6 @@ public class EnemyAIScript : MonoBehaviour
         checkHp();
         hpSlider.GetComponent<EnemyHPScript>().SetEnemyHPSlider(hp);
         animator.SetTrigger("Hit");
+        animator.applyRootMotion = false;
     }
 } //스크립트 클래스 괄호 삭제X

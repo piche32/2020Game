@@ -11,7 +11,7 @@ public class SnowBallPoolingScript : Singleton<SnowBallPoolingScript>
     Queue<SnowBallScript> snowballs = new Queue<SnowBallScript>();
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
        snowball = GameObject.Find("SnowBall");
         for (int i = 0; i < amount; i++)

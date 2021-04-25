@@ -17,7 +17,7 @@ public class EnemyFollowScript : MonoBehaviour
     {
         if (other.tag != "Player") return;
 
-        if (enemyAI.getCurState() == EnemyState.STATE_FOLLOWING) return;
+        if (enemyAI.CurState == EnemyState.STATE_FOLLOWING) return;
         if (enemyAI.isTargetInSight())
         {
             enemyAI.setState(EnemyState.STATE_FOLLOWING);
@@ -29,10 +29,10 @@ public class EnemyFollowScript : MonoBehaviour
     {
         if (other.tag != "Player") return;
 
-        if ((enemyAI.getCurState() == EnemyState.STATE_FOLLOWING) || (enemyAI.getCurState() == EnemyState.STATE_ATTACKING)) return;
+        if ((enemyAI.CurState == EnemyState.STATE_FOLLOWING) || (enemyAI.CurState == EnemyState.STATE_ATTACKING)) return;
 
-        if (enemyAI.isFollowingTimeOver()) return;
-            if (enemyAI.isTargetInSight())
+        //if (enemyAI.isFollowingTimeOver()) return;
+        if (enemyAI.isTargetInSight())
         {
             enemyAI.setState(EnemyState.STATE_FOLLOWING);
         }
@@ -42,7 +42,7 @@ public class EnemyFollowScript : MonoBehaviour
     {
         if (other.tag != "Player") return;
 
-        if (enemyAI.getCurState() != EnemyState.STATE_FOLLOWING) return;
+        if (enemyAI.CurState != EnemyState.STATE_FOLLOWING) return;
 
         enemyAI.setState(EnemyState.STATE_IDLE);
         

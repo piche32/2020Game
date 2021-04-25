@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class SnowParticlePooling : MonoBehaviour
 {
-    [SerializeField] GameObject particle;
+    [SerializeField] GameObject particle = null;
     [SerializeField] int amount = 30;
     Queue<GameObject> particles = new Queue<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
+        if(particle == null)
+        {
+            Debug.LogError("Snow Particle is missing.");
+        }
+
         for (int i = 0; i < amount; i++)
         {
             particles.Enqueue(CreateNewObject());

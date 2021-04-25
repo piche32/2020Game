@@ -39,7 +39,7 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerSc.IsThrowing == true)
+        if (playerSc.IsThrowing)
         {
             if (throwingCoolTime < throwingTime)
             {
@@ -56,10 +56,8 @@ public class PlayerAttack : MonoBehaviour
     public void ReadyToThrow()
     {
         //카메라 회전 시 버튼 작동 막기
+        if (playerSc.SightCamTrans.GetComponent<PlayerSightScript>().IsCameraRotating) return;
 
-
-
-        Debug.Log("ReadyToThrow");
         if (playerSc.IsThrowing == true || playerSc.IsReadyToThrowing == true) return;
 
         playerSc.IsReadyToThrowing = true;

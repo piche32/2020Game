@@ -39,11 +39,11 @@ public class Search : GOAction
 
         if (enemyAISc.PreState == EnemyState.STATE_ATTACKING)
         {
-            enemyAISc.attackToIdle();
+            //enemyAISc.attackToIdle();
         }
         else if (enemyAISc.PreState == EnemyState.STATE_FOLLOWING)
         {
-            enemyAISc.followToIdle();
+           //enemyAISc.followToIdle();
         }
 
         base.OnStart();

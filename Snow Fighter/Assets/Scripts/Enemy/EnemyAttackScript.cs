@@ -16,7 +16,7 @@ public class EnemyAttackScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Player") return;
-        if(enemyAI.getCurState() == EnemyState.STATE_FOLLOWING)
+        if(enemyAI.CurState == EnemyState.STATE_FOLLOWING)
         {
             enemyAI.setState(EnemyState.STATE_ATTACKING);
             return;
@@ -29,7 +29,7 @@ public class EnemyAttackScript : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.tag != "Player") return;
-        if (enemyAI.getCurState() != EnemyState.STATE_IDLE) return;
+        if (enemyAI.CurState != EnemyState.STATE_IDLE) return;
         if (enemyAI.isTargetInSight())
         {
             enemyAI.setState(EnemyState.STATE_ATTACKING);
@@ -40,7 +40,7 @@ public class EnemyAttackScript : MonoBehaviour
     {
         if (other.tag != "Player") return;
 
-        if (enemyAI.getCurState() != EnemyState.STATE_ATTACKING) return;
+        if (enemyAI.CurState != EnemyState.STATE_ATTACKING) return;
         
         enemyAI.setState(EnemyState.STATE_FOLLOWING);
       

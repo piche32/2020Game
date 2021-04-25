@@ -8,7 +8,7 @@ public class PlayerSightScript : MonoBehaviour
 
     private Vector2 dPos;
     float rx, ry;
-    
+
     [SerializeField] float rotSpeed = 150.0f; //각도
     [SerializeField] float maxX = 90.0f; //X축 회전시 범위
     [SerializeField] float minX = -90.0f; //X축 회전시 범위
@@ -21,6 +21,7 @@ public class PlayerSightScript : MonoBehaviour
     float targetingAngle;
 
     bool isCameraRotating;
+    public bool IsCameraRotating { get { return isCameraRotating; } }
 
     UIManager UI;
     // Start is called before the first frame update
@@ -29,7 +30,8 @@ public class PlayerSightScript : MonoBehaviour
         rx = 0.0f;
         ry = 0.0f;
 
-        if (maxX < minX) {
+        if (maxX < minX)
+        {
             float swap = maxX;
             maxX = minX;
             minX = swap;
@@ -58,25 +60,34 @@ public class PlayerSightScript : MonoBehaviour
 
         Touch tempTouch;
 
-        for(int i = 0; i < Input.touchCount; i++)
+        for (int i = 0; i < Input.touchCount; i++)
         {
             tempTouch = Input.GetTouch(i);
 
-            //드래그 영역 제어
-            //if (tempTouch.position.x < Screen.width / 2) continue;
-
             //UI 터치 시 작동 막기
-            if (EventSystem.current.IsPointerOverGameObject(i))
+            if (tempTouch.phase == TouchPhase.Began)
             {
                 isCameraRotating = true;
                 continue;
             }
 
             //UI 터치 후 손 뗄 때 작동 막기
-            if (tempTouch.phase == TouchPhase.Ended) {
+            if (tempTouch.phase == TouchPhase.Ended)
+            {
                 isCameraRotating = false;
                 continue;
             }
+
+            //일단 왼쪽 드래그 시 작동 막아두기
+            if (tempTouch.position.x < Screen.height / 2.0f)
+                continue;
+
+
+            ////조이스틱 터치 시 작동 막기
+            //if (tempTouch.phase == TouchPhase.Moved && tempTouch.position)
+            //{
+
+            //}
 
             dPos = tempTouch.deltaPosition;
 
@@ -107,7 +118,7 @@ public class PlayerSightScript : MonoBehaviour
     {
         Vector3 dir = transform.forward;
         RaycastHit ray;
-        if(Physics.Raycast(transform.position, dir, out ray, targetingDist))
+        if (Physics.Raycast(transform.position, dir, out ray, targetingDist))
             return ray.point + transform.forward * offset;
 
         return Vector3.negativeInfinity;
@@ -129,7 +140,7 @@ public class PlayerSightScript : MonoBehaviour
     {
         Vector3 dir = (obj.position - transform.position).normalized;
         float angle = Vector3.Angle(dir, new Vector3(transform.forward.x, dir.y, transform.forward.z)); //y가 같은 평면 상의 각도 구하기
-        
+
         float dist = Vector3.Distance(obj.position, transform.position);
 
         if (dist < 3) targetingAngle = 50.0f;
@@ -171,7 +182,8 @@ public class PlayerSightScript : MonoBehaviour
         if (other.tag != "Enemy" || other.name == "FollowColl" || other.name == "AttackColl") return;
 
         target = other.transform;
-        if (!isTargetInSight(other.transform)) { 
+        if (!isTargetInSight(other.transform))
+        {
             return;
         }
         UI.SetTarget(true);

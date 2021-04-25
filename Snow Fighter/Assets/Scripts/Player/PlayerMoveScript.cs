@@ -41,6 +41,7 @@ public class PlayerMoveScript : MonoBehaviour
 
     public void jump()
     {
+        if (playerSc.SightCamTrans.GetComponent<PlayerSightScript>().IsCameraRotating) return;
         if (playerSc.IsJumping) return; //점프 중이면 점프 금지
         Vector3 getVel = transform.up * jumpPower;
         getVel.x = rb.velocity.x;
