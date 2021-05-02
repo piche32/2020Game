@@ -138,12 +138,13 @@
     <Compile Include="Assets\Scripts\Behavior Tree\_IsTargetCloseAndInSight.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAIScript.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAniScript.cs" />
-    <Compile Include="Assets\Scripts\Enemy\EnemyAttackScript.cs" />
-    <Compile Include="Assets\Scripts\Enemy\EnemyFollowScript.cs" />
+    <Compile Include="Assets\Scripts\Enemy\EnemyAttack.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyHPScript.cs" />
     <Compile Include="Assets\Scripts\Enemy\Panda BT\Conditions.cs" />
     <Compile Include="Assets\Scripts\Enemy\Panda BT\EnemyAIPandaBT.cs" />
     <Compile Include="Assets\Scripts\Enemy\TestAni.cs" />
+    <Compile Include="Assets\Scripts\Enemy\not used\EnemyAttackScript.cs" />
+    <Compile Include="Assets\Scripts\Enemy\not used\EnemyFollowScript.cs" />
     <Compile Include="Assets\Scripts\GameManagerScript.cs" />
     <Compile Include="Assets\Scripts\Item\HealingItem.cs" />
     <Compile Include="Assets\Scripts\Player\JoyStickScript.cs" />
