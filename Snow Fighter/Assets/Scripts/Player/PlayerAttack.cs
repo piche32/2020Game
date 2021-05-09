@@ -87,6 +87,8 @@ public class PlayerAttack : MonoBehaviour
        snow.GetComponent<SnowBallScript>().Initialize(power, snowStart.position, snowStart.rotation, transform, target);
 
         StageManager.Instance.setAttackedCount();
+
+        #region targeting code not used
         /*
         if(target != null) //목표물 없을 때
         {
@@ -114,6 +116,8 @@ public class PlayerAttack : MonoBehaviour
         }
         UI.SetPlayerPowerSlider(power);
         */
+
+        #endregion targeting code not used
     }
 
     public void Attack()

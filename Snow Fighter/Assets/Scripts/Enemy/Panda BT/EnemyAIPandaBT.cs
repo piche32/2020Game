@@ -13,9 +13,9 @@ namespace Panda
 
         GameObject player;
 
-        [SerializeField] float sightAngle = 120.0f;
-        [SerializeField] float attackingDist = 10.0f;
-        [SerializeField] float followingDist = 20.0f;
+        float sightAngle;
+         float attackingDist;
+        float followingDist;
 
         //공격 쿨타임
         float attackCoolTime;
@@ -24,8 +24,6 @@ namespace Panda
         //어드 정도 따라가다가 못 따라 잡으면 포기
         float followLimitTime;
         float followTime;
-
-
 
         void Start()
         {
@@ -49,6 +47,10 @@ namespace Panda
             attackTime = attackCoolTime;
 
             followLimitTime = self.FollowLimitTime;
+
+            sightAngle = self.SightAngle;
+            attackingDist = self.AttackingDist;
+            followingDist = self.FollowingDist;
         }
 
         #region die
@@ -68,7 +70,25 @@ namespace Panda
         }
         #endregion die
 
+
+
         #region attack
+
+        [Task]
+        bool isAttacking()
+        {
+            AnimatorStateInfo aniInfo = self.Animator.GetCurrentAnimatorStateInfo(1);
+            if(aniInfo.fullPathHash == Animator.StringToHash("Upper Layer.Throw"))
+            {
+                if(aniInfo.normalizedTime <= 1.0f) {
+                    Task.current.Succeed();
+                    return true;
+                }
+            }
+            Task.current.Fail();
+            return false;
+        }
+
         /// <summary>
         /// Check whether player is close depending on a given attacking distance and in enemy's sight.
         /// </summary>
@@ -79,6 +99,12 @@ namespace Panda
             return Panda.Conditions.isTargetInSight(gameObject, player, attackingDist, sightAngle);
         }
 
+        [Task]
+        void attackInit()
+        {
+            self.Animator.SetBool("isAlerting", false);
+            Task.current.Succeed();
+        }
         //쿨타임 끝났으면 true
         [Task]
         bool isTimeToAttack()
@@ -107,6 +133,63 @@ namespace Panda
         {
             if (self.isTarget(player.transform)) // 앞에 장애물 없을 때
                 Task.current.Succeed();
+            else
+                Task.current.Fail();
+        }
+
+        //지금 던지는 중인지
+        [Task]
+        bool isThrowing()
+        {
+            AnimatorStateInfo aniInfo = self.Animator.GetCurrentAnimatorStateInfo(1);
+            if (aniInfo.fullPathHash == Animator.StringToHash("Upper Layer.Throw"))
+            {
+                if (aniInfo.normalizedTime >= 1.0f) {
+                    //던지는 애니메이션 거의 끝나갈 때,
+                    self.Animator.SetBool("isThrowing", false);
+                    return false; 
+                }
+                return true;
+            }
+            else {
+                self.Animator.SetBool("isThrowing", false);
+                return false;
+            }
+        }
+
+        [Task]
+        void readyToThrow()
+        {
+            attackTime = 0;
+            if (self.Animator.GetBool("IsReadyToThrow") == true) return;
+            if (self.PreState == EnemyState.STATE_NONE || self.CurState != EnemyState.STATE_ATTACKING) //처음 들어왔을 때
+            {
+                self.setState(EnemyState.STATE_ATTACKING);
+            }
+            
+            if(self.CurState != EnemyState.STATE_ATTACKING)
+            {
+                self.setState(EnemyState.STATE_ATTACKING);
+            }
+
+            self.Animator.SetBool("IsReadyToThrow", true);
+            self.Animator.SetTrigger("Throw");
+
+            Task.current.Succeed();
+        }
+
+        [Task]
+        void createSnow()
+        {            
+            self.createSnow();
+            Task.current.Succeed();
+        }
+
+        [Task]
+        void throwSnow()
+        {
+            self.throwSnow();
+            Task.current.Succeed();
         }
 
         [Task]
@@ -128,26 +211,42 @@ namespace Panda
             //플레이어 위치 업데이트
             self.NvAgent.SetDestination(player.transform.position);
 
-
-            //self.Animator.SetTrigger("Throw");
-            //준비 애니메이션 켜주기
-            if(self.Animator.GetBool("IsReadyToThrow") == false)
-            {
-                //나중에 던지는 애니메이션으로 넘어가게 하는 장치 혹은 던지기 취소되었을 때 빠져나가는 장치
-                self.Animator.SetBool("IsReadyToThrow", true);
-                self.Animator.SetTrigger("ReadyToThrow");
-                return;
-            }
-            else
+            if (!self.Animator.GetBool("isThrowing"))
             {
                 self.Animator.SetTrigger("Throw");
+                self.Animator.SetBool("isThrowing", true);
                 attackTime = 0.0f;
             }
+            else
+                return;
+
+
+            //준비 애니메이션 켜주기
+            //if(self.Animator.GetBool("IsReadyToThrow") == false)
+            //{
+            //    //나중에 던지는 애니메이션으로 넘어가게 하는 장치 혹은 던지기 취소되었을 때 빠져나가는 장치
+            //    self.Animator.SetBool("IsReadyToThrow", true);
+            //    self.Animator.SetTrigger("ReadyToThrow");
+            //    return;
+            //}
+            //else
+            //{
+            //    /*if (!self.Animator.GetCurrentAnimatorStateInfo(1).IsName("ThrowReady")) //이미 던지는 중..
+            //    {
+            //        Task.current.Succeed();
+            //    }*/
+            //    self.Animator.SetTrigger("Throw");
+            //    attackTime = 0.0f;
+            //}*/
             
             Task.current.Succeed();
         }
 
+
         #endregion attack
+
+        #region follow
+
 
         /// <summary>
         /// Check whether player is close depending on a given following distance and in enemy's sight.
@@ -158,13 +257,19 @@ namespace Panda
             return Panda.Conditions.isTargetInSight(gameObject, player, followingDist, sightAngle);
         }
 
+        
 
         [Task]
         void follow()
         {
             //초기값
             if (self.CurState == EnemyState.STATE_NONE) self.setState(EnemyState.STATE_FOLLOWING);
-            if (self.CurState != EnemyState.STATE_FOLLOWING) self.setState(EnemyState.STATE_FOLLOWING);
+            if (self.CurState == EnemyState.STATE_NONE) self.setState(EnemyState.STATE_FOLLOWING);
+            if (self.CurState != EnemyState.STATE_FOLLOWING) {
+                if (self.CurState == EnemyState.STATE_ATTACKING) self.attackToOther();
+                if (self.CurState == EnemyState.STATE_IDLE) self.IdleToOther();
+                self.setState(EnemyState.STATE_FOLLOWING); 
+            }
 
             if (isFollowingTimeOver())
             {
@@ -190,6 +295,8 @@ namespace Panda
             }
             return false;
         }
+
+        #endregion follow
 
         [Task]
         void idle()

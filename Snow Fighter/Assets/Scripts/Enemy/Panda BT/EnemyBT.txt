@@ -2,29 +2,37 @@
 
 tree("Root")
 	//Root behavior for all Enemys: Be alive or die.
-	fallback
-		sequence
-			isDied
-			died
-		sequence
-			isPlayerInAttackingSight
-			tree("Attack")
-		sequence
-			isPlayerInFollowingSight
-			follow
-		idle
+		fallback
+			sequence
+				isDied
+				died
+			//Whether Enemy is attacking, return true.
+			isAttacking 
+			sequence
+				isPlayerInAttackingSight
+				tree("Attack")
+			sequence
+				isPlayerInFollowingSight
+				follow
+			idle
 
 tree("Attack")
-	fallback
-		//Attack Cool Time
-		while
-			not
-				isTimeToAttack
-			takeAttackCoolTime
+	sequence
+		attackInit
+		fallback
+			//Attack Cool Time
+			while
+				not
+					isTimeToAttack
+				takeAttackCoolTime
 		
-		sequence
-			//isn't There obstacle
-			isThereTarget
-			attack
-
-
+			parallel
+				sequence
+					//isn't There obstacle
+					//isThereTarget
+					//attack
+					readyToThrow
+					//Wait 12
+					createSnow
+					Wait 0.7
+					throwSnow

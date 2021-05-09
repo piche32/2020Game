@@ -24,7 +24,7 @@ namespace Panda
             float angle = Vector3.Angle(dir, self.transform.forward);
             if(angle < sightAngle * 0.5f)
             {
-                RaycastHit[] hits = Physics.RaycastAll(self.transform.position, self.transform.forward, maxDist);
+                /*RaycastHit[] hits = Physics.RaycastAll(self.transform.position, self.transform.forward, maxDist);
                 if (hits == null)
                 {
                     return false; }
@@ -34,7 +34,8 @@ namespace Panda
                     {
                         return true;
                     }
-                }
+                }*/
+                return true;
             }
             return false;
         }

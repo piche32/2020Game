@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class SnowBallScript : MonoBehaviour
 {
+    #region projectile using rigidbody
     //그냥 rigidbody에게 포물선을 맡기는 코드
     /*float time;
     Transform shooter;
@@ -130,6 +131,8 @@ public class SnowBallScript : MonoBehaviour
     }
     */
 
+    #endregion projectile using rigidbody
+
     float time;
     Transform shooter;
 
@@ -230,6 +233,11 @@ public class SnowBallScript : MonoBehaviour
                 EnemyAIScript enemy = other.transform.GetComponent<EnemyAIScript>();
                 enemy.Hit(damage);
             }
+            if(other.tag == "AttackingTestObj")
+            {
+                other.transform.GetComponent<AttackingTest>().Hit(damage);
+            }
+
         }
 
         SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();

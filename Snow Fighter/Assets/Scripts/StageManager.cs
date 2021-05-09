@@ -61,6 +61,7 @@ public class StageManager : Singleton<StageManager>
 
     public void setScore()
     {
+        if (totalEnemyCount == 0) totalEnemyCount = 1;
         score = totalEnemyCount * 10;
 
         //공 던진 횟수에 따른 점수 계산

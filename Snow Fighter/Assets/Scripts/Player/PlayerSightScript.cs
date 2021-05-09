@@ -21,7 +21,7 @@ public class PlayerSightScript : MonoBehaviour
     float targetingAngle;
 
     bool isCameraRotating;
-    public bool IsCameraRotating { get { return isCameraRotating; } }
+    public bool IsCameraRotating { get { return isCameraRotating; } set { isCameraRotating = value; } }
 
     UIManager UI;
     // Start is called before the first frame update
@@ -49,67 +49,65 @@ public class PlayerSightScript : MonoBehaviour
     void Update()
     {
 
-        SetCameraRot(); //카메라 회전
+        //SetCameraRot(); //카메라 회전
 
         CheckTarget();
     }
 
-    void SetCameraRot()
+    public void SetCameraRot(Touch tempTouch)
     {
-        if (Input.touchCount < 1) return;
+        //if (Input.touchCount < 1) return;
 
-        Touch tempTouch;
+        ////Touch tempTouch;
 
-        for (int i = 0; i < Input.touchCount; i++)
+        //for (int i = 0; i < Input.touchCount; i++)
+        //{
+        //    tempTouch = Input.GetTouch(i);
+
+        //    //UI 터치 시 작동 막기
+        //    if (tempTouch.phase == TouchPhase.Began)
+        //    {
+        //        isCameraRotating = true;
+        //        continue;
+        //    }
+
+        //    //UI 터치 후 손 뗄 때 작동 막기
+        //    if (tempTouch.phase == TouchPhase.Ended)
+        //    {
+        //        isCameraRotating = false;
+        //        continue;
+        //    }
+
+        //    //일단 왼쪽 드래그 시 작동 막아두기
+        //    if (tempTouch.position.x < Screen.height / 2.0f)
+        //        continue;
+
+
+        //    ////조이스틱 터치 시 작동 막기
+        //    //if (tempTouch.phase == TouchPhase.Moved && tempTouch.position)
+        //    //{
+
+        //    //}
+        dPos = tempTouch.deltaPosition;
+
+
+        rx += dPos.x * rotSpeed * Time.deltaTime;
+        ry += dPos.y * rotSpeed * Time.deltaTime;
+
+        if (ry >= maxX)
         {
-            tempTouch = Input.GetTouch(i);
-
-            //UI 터치 시 작동 막기
-            if (tempTouch.phase == TouchPhase.Began)
-            {
-                isCameraRotating = true;
-                continue;
-            }
-
-            //UI 터치 후 손 뗄 때 작동 막기
-            if (tempTouch.phase == TouchPhase.Ended)
-            {
-                isCameraRotating = false;
-                continue;
-            }
-
-            //일단 왼쪽 드래그 시 작동 막아두기
-            if (tempTouch.position.x < Screen.height / 2.0f)
-                continue;
-
-
-            ////조이스틱 터치 시 작동 막기
-            //if (tempTouch.phase == TouchPhase.Moved && tempTouch.position)
-            //{
-
-            //}
-
-            dPos = tempTouch.deltaPosition;
-
-            rx += dPos.x * rotSpeed * Time.deltaTime;
-            ry += dPos.y * rotSpeed * Time.deltaTime;
-
-            if (ry >= maxX)
-            {
-                ry = maxX;
-            }
-
-            else if (ry <= minX)
-            {
-                ry = minX;
-            }
-
-            transform.parent.eulerAngles = new Vector3(0, rx, 0);
-
-            transform.eulerAngles = new Vector3(-ry, rx, 0);
-
-            break;
+            ry = maxX;
         }
+
+        else if (ry <= minX)
+        {
+            ry = minX;
+        }
+
+        transform.parent.eulerAngles = new Vector3(0, rx, 0);
+
+        transform.eulerAngles = new Vector3(-ry, rx, 0);
+
 
     }
 
@@ -197,6 +195,8 @@ public class PlayerSightScript : MonoBehaviour
     }
 
 }
+
+#region check target not used
 /* void CheckTarget()
 {
    if (target == null) return; //(다시)Enemy가 여러명으로 늘어날 때는 우선 순위 큐로 만들어서 계산
@@ -279,4 +279,5 @@ private void OnTriggerExit(Collider other)
         GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(false);
     }
    */
+#endregion check target not used
 

@@ -47,7 +47,7 @@ public class JoyStickScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     private void ControlJoystickLever(PointerEventData eventData)
     {
-        TouchManager.Instance.setMove(true);
+        TouchManager.Instance.setMove(1); //(다시)손가락 번호 넣어주려고 했는데 일단 임시 저장했다
         Vector3 leverPos = new Vector3(eventData.position.x, eventData.position.y, mLever.position.z);
         mLever.position = leverPos;
         mLever.anchoredPosition = mLever.anchoredPosition.magnitude < mLeverRange ?
