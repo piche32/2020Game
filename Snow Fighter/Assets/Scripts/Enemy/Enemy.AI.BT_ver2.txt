@@ -1,13 +1,8 @@
 tree("Root")
 	//Root behaviour for all enemy: Be alive or die.
 	parallel
-		fallback
-			sequence
-				CheckHP
-				tree("Die")
-			tree("BeAlive")
-		//repeat mute tree("BeAlive")
-		//repeat mute tree("Die")
+		repeat mute tree("BeAlive")
+		repeat mute tree("Die")
 
 tree("BeAlive")
 	//This enemy attacks when possible,
@@ -49,8 +44,9 @@ tree("Patrol")
 tree("Die")
 	//Die if no more HP.
 	Sequence
+		CheckHP
 		MakeRagdoll
-		repeat(30)
+		repeat(15)
 			sequence
 				Wait(0.1)
 				Blink

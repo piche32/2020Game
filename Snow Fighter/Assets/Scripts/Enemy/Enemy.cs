@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
 namespace Enemy.Ver2
 {
     [RequireComponent(typeof(NavMeshAgent))]
@@ -22,6 +21,7 @@ namespace Enemy.Ver2
         Slider hpSlider;
         public Slider HpSlider { get { return hpSlider; } set { hpSlider = value; } }
 
+
         // Start is called before the first frame update
         void Start()
         {
@@ -35,13 +35,14 @@ namespace Enemy.Ver2
             hpSlider = GameObject.Instantiate(GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().EnemyHPPrefab.GetComponent<Slider>());
             hpSlider.GetComponent<EnemyHPScript>().enabled = true;
             hpSlider.GetComponent<EnemyHPScript>().InitEnemyHPSlider(this.transform, maxHP);
+
         }
 
         // Update is called once per frame
         void Update()
         {
-            if(nvAgent.enabled)
-                nvAgent.destination = player.transform.position;
+        //    if(nvAgent.enabled)
+        //        nvAgent.destination = player.transform.position;
             animator.SetFloat("Speed", nvAgent.velocity.magnitude);
         }
 
@@ -52,9 +53,9 @@ namespace Enemy.Ver2
         public void Hit(float damage)
         {
             hp -= damage;
-            animator.Play("Hit", 1);
-            animator.Play("Hit", 0);
-            animator.SetTrigger("Hit");
+            //animator.Play("Hit", 1);
+            //animator.Play("Hit", 0);
+            //animator.SetTrigger("Hit");
             hpSlider.GetComponent<EnemyHPScript>().SetEnemyHPSlider(hp);
         }
 
@@ -64,10 +65,15 @@ namespace Enemy.Ver2
                 SnowBallPoolingScript.Instance.ReturnObject(this.GetComponentInChildren<SnowBallScript>());
 
             this.GetComponentInChildren<Renderer>().enabled = false;
-            if(StageManager.Instance.EnemyCount == 0)
+            --StageManager.Instance.EnemyCount;
+            GameObject.Find("UIManager").GetComponent<UIManager>().SetEnemyCountText();
+            if (StageManager.Instance.EnemyCount == 0)
             {
                 GameManagerScript.Instance.Success();
             }
+
+         
+
             this.gameObject.SetActive(false);
            // GetComponent<Panda.PandaBehaviour>().enabled = false;
 

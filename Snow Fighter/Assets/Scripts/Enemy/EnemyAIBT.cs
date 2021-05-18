@@ -265,7 +265,7 @@ namespace Enemy.Ver2
         [Task]
         void Die()
         {
-            //self.Die();
+            self.Die();
             Task.current.Succeed();
         }
 
