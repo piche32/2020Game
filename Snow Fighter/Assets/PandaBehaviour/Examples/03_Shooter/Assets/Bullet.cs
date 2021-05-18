@@ -30,7 +30,6 @@ namespace Panda.Examples.Shooter
                 Destroy(this.gameObject);
             else
                 BulletScan();
-                
         }
 
         void BulletScan()

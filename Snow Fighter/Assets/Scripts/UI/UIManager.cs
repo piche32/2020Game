@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
 
     Slider playerHP = null;
     Image reticle = null;
+    private Vector3 reticleDefaultPosition;
      GameObject enemyHPPrefab = null;
     public GameObject EnemyHPPrefab { get { return enemyHPPrefab; } }
 
@@ -33,6 +34,8 @@ public class UIManager : MonoBehaviour
         reticle = GameObject.Find("Reticle").GetComponent<Image>();
         reticle.color = Color.gray;
 
+        reticleDefaultPosition = reticle.transform.position;
+
         enemyHPPrefab = GameObject.Find("EnemyHP");
         hpCanvas = GameObject.Find("HPCanvas").GetComponent<Canvas>();
         EnemyCount = GameObject.Find("EnemyCount").GetComponent<TextMeshProUGUI>();
@@ -42,12 +45,18 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void SetTarget(bool isTarget)
+    public void SetTarget(Transform target)
     {
-        if (isTarget)
+        if (target != null)
+        {
             reticle.color = Color.red;
+            reticle.transform.position = Camera.main.WorldToScreenPoint(target.position + target.up);
+        }
         else
+        {
             reticle.color = Color.gray;
+            reticle.transform.position = reticleDefaultPosition;
+        }
     }
 
     public void SetPlayerHPSlider(float hp)

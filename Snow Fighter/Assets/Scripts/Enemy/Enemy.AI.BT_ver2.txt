@@ -1,0 +1,59 @@
+tree("Root")
+	//Root behaviour for all enemy: Be alive or die.
+	parallel
+		fallback
+			sequence
+				CheckHP
+				tree("Die")
+			tree("BeAlive")
+		//repeat mute tree("BeAlive")
+		//repeat mute tree("Die")
+
+tree("BeAlive")
+	//This enemy attacks when possible,
+	//otherwise it patrols a predefined path.
+	fallback
+		tree("Attack")
+		tree("Patrol")
+
+
+tree("Attack")
+	//When the enemy is visible, attack it,
+	//Otherwise forget about it.
+	fallback
+
+		//Attack the enemy if visible.
+		while
+			canAttack
+			sequence
+				//Stop
+				SetDestination_Player
+				Wait(0.5)
+				AimAt_Target
+				Wait(0.3)
+				Attack
+		Fail
+
+
+tree("Patrol")
+	//While no enemy is spotted,
+	//follow the assigned waypoints
+	while
+		not canAttack
+		repeat
+			sequence
+				SetDestination_Waypoint
+				isArrived
+				NextWaypoint
+
+tree("Die")
+	//Die if no more HP.
+	Sequence
+		MakeRagdoll
+		repeat(30)
+			sequence
+				Wait(0.1)
+				Blink
+		Die
+
+			

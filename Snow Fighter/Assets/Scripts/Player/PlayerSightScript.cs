@@ -56,6 +56,7 @@ public class PlayerSightScript : MonoBehaviour
 
     public void SetCameraRot(Touch tempTouch)
     {
+        #region never used
         //if (Input.touchCount < 1) return;
 
         ////Touch tempTouch;
@@ -88,6 +89,8 @@ public class PlayerSightScript : MonoBehaviour
         //    //{
 
         //    //}
+        #endregion never used
+
         dPos = tempTouch.deltaPosition;
 
 
@@ -105,19 +108,33 @@ public class PlayerSightScript : MonoBehaviour
         }
 
         transform.parent.eulerAngles = new Vector3(0, rx, 0);
-
         transform.eulerAngles = new Vector3(-ry, rx, 0);
-
-
     }
 
     //눈 발사 시 자동 타겟팅.
     public Vector3 GetTarget()
     {
-        Vector3 dir = transform.forward;
-        RaycastHit ray;
-        if (Physics.Raycast(transform.position, dir, out ray, targetingDist))
-            return ray.point + transform.forward * offset;
+        //Vector3 dir = transform.forward;
+        //RaycastHit[] hits = Physics.BoxCastAll(this.transform.position, new Vector3(10.0f, 10.0f, 10.0f), transform.forward);
+        //if (hits.Length > 0)
+        //{
+        //    foreach (var hit in hits)
+        //    {
+        //        if (hit.collider.tag == "Enemy")
+        //        {
+        //            target = hit.collider.transform;
+        //            GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(target);
+        //            return hit.point + transform.forward * offset;
+        //        }
+        //    }
+        //}
+
+        //if (Physics.Raycast(transform.position, dir, out ray, targetingDist))
+        //{
+        //    target = ray.collider.transform;
+        //    GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(target);
+        //    return ray.point + transform.forward * offset; 
+        //}
 
         return Vector3.negativeInfinity;
     }
@@ -125,13 +142,15 @@ public class PlayerSightScript : MonoBehaviour
 
     void CheckTarget()
     {
+        GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(null);
+
         if (target == null) return; //(다시)Enemy가 여러명으로 늘어날 때는 우선 순위 큐로 만들어서 계산
         if (isTargetInSight(target))
         {
-            GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(true);
+            GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(target);
+
             return;
         }
-        GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().SetTarget(false);
 
     }
     bool isTargetInSight(Transform obj)
@@ -184,14 +203,14 @@ public class PlayerSightScript : MonoBehaviour
         {
             return;
         }
-        UI.SetTarget(true);
+        UI.SetTarget(target.transform);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag != "Enemy" || other.name == "FollowColl" || other.name == "AttackColl") return;
         target = null;
-        UI.SetTarget(false);
+        UI.SetTarget(null);
     }
 
 }

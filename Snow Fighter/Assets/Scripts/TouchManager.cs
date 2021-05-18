@@ -15,7 +15,7 @@ using UnityEngine.EventSystems;
 /// 3. 조이스틱 + 카메라
 /// 4. 카메라 + 조이스틱
 /// </summary>
-public class TouchManager : Singleton<TouchManager>
+public class TouchManager : MonoBehaviour
 {
     public struct InputUIInfo //UI 조작 정보 구조체
     {

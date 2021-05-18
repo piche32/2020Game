@@ -135,6 +135,7 @@ public class SnowBallScript : MonoBehaviour
 
     float time;
     Transform shooter;
+    public Transform Shooter { get { return shooter; } set { shooter = value; } }
 
     [SerializeField] float damage = 10.0f;
 
@@ -205,6 +206,28 @@ public class SnowBallScript : MonoBehaviour
             projectileCoroutine = StartCoroutine(projectile());
 
     }
+    
+    public void Initialize( Transform shooter)
+    {
+        //rb.isKinematic = false;
+        this.shooter = shooter;
+        if (shooter.tag == "Player")
+        {
+            this.gameObject.layer = LayerMask.NameToLayer("PlayerSnowBall");
+        }
+        else if (shooter.tag == "Enemy")
+        {
+            this.gameObject.layer = LayerMask.NameToLayer("EnemySnowBall");
+        }
+        else
+        {
+            Debug.Log("Error with shooterName");
+        }
+
+        GetComponentInChildren<Collider>().enabled = true;
+
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -230,8 +253,10 @@ public class SnowBallScript : MonoBehaviour
             }
             if (shooter.tag == "Player" && other.tag == "Enemy")
             {
-                EnemyAIScript enemy = other.transform.GetComponent<EnemyAIScript>();
-                enemy.Hit(damage);
+                Enemy.Ver2.Enemy enemy = other.transform.GetComponent<Enemy.Ver2.Enemy>();
+                //EnemyAIScript enemy = other.transform.GetComponent<EnemyAIScript>();
+                if(enemy != null)
+                    enemy.Hit(damage);
             }
             if(other.tag == "AttackingTestObj")
             {
@@ -293,15 +318,21 @@ public class SnowBallScript : MonoBehaviour
     Vector3 GetVelocity()
     {
         Vector3 finalVelocity;
+        Vector3 shooterVel;
         if (shooter.CompareTag("Player"))
         {
             finalVelocity = shooter.GetComponentInChildren<PlayerSightScript>().transform.forward * power;
-        }
-        else finalVelocity = shooter.transform.forward * power;
+            shooterVel = shooter.GetComponent<Rigidbody>().velocity;
+            finalVelocity += shooterVel;
+            finalVelocity += Vector3.up * offset;
 
-        Vector3 shooterVel = shooter.GetComponent<Rigidbody>().velocity;
+            return finalVelocity;
+        }
+        else finalVelocity = shooter.transform.forward * power/2 + shooter.transform.up * power/2;
+
+        shooterVel = shooter.GetComponent<Rigidbody>().velocity;
         finalVelocity += shooterVel;
-        finalVelocity += Vector3.up * offset;
+        //finalVelocity += Vector3.up * offset;
 
         return finalVelocity;
     }

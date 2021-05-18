@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 5244111547031682105}
   - component: {fileID: 3790252479230656324}
   - component: {fileID: 6337949608628726255}
+  - component: {fileID: 2998307212035310703}
   m_Layer: 0
   m_Name: SnowBall
   m_TagString: SnowBall
@@ -250,5 +251,21 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2998307212035310703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9084020594133554072}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d2ae7c3b98ecf24ea02cc80903e8def, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 0}
+  sensorTrigger: {fileID: 0}
+  shootForce: 0
+  attackCoolDown: 1

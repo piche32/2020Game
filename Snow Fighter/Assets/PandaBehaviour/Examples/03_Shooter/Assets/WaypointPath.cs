@@ -12,17 +12,16 @@ namespace Panda.Examples.Shooter
     public class WaypointPath : MonoBehaviour
     {
         public bool loop;
-        public Transform[] waypoints
-        {
+        public Transform[] waypoints {
             get
             {
                 var wp = new List<Transform>();
-                foreach( Transform c in this.transform)
+                foreach (Transform c in this.transform)
                 {
                     wp.Add(c);
                 }
                 return wp.ToArray();
-            }
+            } 
         }
 
         // Use this for initialization
