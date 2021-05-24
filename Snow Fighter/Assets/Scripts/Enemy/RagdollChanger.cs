@@ -7,6 +7,8 @@ public class RagdollChanger : MonoBehaviour
     [SerializeField]GameObject originObj;
     [SerializeField]GameObject ragdollObj;
 
+
+
     public void ChangeRagdoll()
     {
         originObj.transform.parent.gameObject.SetActive(false);

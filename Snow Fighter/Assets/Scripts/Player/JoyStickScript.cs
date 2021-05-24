@@ -24,12 +24,16 @@ public class JoyStickScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         playerSc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
         mRectTransform = GetComponent<RectTransform>();
+        if(touchManager == null)
+        {
+            touchManager = GameObject.Find("TouchManager").GetComponent<TouchManager>();
+        }
     }
 
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        playerSc.IsMoving = true;
+         playerSc.IsMoving = true;
         ControlJoystickLever(eventData);
     }
 

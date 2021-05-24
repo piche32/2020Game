@@ -43,6 +43,7 @@ namespace Enemy.Ver2
         {
         //    if(nvAgent.enabled)
         //        nvAgent.destination = player.transform.position;
+       
             animator.SetFloat("Speed", nvAgent.velocity.magnitude);
         }
 
