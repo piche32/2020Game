@@ -13,8 +13,8 @@ public class WizardEnemyAIBT : MonoBehaviour
     [SerializeField]Vector3 skillOffset = new Vector3(0.1f, 0f, 0f);
 
     [SerializeField] float attackDelayTime = 3.0f;
-    [SerializeField] float damage = 10.0f;
 
+    [SerializeField] float rotateSpeed = 1.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +27,8 @@ public class WizardEnemyAIBT : MonoBehaviour
             Debug.LogWarning("[" + this.ToString() + "]" + "Can not found AttackPoint.");
         }
 
-        animator = GetComponentInChildren<Animator>();
+        //animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
 
         skillParticle.GetComponent<ParticleSystem>().Stop();
         skillParticle.GetComponent<ParticleSystem>().Clear();
@@ -42,6 +43,7 @@ public class WizardEnemyAIBT : MonoBehaviour
 
     }
 
+
     /// <summary>
     /// 타겟 쪽으로 살짝 몸을 트는 함수
     /// 타겟이 가까이 있을 땐 집요하게 몸을 튼다.
@@ -51,7 +53,7 @@ public class WizardEnemyAIBT : MonoBehaviour
     {
         if (player != null)
         {
-            var targetDekta = (player.transform.position - this.transform.position);
+            var targetDelta = (player.transform.position - this.transform.position);
 
             Vector3 dir = Vector3.zero; //Enemy와 Player 간의 방향 벡터
             dir.x = player.transform.position.x - this.transform.position.x;
@@ -62,12 +64,12 @@ public class WizardEnemyAIBT : MonoBehaviour
             //Enemy와 Player 간의 각도
             float angle = Vector3.Angle(dir, new Vector3(transform.forward.x, dir.y, transform.forward.z));
 
-            if (targetDekta.magnitude > 3f) //일정 거리만큼 멀리 있으면 player쪽으로 회전한다.
+            if (targetDelta.magnitude > 3f) //일정 거리만큼 멀리 있으면 player쪽으로 회전한다.
             {
                 if (angle > 120f || angle < -120.0f) { Task.current.Fail(); return; }
                 if (angle > 0.1f || angle < -0.1f)
                 {
-                    Vector3 look = Vector3.Slerp(this.transform.forward, dir, Time.deltaTime * 3.0f);
+                    Vector3 look = Vector3.Slerp(this.transform.forward, dir, Time.deltaTime * 6.0f);
                     this.transform.rotation = Quaternion.LookRotation(look, Vector3.up);
                 }
                 else
@@ -78,7 +80,7 @@ public class WizardEnemyAIBT : MonoBehaviour
             {
                 if (angle > 5.0f || angle < -5.0f)
                 {
-                    Vector3 look = Vector3.Slerp(this.transform.forward, dir, Time.deltaTime * 2.0f);
+                    Vector3 look = Vector3.Slerp(this.transform.forward, dir, Time.deltaTime * 6.0f);
                     this.transform.rotation = Quaternion.LookRotation(look, Vector3.up);
                 }
                 else
@@ -88,8 +90,6 @@ public class WizardEnemyAIBT : MonoBehaviour
                 Task.current.debugInfo = string.Format("angle={0}", Vector3.Angle(dir, this.transform.forward));
 
         }
-
-
     }
 
 
@@ -146,15 +146,41 @@ public class WizardEnemyAIBT : MonoBehaviour
                 particle.Play();
             }
 
-            if (Vector3.Distance(this.transform.position, player.transform.position) < 2.0f)
-            {
-                player.setHP(-damage);
-            }
         }
     }
 
     [Task]
+    public void StopAttacking()
+    {
+        skillParticle.GetComponent<ParticleSystem>().Stop();
+        skillParticle.GetComponent<ParticleSystem>().Clear();
+
+        ParticleSystem[] particles;
+        particles = skillParticle.GetComponentsInChildren<ParticleSystem>();
+        foreach (var particle in particles)
+        {
+            particle.Clear();
+            particle.Stop();
+        }
+        Task.current.Succeed();
+    }
+
+    [Task]
     public void Alert() {
-    
+        if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Alert")) animator.SetTrigger("Alert");
+        if (animator.GetBool("isAlerting")) return;
+        animator.SetBool("isAlerting", true);
+        animator.applyRootMotion = true;
+
+
+        Task.current.Succeed();
+    }
+
+    [Task]
+    public void StopAlerting()
+    {
+        animator.SetBool("isAlerting", false);
+        animator.applyRootMotion = false;
+        Task.current.Succeed();
     }
 }

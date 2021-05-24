@@ -20,7 +20,7 @@ namespace Enemy.Ver2
 
         [SerializeField] float defaultStoppingDist = 1.5f;
         [SerializeField] float attackStoppingDist = 1.5f;
-
+        
 
         private void Start()
         {
@@ -74,10 +74,6 @@ namespace Enemy.Ver2
             nvAgent.isStopped = true;
             return true;
         }
-
-        
-
-
         
         int waypointArrayIndex
         {
@@ -119,6 +115,7 @@ namespace Enemy.Ver2
         public bool SetDestination_Waypoint()
         {
             bool isSet = false;
+            nvAgent.isStopped = false;
             nvAgent.stoppingDistance = defaultStoppingDist;
             if(waypointPath != null)
             {
@@ -133,8 +130,11 @@ namespace Enemy.Ver2
         public bool isArrived()
         {
             bool ret = false;
-            float d = Vector3.Distance(this.transform.position, destination);
-            if (d < 5.0f)
+            Vector3 dest = this.transform.position;
+            dest.y = this.transform.position.y;
+            float d = Vector3.Distance(dest, destination);
+            //if (d < 5.0f) 원본
+            if(d <= nvAgent.stoppingDistance)
                 ret = true;
 
             if (Task.isInspected)

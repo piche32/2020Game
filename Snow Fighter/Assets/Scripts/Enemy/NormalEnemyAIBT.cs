@@ -9,7 +9,7 @@ public class NormalEnemyAIBT : MonoBehaviour
     Animator animator = null;
 
     [SerializeField] float attackDelayTime = 1.2f;
-    [SerializeField] float damage = 10.0f;
+     float damage = 10.0f;
 
 
     private void Start()
@@ -19,7 +19,7 @@ public class NormalEnemyAIBT : MonoBehaviour
             Debug.LogError("[Enemy.Ver2.EnemyAIBT.cs]Can't Find PlayerScript.");
 
         animator = GetComponentInChildren<Animator>();
-
+        damage = GetComponent<Enemy.Ver2.Enemy>().Damage;
 
     }
 

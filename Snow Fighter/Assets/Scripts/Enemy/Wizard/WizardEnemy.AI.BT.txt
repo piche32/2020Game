@@ -7,22 +7,26 @@ tree("Attack")
 		while
 			canAttack
 			sequence
-				//Stop
 				SetDestination_Player
+				Stop
 				Wait(0.5)
 				AimAt_Target
-				Wait(0.3)
+				Wait(0.1)
 				Attack
-		Fail
+		sequence
+			StopAttacking
+			Fail
 
 		
 tree("Patrol")
 	//While no enemy is spotted,
 	//follow the assigned waypoints
-	while
-		not canAttack
-		repeat
-			sequence
-				SetDestination_Waypoint
-				isArrived
-				Alert
+	fallback
+		while
+			not canAttack
+			repeat
+				sequence
+					SetDestination_Waypoint
+					isArrived
+					Alert
+		StopAlerting

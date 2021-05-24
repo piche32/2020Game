@@ -9,7 +9,7 @@ public class magicParticleController : MonoBehaviour
 
     PlayerScript player = null;
 
-    [SerializeField] float damage = 5.0f;
+     float damage = 5.0f;
     [SerializeField] float coolTime = 1.0f;
     float lateAttackTime = 0.0f;
     // Start is called before the first frame update
@@ -17,7 +17,7 @@ public class magicParticleController : MonoBehaviour
     {
         ps = GetComponent<ParticleSystem>();
         player = GameObject.Find("Player").GetComponent<PlayerScript>();
-
+        damage = GetComponentInParent<Enemy.Ver2.Enemy>().Damage;
     }
 
     private void OnParticleTrigger()

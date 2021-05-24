@@ -7,7 +7,6 @@ public class IsPlayerInEnemySight : MonoBehaviour
 {
     [SerializeField] float DIST = 10.0f; //Enemy와 Player의 사이 최대 거리
     [SerializeField] float SIGHTANGLE = 120.0f; //Enemy가 볼 수 있는 각도
-
     bool isPlayerInEnemySight = false;
     public bool _IsPlayerInEnemySight
     { get { return isPlayerInEnemySight; } }
@@ -57,9 +56,10 @@ public class IsPlayerInEnemySight : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "Player" )
         {
-            isPlayerInEnemySight = false;
+                isPlayerInEnemySight = false;
+         //   Debug.Break();
         }
 
 

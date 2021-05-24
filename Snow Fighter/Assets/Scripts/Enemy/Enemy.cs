@@ -21,6 +21,8 @@ namespace Enemy.Ver2
         Slider hpSlider;
         public Slider HpSlider { get { return hpSlider; } set { hpSlider = value; } }
 
+        [SerializeField] float damage = 10.0f;
+        public float Damage { get { return damage; } }
 
         // Start is called before the first frame update
         void Start()
