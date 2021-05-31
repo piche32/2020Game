@@ -236,6 +236,7 @@
     <Compile Include="Assets\Scripts\Enemy\NormalEnemyAIBT.cs" />
     <Compile Include="Assets\Scripts\Enemy\RagdollChanger.cs" />
     <Compile Include="Assets\Scripts\Enemy\WaypointPath.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Wizard\WizardEnemy.cs" />
     <Compile Include="Assets\Scripts\Enemy\Wizard\WizardEnemyAIBT.cs" />
     <Compile Include="Assets\Scripts\Enemy\Wizard\magicParticleController.cs" />
     <Compile Include="Assets\Scripts\Enemy\not used\EnemyAIScript.cs" />
