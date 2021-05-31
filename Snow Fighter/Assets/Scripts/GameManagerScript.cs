@@ -8,10 +8,20 @@ using UnityEngine.SceneManagement;
  - 씬 전환 시 넘겨줄 데이터
  */
 
+public enum StageNum
+{
+    Start = 0,
+    GameOver = 1,
+    Success = 2,
+    Tutorial,
+    Stage1,
+    Stage2,
+}
+
 public class GameManagerScript : Singleton<GameManagerScript>
 {
     protected GameManagerScript() { }
-
+    
     int stage = 3;
     public int Stage {
         get { return stage; }
@@ -37,7 +47,9 @@ public class GameManagerScript : Singleton<GameManagerScript>
 
     public void Awake()
     {
-        if(stage > 2)
+        stage = DataController.Instance.gameData.Stage;
+        preStage = DataController.Instance.gameData.PreStage;
+        if(stage >= (int)StageNum.Tutorial )
         {
             init();
         }
@@ -47,6 +59,8 @@ public class GameManagerScript : Singleton<GameManagerScript>
     {
         preStage = stage;
         stage = 1;
+
+        DataController.Instance.gameData.ChangeStage(stage);
         SceneManager.LoadScene(stage);
     }
 
@@ -63,6 +77,8 @@ public class GameManagerScript : Singleton<GameManagerScript>
 
         preStage = stage;
         stage = 2;
+
+        DataController.Instance.gameData.ChangeStage(stage);
         SceneManager.LoadScene(stage);
     }
     public void Restart()
@@ -70,6 +86,13 @@ public class GameManagerScript : Singleton<GameManagerScript>
         int swap = preStage;
         preStage = stage;
         stage = preStage;
+
+        DataController.Instance.gameData.ChangeStage(stage);
+        SceneManager.LoadScene(stage);
+    }
+
+    public void LoadGame()
+    {
         SceneManager.LoadScene(stage);
     }
 

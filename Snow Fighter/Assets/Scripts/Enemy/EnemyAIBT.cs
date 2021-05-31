@@ -134,7 +134,7 @@ namespace Enemy.Ver2
             dest.y = this.transform.position.y;
             float d = Vector3.Distance(dest, destination);
             //if (d < 5.0f) 원본
-            if(d <= nvAgent.stoppingDistance)
+            if(d <= nvAgent.stoppingDistance + 1.0f) //1.0f은 offset
                 ret = true;
 
             if (Task.isInspected)

@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
         playerHP.value = playerHP.maxValue;
 
         reticle = GameObject.Find("Reticle").GetComponent<Image>();
-        reticle.color = Color.gray;
+        if(reticle != null)reticle.color = Color.gray;
 
         reticleDefaultPosition = reticle.transform.position;
 
@@ -47,6 +47,7 @@ public class UIManager : MonoBehaviour
 
     public void SetTarget(Transform target)
     {
+        if (reticle == null) return;
         if (target != null)
         {
             reticle.color = Color.red;
