@@ -15,7 +15,7 @@ public class JoyStickScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     [SerializeField] private Canvas mainCanvas;
 
-    [SerializeField] TouchManager touchManager = null;
+    TouchManager touchManager = null;
 
     private Vector2 mInputDir;
     public Vector2 MInputDir { get { return mInputDir; } set { mInputDir = value; } }
@@ -24,9 +24,13 @@ public class JoyStickScript : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         playerSc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>();
         mRectTransform = GetComponent<RectTransform>();
-        if(touchManager == null)
+
+
+        touchManager = GameObject.Find("TouchManager").GetComponent<TouchManager>();
+        if (touchManager == null)
         {
-            touchManager = GameObject.Find("TouchManager").GetComponent<TouchManager>();
+            Debug.LogError(string.Format("[{0}: {1}]There's no Touch Manager.", this.gameObject.name.ToString(), this.name.ToString()));
+            return;
         }
     }
 

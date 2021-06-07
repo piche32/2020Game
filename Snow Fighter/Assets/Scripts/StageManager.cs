@@ -29,7 +29,7 @@ public class StageManager : Singleton<StageManager>
     public int Score { get { return score; } }
     
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         init();
     }
@@ -43,9 +43,12 @@ public class StageManager : Singleton<StageManager>
     {
         totalEnemyCount = 0;
         GameObject enemys = GameObject.Find("Enemys");
-        int childIdx = enemys.transform.childCount;
-        for(int i = 0; i < childIdx; i++)
-            if (enemys.transform.GetChild(i).gameObject.activeSelf) totalEnemyCount++;
+        if (enemys != null)
+        {
+            int childIdx = enemys.transform.childCount;
+            for (int i = 0; i < childIdx; i++)
+                if (enemys.transform.GetChild(i).gameObject.activeSelf) totalEnemyCount++;
+        }
         enemyCount = totalEnemyCount;
         runningTime = 0.0f;
         attackedCount = 0;

@@ -13,7 +13,7 @@ namespace Enemy.Ver2
         PlayerScript player = null;
         Animator animator = null;
 
-        float maxHP = 1.0f;
+        [SerializeField]float maxHP = 1.0f;
         float hp = 1.0f;
         public float HP { get { return hp; } }
 
@@ -59,7 +59,8 @@ namespace Enemy.Ver2
             //animator.Play("Hit", 1);
             //animator.Play("Hit", 0);
             //animator.SetTrigger("Hit");
-            hpSlider.GetComponent<EnemyHPScript>().SetEnemyHPSlider(hp);
+            if(hpSlider != null)
+                hpSlider.GetComponent<EnemyHPScript>().SetEnemyHPSlider(hp);
         }
 
         public void Die()

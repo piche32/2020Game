@@ -10,12 +10,15 @@ using UnityEngine.SceneManagement;
 
 public enum StageNum
 {
+    None = -1,
     Start = 0,
     GameOver = 1,
     Success = 2,
     Tutorial,
     Stage1,
     Stage2,
+    Clear,
+    Num,
 }
 
 public class GameManagerScript : Singleton<GameManagerScript>
@@ -47,12 +50,7 @@ public class GameManagerScript : Singleton<GameManagerScript>
 
     public void Awake()
     {
-        stage = DataController.Instance.gameData.Stage;
-        preStage = DataController.Instance.gameData.PreStage;
-        if(stage >= (int)StageNum.Tutorial )
-        {
-            init();
-        }
+        init();
     }
 
     public void Gameover()
@@ -85,7 +83,7 @@ public class GameManagerScript : Singleton<GameManagerScript>
     {
         int swap = preStage;
         preStage = stage;
-        stage = preStage;
+        stage = swap;
 
         DataController.Instance.gameData.ChangeStage(stage);
         SceneManager.LoadScene(stage);
@@ -96,12 +94,39 @@ public class GameManagerScript : Singleton<GameManagerScript>
         SceneManager.LoadScene(stage);
     }
 
-    void init()
+    public void init()
     {
-        score = 0;
-        totalEnemyCount = 0;
-        enemyCount = 0;
-        attackedCount = 0;
-        runningTime = 0.0f;
+        stage = DataController.Instance.gameData.Stage;
+        preStage = DataController.Instance.gameData.PreStage;
+        if (stage >= (int)StageNum.Tutorial)
+        {
+            score = 0;
+            totalEnemyCount = 0;
+            enemyCount = 0;
+            attackedCount = 0;
+            runningTime = 0.0f;
+        }
+    }
+
+    public void init(int stageNum)
+    {
+        DataController.Instance.gameData.ChangeStage(stageNum);
+        init();
+    }
+
+    public void GoToNext()
+    {
+        int swap = preStage;
+        preStage = stage;
+        stage = swap + 1;
+
+        //마지막까지 다 깼을 경우
+        if(stage >= (int)StageNum.Num)
+        {
+            return;
+        } 
+        DataController.Instance.gameData.ChangeStage(stage);
+        DataController.Instance.SaveGameData();
+        SceneManager.LoadScene(stage);
     }
 }

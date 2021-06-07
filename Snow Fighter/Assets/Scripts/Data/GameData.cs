@@ -9,7 +9,7 @@ public class GameData
     public int Stage { get { return stage; } }
 
     private int preStage = (int)StageNum.Start;
-    public int PreStage { get { return stage; } }
+    public int PreStage { get { return preStage; } }
 
     public float BGMVolume = 1.0f;
     public float SFXVolume = 1.0f;

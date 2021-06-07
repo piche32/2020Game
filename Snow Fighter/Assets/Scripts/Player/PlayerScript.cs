@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
 
-    [SerializeField] UIManager UI = null;
+    UIManager UI = null;
 
     GameObject enemy;
 
@@ -43,8 +43,14 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.lockState = CursorLockMode.Locked;
 
+        UI = GameObject.Find("UIManager").GetComponent<UIManager>();
+        if(UI == null)
+        {
+            Debug.LogError(string.Format("[{0}: {1}]There's no UI Manager.", this.gameObject.name.ToString(), this.name.ToString()));
+            return;
+        }
         enemy = GameObject.FindGameObjectWithTag("Enemy");
         if (enemy == null)
         {

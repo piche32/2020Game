@@ -219,6 +219,7 @@
     <Compile Include="Assets\PandaBehaviour\Examples\03_Shooter\Assets\UnitExplosion.cs" />
     <Compile Include="Assets\PandaBehaviour\Examples\03_Shooter\Assets\WaypointPath.cs" />
     <Compile Include="Assets\Scripts\AttackingTest.cs" />
+    <Compile Include="Assets\Scripts\AttackingTestDurability.cs" />
     <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Attack.cs" />
     <Compile Include="Assets\Scripts\Behavior Tree\Enemy\CheckHP.cs" />
     <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Died.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Assets\Scripts\Enemy\IsPlayerInEnemySight.cs" />
     <Compile Include="Assets\Scripts\Enemy\NormalEnemyAIBT.cs" />
     <Compile Include="Assets\Scripts\Enemy\RagdollChanger.cs" />
+    <Compile Include="Assets\Scripts\Enemy\RunEnemyBT.cs" />
     <Compile Include="Assets\Scripts\Enemy\WaypointPath.cs" />
     <Compile Include="Assets\Scripts\Enemy\Wizard\WizardEnemy.cs" />
     <Compile Include="Assets\Scripts\Enemy\Wizard\WizardEnemyAIBT.cs" />
@@ -263,6 +265,7 @@
     <Compile Include="Assets\Scripts\SnowBall\SnowBallScript.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowParticle.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowParticlePooling.cs" />
+    <Compile Include="Assets\Scripts\StageInit.cs" />
     <Compile Include="Assets\Scripts\StageManager.cs" />
     <Compile Include="Assets\Scripts\SuccessStage.cs" />
     <Compile Include="Assets\Scripts\Test\EnemyMove.cs" />
@@ -272,6 +275,7 @@
     <Compile Include="Assets\Scripts\TutorialHamburger.cs" />
     <Compile Include="Assets\Scripts\UI\GameStartBT.cs" />
     <Compile Include="Assets\Scripts\UI\NewGameBT.cs" />
+    <Compile Include="Assets\Scripts\UI\NextBT.cs" />
     <Compile Include="Assets\Scripts\UI\QuitBT.cs" />
     <Compile Include="Assets\Scripts\UI\RestartBTScript.cs" />
     <Compile Include="Assets\Scripts\UI\StageStory\Stage1Story.cs" />

@@ -7,7 +7,7 @@ public class PlayerAttack : MonoBehaviour
     PlayerScript playerSc;
 
     //[SerializeField] GameObject snowball = null;
-    [SerializeField] UIManager UI = null;
+    UIManager UI = null;
 
     Transform snow;
     [SerializeField] Transform snowStart = null;
@@ -30,6 +30,13 @@ public class PlayerAttack : MonoBehaviour
 
     void Start()
     {
+
+        UI = GameObject.Find("UIManager").GetComponent<UIManager>();
+        if (UI == null)
+        {
+            Debug.LogError(string.Format("[{0}: {1}]There's no UI Manager.", this.gameObject.name.ToString(), this.name.ToString()));
+            return;
+        }
         playerSc = this.GetComponent<PlayerScript>();
         animator = this.GetComponent<Animator>();
 

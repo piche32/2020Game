@@ -38,10 +38,10 @@ public class UIManager : MonoBehaviour
 
         enemyHPPrefab = GameObject.Find("EnemyHP");
         hpCanvas = GameObject.Find("HPCanvas").GetComponent<Canvas>();
-        EnemyCount = GameObject.Find("EnemyCount").GetComponent<TextMeshProUGUI>();
+        enemyCount = GameObject.Find("EnemyCount").GetComponent<TextMeshProUGUI>();
 
-
-        enemyCount.text = StageManager.Instance.EnemyCount + " / " + StageManager.Instance.TotalEnemyCount;
+        SetEnemyCountText();
+       // enemyCount.text = StageManager.Instance.EnemyCount + " / " + StageManager.Instance.TotalEnemyCount;
 
     }
 

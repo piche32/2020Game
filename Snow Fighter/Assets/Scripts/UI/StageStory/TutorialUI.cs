@@ -69,24 +69,24 @@ public class TutorialUI : MonoBehaviour
                 }
                 break;
             case 1:
-                tmp.text = "다음은 화면 회전입니다. \n오른쪽 화면을 드래그해보세요.";
-                if (player.GetComponentInChildren<PlayerSightScript>().IsCameraRotating)
+                if(!isDone)
+                    tmp.text = "다음은 화면 회전입니다. \n오른쪽 화면을 드래그해보세요.";
+                if (!isDone && player.GetComponentInChildren<PlayerSightScript>().IsCameraRotating)
                 {
                     isDone = true;
                 }
-                if (isDone)
+                if (isDone && !player.GetComponentInChildren<PlayerSightScript>().IsCameraRotating)
                 {
                     tmp.text = "잘했습니다.";
                     time += Time.deltaTime;
                     panel.SetActive(true);
-
-                    if (time > 3.0f)
-                    {
-                        curIndex++;
-                        time = 0.0f;
-                        panel.SetActive(false);
-                        isDone = false;
-                    }
+                }
+                if (time > 3.0f)
+                {
+                    curIndex++;
+                    time = 0.0f;
+                    panel.SetActive(false);
+                    isDone = false;
                 }
                 break;
             case 2:

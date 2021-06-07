@@ -102,7 +102,7 @@ namespace Enemy.Ver2
         public bool SetDestination(Vector3 p)
         {
             destination = p;
-            if(nvAgent != null && !nvAgent.isActiveAndEnabled) return false;
+            if(nvAgent == null || !nvAgent.isActiveAndEnabled) return false;
             nvAgent.SetDestination(destination);
 
             if (Task.isInspected)
@@ -115,6 +115,7 @@ namespace Enemy.Ver2
         public bool SetDestination_Waypoint()
         {
             bool isSet = false;
+            if (nvAgent == null || !nvAgent.isActiveAndEnabled) return isSet;
             nvAgent.isStopped = false;
             nvAgent.stoppingDistance = defaultStoppingDist;
             if(waypointPath != null)

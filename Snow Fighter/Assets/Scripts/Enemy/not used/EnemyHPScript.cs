@@ -42,6 +42,7 @@ public class EnemyHPScript : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (enemy == null) return;
         enemyHPUpdate();
         MaskableGraphic[] ui = hpSlider.GetComponentsInChildren<MaskableGraphic>();
         if (ui[0].enabled)
@@ -60,7 +61,7 @@ public class EnemyHPScript : MonoBehaviour
             }
             else
             {
-                rectHp.localScale = Vector3.one * (10.0f- Vector3.Distance(player.position, enemy.position)) / 10.0f;
+                rectHp.localScale = Vector3.one * (10.0f - Vector3.Distance(player.position, enemy.position)) / 10.0f;
             }
 
             Vector2 localPos = Vector2.zero;
