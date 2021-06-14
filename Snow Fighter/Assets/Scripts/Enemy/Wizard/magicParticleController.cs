@@ -26,10 +26,11 @@ public class magicParticleController : MonoBehaviour
         if (player == null || !player.gameObject.activeInHierarchy) return; //플레이어 죽으면 리턴
 
         int numEnter = ps.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, enter);
-        if (numEnter > 1)
+        if (numEnter > 5)
         {
             lateAttackTime = Time.time;
-            player.setHP(-damage);
+            player.damaged(-damage);
+           // player.setHP(-damage);
             for (int i = 0; i < numEnter; i++)
             {
                 ParticleSystem.Particle temp = enter[i];

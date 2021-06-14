@@ -39,6 +39,7 @@ public class PlayerScript : MonoBehaviour
 
     Rigidbody rb;
     Animator animator;
+    PlayerDamaged playerDamaged;
 
     // Start is called before the first frame update
     void Start()
@@ -73,6 +74,14 @@ public class PlayerScript : MonoBehaviour
         animator = GetComponent<Animator>();
 
         hp = maxHP;
+
+        playerDamaged = GetComponent<PlayerDamaged>();
+    }
+
+    public void damaged(float damage)
+    {
+        setHP(damage);
+        playerDamaged.OnDamagedImage();
     }
 
     void checkHp()

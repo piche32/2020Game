@@ -255,6 +255,7 @@
     <Compile Include="Assets\Scripts\Player\JoyStickScript.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerAniScript.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerAttack.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerDamaged.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMoveScript.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSightScript.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Assets\Scripts\TouchManager.cs" />
     <Compile Include="Assets\Scripts\TutorialHamburger.cs" />
     <Compile Include="Assets\Scripts\UI\GameStartBT.cs" />
+    <Compile Include="Assets\Scripts\UI\MainBT.cs" />
     <Compile Include="Assets\Scripts\UI\NewGameBT.cs" />
     <Compile Include="Assets\Scripts\UI\NextBT.cs" />
     <Compile Include="Assets\Scripts\UI\QuitBT.cs" />

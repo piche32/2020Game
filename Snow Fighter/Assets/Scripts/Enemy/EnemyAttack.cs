@@ -26,7 +26,8 @@ namespace Enemy.Ver2
                 if (other.transform.tag == "Player" && other.transform.name != "Sight Camera")
                 {
                     lateAttacktime = Time.time;
-                    player.setHP(-damage);
+                    player.damaged(-damage);
+           //         player.setHP(-damage);
                 }
             }
         }

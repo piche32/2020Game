@@ -183,4 +183,23 @@ public class WizardEnemyAIBT : MonoBehaviour
         animator.applyRootMotion = false;
         Task.current.Succeed();
     }
+
+    [Task]
+    public bool canFollow()
+    {
+        bool ret = false;
+        if(player != null && player.gameObject != null)
+        {
+            IsPlayerInEnemySight self = this.transform.Find("FollowColl").GetComponent<IsPlayerInEnemySight>();
+            ret = self._IsPlayerInEnemySight;
+        }
+        return ret;
+    }
+
+    [Task]
+    public void StopFollowing()
+    {
+        Task.current.Succeed();
+    }
+
 }

@@ -1,3 +1,11 @@
+tree("BeAlive")
+	//This enemy attacks when possible,
+	//otherwise it patrols a predefined path.
+	fallback
+		tree("Attack")
+		tree("Patrol")
+
+
 tree("Attack")
 	//When the enemy is visible, attack it,
 	//Otherwise forget about it.

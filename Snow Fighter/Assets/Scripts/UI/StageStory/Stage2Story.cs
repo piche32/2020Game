@@ -35,7 +35,7 @@ public class Stage2Story : MonoBehaviour
                 break;
                 
             case 1:
-                tmp.text = "여긴 저 이상한 사람들이\n훨씬 더 많잖아..";
+                tmp.text = "여긴 훨씬 더 많잖아..";
                 if(time > 3.0f)
                 {
                     time = 0.0f;
@@ -44,7 +44,7 @@ public class Stage2Story : MonoBehaviour
                 break;
                 
             case 2:
-                tmp.text = "저기 저 사람이 이상한 사람들을\n끌어들이는 거 같아. 처치하자!";
+                tmp.text = "저기서 수상한 빛이 나. \n한 번 확인해보자.";
                 if(time > 3.0f)
                 {
                     time = 0.0f;

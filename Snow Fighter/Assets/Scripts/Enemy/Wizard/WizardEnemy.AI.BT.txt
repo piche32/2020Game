@@ -1,3 +1,11 @@
+tree("BeAlive")
+	//This enemy attacks when possible,
+	//otherwise it patrols a predefined path.
+	fallback
+		tree("Attack")
+		tree("Follow")
+		tree("Patrol")
+
 tree("Attack")
 	//When the enemy is visible, attack it,
 	//Otherwise forget about it.
@@ -17,6 +25,17 @@ tree("Attack")
 			StopAttacking
 			Fail
 
+tree("Follow")
+	fallback
+		while
+			canFollow
+			sequence
+				SetDestination_Player
+				Wait(0.1)
+				StartNvAgent
+		sequence
+			StopFollowing
+			Fail
 		
 tree("Patrol")
 	//While no enemy is spotted,

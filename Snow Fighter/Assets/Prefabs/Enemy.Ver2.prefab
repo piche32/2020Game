@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypointPath: {fileID: 0}
-  damage: 10
-  attackDelayTime: 1.2
+  defaultStoppingDist: 1.5
+  attackStoppingDist: 1.5
 --- !u!114 &6382551258649387881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62032c1e3df26554ca1d3997573d4a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHP: 1
+  damage: 10
 --- !u!65 &100937838430079370
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -232,8 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45397629014e674eb9ade842452ce70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DIST: 15
-  SIGHTANGLE: 100
+  DIST: 20
+  SIGHTANGLE: 180
 --- !u!1 &941827036609116216
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DIST: 10
-  SIGHTANGLE: 120
+  SIGHTANGLE: 300
 --- !u!135 &941827036269196920
 SphereCollider:
   m_ObjectHideFlags: 0

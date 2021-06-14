@@ -75,6 +75,13 @@ namespace Enemy.Ver2
             return true;
         }
         
+        [Task]
+        public bool StartNvAgent()
+        {
+            nvAgent.isStopped = false;
+            return true;
+        }
+
         int waypointArrayIndex
         {
             get

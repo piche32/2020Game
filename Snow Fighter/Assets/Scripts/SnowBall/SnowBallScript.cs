@@ -239,6 +239,7 @@ public class SnowBallScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.name.ToString());
         if (other.tag != null || other.tag != "")
         {
             if (other.name == "<multi>wall") return;
@@ -249,7 +250,8 @@ public class SnowBallScript : MonoBehaviour
             if (shooter.tag == "Enemy" && other.tag == "Player")
             {
                 PlayerScript player = other.transform.GetComponent<PlayerScript>();
-                player.setHP(-damage);
+                player.damaged(-damage);
+                //player.setHP(-damage);
             }
             if (shooter.tag == "Player" && other.tag == "Enemy")
             {

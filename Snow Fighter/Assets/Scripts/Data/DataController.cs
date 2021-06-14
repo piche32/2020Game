@@ -15,6 +15,7 @@ public class DataController : Singleton<DataController>
         {
             if (_gameData == null)
             {
+
                 LoadGameData();
                 SaveGameData();
             }
@@ -28,14 +29,26 @@ public class DataController : Singleton<DataController>
 
         if (File.Exists(filePath))
         {
-            Debug.Log("불러오기 성공!");
             string FromJsonData = File.ReadAllText(filePath);
             _gameData = JsonUtility.FromJson<GameData>(FromJsonData);
+            Debug.Log("불러오기 성공!");
         }
         else
         {
             MakeNewData();
         }
+
+        if(_gameData.Stage < (int)StageNum.Tutorial) //start나 그런 거
+        {
+            if(_gameData.PreStage < (int)StageNum.Tutorial)
+            {
+                _gameData.PreStage = (int)StageNum.Tutorial;
+            }
+            else
+                _gameData.Stage = _gameData.PreStage;
+        }
+        GameManagerScript.Instance.Stage = _gameData.Stage;
+
     }
 
     public void SaveGameData()
@@ -66,6 +79,7 @@ public class DataController : Singleton<DataController>
 
     private void OnApplicationQuit()
     {
+        Debug.Log("Stage: " + gameData.Stage.ToString());
         SaveGameData();
     }
 }

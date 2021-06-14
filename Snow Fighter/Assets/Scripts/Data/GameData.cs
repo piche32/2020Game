@@ -5,18 +5,18 @@ using System;
 [Serializable]
 public class GameData
 {
-    private int stage = (int)StageNum.Tutorial;
-    public int Stage { get { return stage; } }
+    public int Stage = (int)StageNum.Tutorial;
+    //public int Stage { get { return stage; } }
 
-    private int preStage = (int)StageNum.Start;
-    public int PreStage { get { return preStage; } }
+    public int PreStage = (int)StageNum.Tutorial;
+    //public int PreStage { get { return preStage; } }
 
     public float BGMVolume = 1.0f;
     public float SFXVolume = 1.0f;
 
     public void ChangeStage(int nextStage)
     {
-        preStage = stage;
-        stage = nextStage;
+        PreStage = Stage;
+        Stage = nextStage;
     }
 }

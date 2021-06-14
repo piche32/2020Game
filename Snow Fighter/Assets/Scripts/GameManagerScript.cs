@@ -17,7 +17,6 @@ public enum StageNum
     Tutorial,
     Stage1,
     Stage2,
-    Clear,
     Num,
 }
 
@@ -25,7 +24,7 @@ public class GameManagerScript : Singleton<GameManagerScript>
 {
     protected GameManagerScript() { }
     
-    int stage = 3;
+    int stage = (int)StageNum.Tutorial;
     public int Stage {
         get { return stage; }
         set {
@@ -76,7 +75,7 @@ public class GameManagerScript : Singleton<GameManagerScript>
         preStage = stage;
         stage = 2;
 
-        DataController.Instance.gameData.ChangeStage(stage);
+        DataController.Instance.gameData.ChangeStage(preStage+1);
         SceneManager.LoadScene(stage);
     }
     public void Restart()
@@ -123,10 +122,20 @@ public class GameManagerScript : Singleton<GameManagerScript>
         //마지막까지 다 깼을 경우
         if(stage >= (int)StageNum.Num)
         {
+            preStage = (int)StageNum.None;
+            stage--;
+            DataController.Instance.gameData.ChangeStage(stage);
+            DataController.Instance.SaveGameData();
+            SceneManager.LoadScene((int)StageNum.Start);
             return;
         } 
         DataController.Instance.gameData.ChangeStage(stage);
         DataController.Instance.SaveGameData();
         SceneManager.LoadScene(stage);
+    }
+
+    public void GoToMain()
+    {
+        SceneManager.LoadScene((int)StageNum.Start);
     }
 }
