@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PlayerScript">
+    <Position X="1" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BBAABgAAACYAABwEAAAAkAQIABEECAkAAABBAAIAUAI=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerSightScript">
+    <Position X="8" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IDWAAEIAACgAAAAkYAAAAABAgAAAAIAEQAAAABAAEAE=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerSightScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerAniScript">
+    <Position X="6.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerAniScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerAttack">
+    <Position X="4.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BBUAAAAIACQAAEQAIAEAACAAAIEAAAAIgAIAAAAAEAA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerAttack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerDamaged">
+    <Position X="2.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAACAAIAAAAAAAAAAEAAAQAAAAIAIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerDamaged.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerMoveScript">
+    <Position X="9.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAYAECAAAECEAAAAAAAAAAAAAAAIAAAIAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Player\PlayerMoveScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="JoyStickScript">
+    <Position X="11.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAABBAGAAQAABCACEAACAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Player\JoyStickScript.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

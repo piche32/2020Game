@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DataController">
+    <Position X="1" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAACAAAAAAAAAAAAQAICAAAAAACAAAAAAAAAAI=</HashCode>
+      <FileName>Assets\Scripts\Data\DataController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameData">
+    <Position X="3.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACBQAAAAAAAAAAIAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Data\GameData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RagdollChanger">
+    <Position X="1.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAgAAAAAAAAAAQgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\RagdollChanger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

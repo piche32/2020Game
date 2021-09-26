@@ -90,6 +90,15 @@ public class GameManagerScript : Singleton<GameManagerScript>
 
     public void LoadGame()
     {
+        if (stage >= (int)StageNum.Num)
+        {
+            preStage = (int)StageNum.None;
+            stage--;
+            DataController.Instance.gameData.ChangeStage(stage);
+            DataController.Instance.SaveGameData();
+            SceneManager.LoadScene((int)StageNum.Start);
+            return;
+        }
         SceneManager.LoadScene(stage);
     }
 
