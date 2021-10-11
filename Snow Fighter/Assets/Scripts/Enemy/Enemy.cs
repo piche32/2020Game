@@ -61,6 +61,8 @@ namespace Enemy.Ver2
             //animator.SetTrigger("Hit");
             if(hpSlider != null)
                 hpSlider.GetComponent<EnemyHPScript>().SetEnemyHPSlider(hp);
+
+            SoundController.Instance.PlaySFX("enemyAttacked");
         }
 
         public void Die()

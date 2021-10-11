@@ -105,7 +105,8 @@ public class NormalEnemyAIBT : MonoBehaviour
             if (Vector3.Distance(this.transform.position, player.transform.position) < 2.0f)
             {
                 player.damaged(-damage);
-//                player.setHP(-damage);
+
+                //                player.setHP(-damage);
             }
         }
     }

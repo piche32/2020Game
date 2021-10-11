@@ -41,6 +41,7 @@ public class PlayerAttack : MonoBehaviour
         animator = this.GetComponent<Animator>();
 
         throwingTime = 0.0f;
+
     }
 
     // Update is called once per frame
@@ -95,6 +96,7 @@ public class PlayerAttack : MonoBehaviour
 
         StageManager.Instance.setAttackedCount();
 
+        SoundController.Instance.PlaySFX("playerAttack", 0.8f, 1.8f);
         #region targeting code not used
         /*
         if(target != null) //목표물 없을 때

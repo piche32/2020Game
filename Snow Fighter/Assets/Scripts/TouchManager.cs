@@ -29,8 +29,8 @@ public class TouchManager : MonoBehaviour
     private InputUIInfo inputUI;
     public InputUIInfo InputUI { get { return inputUI; } }
 
-    PlayerSightScript camera = null;
-
+    PlayerSightScript playerSight = null;
+    
     // Start is called before the first frame update
     Touch touch;
     void Start()
@@ -41,7 +41,7 @@ public class TouchManager : MonoBehaviour
         inputUI.attack = -1;
         inputUI.skill = -1;
 
-        camera = Camera.main.GetComponent<PlayerSightScript>();
+        playerSight = Camera.main.GetComponent<PlayerSightScript>();
     }
 
     // Update is called once per frame
@@ -64,7 +64,7 @@ public class TouchManager : MonoBehaviour
                     if(t.position.x > Screen.width / 2)
                     {
                         inputUI.camera = t.fingerId;
-                        camera.IsCameraRotating = true;
+                        playerSight.IsCameraRotating = true;
                     }
                     break;
 
@@ -73,7 +73,7 @@ public class TouchManager : MonoBehaviour
                     {
                         if(t.fingerId == this.inputUI.camera)
                         {
-                            camera.SetCameraRot(t);
+                            playerSight.SetCameraRot(t);
                         }
                     }
                     break;
@@ -81,7 +81,7 @@ public class TouchManager : MonoBehaviour
                 case TouchPhase.Ended:
                     if(t.fingerId == this.inputUI.camera)
                     {
-                        camera.IsCameraRotating = false;
+                        playerSight.IsCameraRotating = false;
                         inputUI.camera = -1;
                     }
                     break;

@@ -266,6 +266,7 @@
     <Compile Include="Assets\Scripts\SnowBall\SnowBallScript.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowParticle.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowParticlePooling.cs" />
+    <Compile Include="Assets\Scripts\SoundController.cs" />
     <Compile Include="Assets\Scripts\StageInit.cs" />
     <Compile Include="Assets\Scripts\StageManager.cs" />
     <Compile Include="Assets\Scripts\SuccessStage.cs" />

@@ -251,14 +251,17 @@ public class SnowBallScript : MonoBehaviour
             {
                 PlayerScript player = other.transform.GetComponent<PlayerScript>();
                 player.damaged(-damage);
+                SoundController.Instance.PlaySFX("playerAttacked", 6.0f, 7.0f);
                 //player.setHP(-damage);
             }
             if (shooter.tag == "Player" && other.tag == "Enemy")
             {
                 Enemy.Ver2.Enemy enemy = other.transform.GetComponent<Enemy.Ver2.Enemy>();
                 //EnemyAIScript enemy = other.transform.GetComponent<EnemyAIScript>();
-                if(enemy != null)
+                if (enemy != null)
+                {
                     enemy.Hit(damage);
+                }
             }
             if(other.tag == "AttackingTestObj")
             {

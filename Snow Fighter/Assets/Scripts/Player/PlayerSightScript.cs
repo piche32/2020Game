@@ -27,8 +27,14 @@ public class PlayerSightScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rx = 0.0f;
-        ry = 0.0f;
+        //rx = 0.0f;
+        //ry = 0.0f;
+
+        rx = transform.parent.eulerAngles.y;
+        ry = transform.eulerAngles.x;
+
+        transform.parent.eulerAngles = new Vector3(0, rx, 0);
+
 
         if (maxX < minX)
         {
@@ -92,7 +98,6 @@ public class PlayerSightScript : MonoBehaviour
         #endregion never used
 
         dPos = tempTouch.deltaPosition;
-
 
         rx += dPos.x * rotSpeed * Time.deltaTime;
         ry += dPos.y * rotSpeed * Time.deltaTime;

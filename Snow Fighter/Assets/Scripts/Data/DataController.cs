@@ -8,7 +8,7 @@ public class DataController : Singleton<DataController>
 {
     public string GameDataFileName = ".json"; //이름 변경 절대 X
 
-    private GameData _gameData;
+    private GameData _gameData = null;
     public GameData gameData
     {
         get
@@ -71,8 +71,9 @@ public class DataController : Singleton<DataController>
 
         if (temp != null) //만약 소리 설정한 게 있다면 유지
         {
-            _gameData.BGMVolume = temp.BGMVolume;
-            _gameData.SFXVolume = temp.SFXVolume;
+            
+            _gameData.ChangeVolume("BGM", temp._BGMVolume);
+            _gameData.ChangeVolume("SFX", temp._SFXVolume);
         }
 
     }
