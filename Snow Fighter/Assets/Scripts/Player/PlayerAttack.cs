@@ -68,8 +68,11 @@ public class PlayerAttack : MonoBehaviour
 
         if (playerSc.IsThrowing == true || playerSc.IsReadyToThrowing == true) return;
 
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle")) return;
+
         playerSc.IsReadyToThrowing = true;
         animator.SetTrigger("readyToThrow");
+
         snow = SnowBallPoolingScript.Instance.GetObject().transform;
         snow.SetParent(snowStart);
         snow.position = snowStart.position;
@@ -85,8 +88,9 @@ public class PlayerAttack : MonoBehaviour
 
     void ThrowSnow()
     {
-        if (playerSc.IsThrowing == true) return;
-        playerSc.IsThrowing = true;
+       /* if (playerSc.IsThrowing == true || playerSc.IsReadyToThrowing == false) return;
+        playerSc.IsReadyToThrowing = false;
+        playerSc.IsThrowing = true;*/
         snow.SetParent(null);
         snow.GetComponent<SnowBallScript>().IsFired = true;
 
@@ -97,6 +101,8 @@ public class PlayerAttack : MonoBehaviour
         StageManager.Instance.setAttackedCount();
 
         SoundController.Instance.PlaySFX("playerAttack", 0.8f, 1.8f);
+
+
         #region targeting code not used
         /*
         if(target != null) //목표물 없을 때
@@ -131,7 +137,12 @@ public class PlayerAttack : MonoBehaviour
 
     public void Attack()
     {
+        if (playerSc.IsThrowing == true || playerSc.IsReadyToThrowing == false) return;
+        playerSc.IsReadyToThrowing = false;
+        playerSc.IsThrowing = true;
         animator.SetTrigger("throw");
+
+       // ThrowSnow();
     }
 
     

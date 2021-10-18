@@ -7,41 +7,59 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     protected UIManager() { }
-    
+
     Transform player;
 
     Slider playerHP = null;
     Image reticle = null;
     private Vector3 reticleDefaultPosition;
-     GameObject enemyHPPrefab = null;
+    GameObject enemyHPPrefab = null;
     public GameObject EnemyHPPrefab { get { return enemyHPPrefab; } }
 
-     Canvas hpCanvas = null;
+    Canvas hpCanvas = null;
     public Canvas HpCanvas { get { return hpCanvas; } }
 
     TextMeshProUGUI enemyCount = null;
     public TextMeshProUGUI EnemyCount { get { return enemyCount; } set { enemyCount = value; } }
-    
+
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindWithTag("Player").transform;
+        if (player == null)
+        {
+            Debug.LogError(string.Format("[{0}:{1}] Can not find Player.", this.gameObject.name.ToString(), this.name.ToString()));
+            return;
+        }
         PlayerScript playerScirpt = player.GetComponent<PlayerScript>();
 
-        playerHP = GameObject.Find("HP").GetComponent<Slider>();
+        playerHP = player.Find("Sight Camera/Canvas/HP").GetComponent<Slider>();
+        if (playerHP == null)
+        {
+            Debug.LogError(string.Format("[{0}:{1}] Gan not find Player.", this.gameObject.name.ToString(), this.name.ToString()));
+            return;
+
+        }
         playerHP.maxValue = playerScirpt.MaxHP;
         playerHP.value = playerHP.maxValue;
 
         reticle = GameObject.Find("Reticle").GetComponent<Image>();
-        if(reticle != null)reticle.color = Color.gray;
-
-        reticleDefaultPosition = reticle.transform.position;
+        if (ConsoleDebug.Instance.IsNull(this.name.ToString(), reticle.name.ToString(), (Object)reticle)) return;
+        
+            reticle.color = Color.gray;
+            reticleDefaultPosition = reticle.transform.position;
+        
 
         enemyHPPrefab = GameObject.Find("EnemyHP");
+        if (ConsoleDebug.Instance.IsNull(this.name.ToString(), enemyHPPrefab.name.ToString(), (Object)enemyHPPrefab)) return;
+
         hpCanvas = GameObject.Find("HPCanvas").GetComponent<Canvas>();
+        if (ConsoleDebug.Instance.IsNull(this.name.ToString(), hpCanvas.name.ToString(), (Object)hpCanvas)) return;
+
         enemyCount = GameObject.Find("EnemyCount").GetComponent<TextMeshProUGUI>();
+        if (ConsoleDebug.Instance.IsNull(this.name.ToString(), enemyCount.name.ToString(), (Object)enemyCount)) return;
 
         SetEnemyCountText();
-       // enemyCount.text = StageManager.Instance.EnemyCount + " / " + StageManager.Instance.TotalEnemyCount;
+        // enemyCount.text = StageManager.Instance.EnemyCount + " / " + StageManager.Instance.TotalEnemyCount;
 
     }
 
@@ -73,7 +91,7 @@ public class UIManager : MonoBehaviour
     //public void SetEnemyHPSlider(Slider enemyHP, float hp)
     //{
     //    enemyHPAni = true;
-        
+
     //    enemyHP.value = hp;
     //    setHPRender(true);
     //    time = 0.0f;
@@ -90,7 +108,7 @@ public class UIManager : MonoBehaviour
     //    setHPRender(false);
     //}
 
-   
+
 
     //void setHPRender(Slider enemyHP, bool isOn)
     //{

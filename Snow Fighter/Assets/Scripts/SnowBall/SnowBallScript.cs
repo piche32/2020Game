@@ -235,6 +235,7 @@ public class SnowBallScript : MonoBehaviour
         time += Time.deltaTime;
         //필드 밖으로 떨어졌을 경우, 삭제
         if(time > 30) SnowBallPoolingScript.Instance.ReturnObject(this);
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -326,7 +327,8 @@ public class SnowBallScript : MonoBehaviour
         Vector3 shooterVel;
         if (shooter.CompareTag("Player"))
         {
-            finalVelocity = shooter.GetComponentInChildren<PlayerSightScript>().transform.forward * power;
+            //finalVelocity = shooter.GetComponentInChildren<PlayerSightScript>().transform.forward * power;
+            finalVelocity = shooter.GetComponentInChildren<PlayerSightScript>().transform.forward * power - shooter.transform.forward;
             shooterVel = shooter.GetComponent<Rigidbody>().velocity;
             finalVelocity += shooterVel;
             finalVelocity += Vector3.up * offset;

@@ -27,13 +27,25 @@ public class PlayerSightScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //rx = 0.0f;
-        //ry = 0.0f;
+        rx = 0.0f;
+        ry = 0.0f;
 
         rx = transform.parent.eulerAngles.y;
-        ry = transform.eulerAngles.x;
+        ry = -transform.eulerAngles.x;
+
+
+        if (ry >= maxX)
+        {
+            ry = maxX;
+        }
+
+        else if (ry <= minX)
+        {
+            ry = minX;
+        }
 
         transform.parent.eulerAngles = new Vector3(0, rx, 0);
+        transform.eulerAngles = new Vector3(-ry, rx, 0);
 
 
         if (maxX < minX)

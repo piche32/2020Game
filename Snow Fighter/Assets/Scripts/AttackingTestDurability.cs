@@ -20,7 +20,7 @@ public class AttackingTestDurability : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        player = GameObject.Find("Player").transform;
+        player = GameObject.FindWithTag("Player").transform;
         if(player == null)
         {
             Debug.LogError(string.Format("[{0}:{1}] Gan not find Player.", this.gameObject.name.ToString(), this.name.ToString()));
