@@ -3,6 +3,7 @@ tree("BeAlive")
 	//otherwise it patrols a predefined path.
 	fallback
 		tree("Attack")
+		tree("Follow")
 		tree("Patrol")
 
 
@@ -13,7 +14,7 @@ tree("Attack")
 
 		//Attack the enemy if visible.
 		while
-			canAttack
+			IsPlayerInSight("Attack")
 			sequence
 				//Stop
 				SetDestination_Player
@@ -24,12 +25,15 @@ tree("Attack")
 		Fail
 
 		
+tree("Follow")
+	while
+		IsPlayerInSight("Follow")
+		sequence
+			SetDestination_Player
+		
 tree("Patrol")
 	//While no enemy is spotted,
 	//follow the assigned waypoints
-	while
-		not canAttack
-		repeat
 			sequence
 				SetDestination_Waypoint
 				isArrived

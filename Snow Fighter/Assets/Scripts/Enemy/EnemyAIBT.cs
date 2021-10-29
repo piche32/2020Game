@@ -9,10 +9,10 @@ namespace Enemy.Ver2
     public class EnemyAIBT : MonoBehaviour
     {
         Enemy self = null;
-        PlayerScript player = null;
+        protected PlayerScript player = null;
 
         NavMeshAgent nvAgent = null;
-       // Animator animator = null;
+        // Animator animator = null;
 
         public WaypointPath waypointPath;
         int waypointIndex;
@@ -20,9 +20,11 @@ namespace Enemy.Ver2
 
         [SerializeField] float defaultStoppingDist = 1.5f;
         [SerializeField] float attackStoppingDist = 1.5f;
-        
 
-        private void Start()
+        [SerializeField] float attackDist = 5.0f;
+        //IsPlayerInEnemySight enemyAttackSight = null;
+        IsPlayerInEnemySight enemyFollowSight = null;
+        protected virtual void Start()
         {
 
             player = GameObject.Find("Player").GetComponent<PlayerScript>();
@@ -34,6 +36,10 @@ namespace Enemy.Ver2
             self = GetComponent<Enemy>();
 
             waypointIndex = 0;
+
+            //enemyAttackSight = this.transform.Find("AttackColl").GetComponent<IsPlayerInEnemySight>();
+            enemyFollowSight = this.transform.Find("FollowColl").GetComponent<IsPlayerInEnemySight>();
+
         }
 
         /// <summary>
@@ -42,13 +48,20 @@ namespace Enemy.Ver2
         /// </summary>
         /// <returns></returns>
         [Task]
-        bool canAttack()
+        protected bool IsPlayerInSight(string type)
         {
             bool ret = false;
             if (player != null && player.gameObject != null)
             {
-                IsPlayerInEnemySight self = this.transform.Find("AttackColl").GetComponent<IsPlayerInEnemySight>();
-                ret = self._IsPlayerInEnemySight;
+                if (type == "Attack")
+                {
+                    Vector3 dir = player.transform.position - this.transform.position;
+                    dir.y = 0.0f;
+                    if (dir.magnitude < attackDist)
+                        ret = true;
+                }
+                else if (type == "Follow")
+                    ret = enemyFollowSight._IsPlayerInEnemySight;
             }
             return ret;
         }
@@ -74,7 +87,7 @@ namespace Enemy.Ver2
             nvAgent.isStopped = true;
             return true;
         }
-        
+
         [Task]
         public bool StartNvAgent()
         {
@@ -96,7 +109,7 @@ namespace Enemy.Ver2
                     int n = waypointPath.Waypoints.Length; //waypointPath 최대 길이
                     i = waypointIndex % (n * 2);
 
-                    if(i > n - 1)
+                    if (i > n - 1)
                     {
                         i = (n - 1) - (i % n);
                     }
@@ -109,7 +122,7 @@ namespace Enemy.Ver2
         public bool SetDestination(Vector3 p)
         {
             destination = p;
-            if(nvAgent == null || !nvAgent.isActiveAndEnabled) return false;
+            if (nvAgent == null || !nvAgent.isActiveAndEnabled) return false;
             nvAgent.SetDestination(destination);
 
             if (Task.isInspected)
@@ -125,7 +138,7 @@ namespace Enemy.Ver2
             if (nvAgent == null || !nvAgent.isActiveAndEnabled) return isSet;
             nvAgent.isStopped = false;
             nvAgent.stoppingDistance = defaultStoppingDist;
-            if(waypointPath != null)
+            if (waypointPath != null)
             {
                 var i = waypointArrayIndex;
                 var p = waypointPath.Waypoints[i].position;
@@ -142,18 +155,18 @@ namespace Enemy.Ver2
             dest.y = this.transform.position.y;
             float d = Vector3.Distance(dest, destination);
             //if (d < 5.0f) 원본
-            if(d <= nvAgent.stoppingDistance + 1.0f) //1.0f은 offset
+            if (d <= nvAgent.stoppingDistance + 1.0f) //1.0f은 offset
                 ret = true;
 
             if (Task.isInspected)
                 Task.current.debugInfo = string.Format("d-{0:0.00}", d);
             return ret;
         }
-        
+
         [Task]
         bool NextWaypoint()
         {
-            if(waypointPath != null)
+            if (waypointPath != null)
             {
                 waypointIndex = (++waypointIndex) % (waypointPath.Waypoints.Length * 2);
                 if (Task.isInspected)
@@ -168,13 +181,13 @@ namespace Enemy.Ver2
         /// </summary>
         /// <returns></returns>
         [Task]
-        bool CheckHP()
+        protected bool CheckHP()
         {
             return self.checkHp();
         }
 
         [Task]
-        void MakeRagdoll()
+        protected void MakeRagdoll()
         {
             GetComponent<Collider>().isTrigger = false;
             //GetComponent<Collider>().enabled = false;
@@ -186,14 +199,14 @@ namespace Enemy.Ver2
         }
 
         [Task]
-        void Blink()
+        protected void Blink()
         {
             this.GetComponentInChildren<Renderer>().enabled = !this.GetComponentInChildren<Renderer>().enabled;
             Task.current.Succeed();
         }
 
         [Task]
-        void Die()
+        protected void Die()
         {
             self.Die();
             Task.current.Succeed();

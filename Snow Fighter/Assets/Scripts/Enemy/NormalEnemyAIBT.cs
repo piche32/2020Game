@@ -94,6 +94,7 @@ public class NormalEnemyAIBT : MonoBehaviour
                 animator.SetBool("isAttacking", true);
                 Invoke("HitPlayer", attackDelayTime);
                 animator.SetTrigger("Attack");
+                Task.current.Succeed();
             }
         }
     }
@@ -111,6 +112,6 @@ public class NormalEnemyAIBT : MonoBehaviour
         }
     }
 
-
+    
 
 }

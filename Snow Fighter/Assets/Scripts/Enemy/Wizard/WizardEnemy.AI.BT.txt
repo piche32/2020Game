@@ -10,10 +10,9 @@ tree("Attack")
 	//When the enemy is visible, attack it,
 	//Otherwise forget about it.
 	fallback
-
 		//Attack the enemy if visible.
 		while
-			canAttack
+			IsPlayerInSight("Attack")
 			sequence
 				SetDestination_Player
 				Stop
@@ -28,7 +27,7 @@ tree("Attack")
 tree("Follow")
 	fallback
 		while
-			canFollow
+			IsPlayerInSight("Follow")
 			sequence
 				SetDestination_Player
 				Wait(0.1)
@@ -40,12 +39,9 @@ tree("Follow")
 tree("Patrol")
 	//While no enemy is spotted,
 	//follow the assigned waypoints
-	fallback
-		while
-			not canAttack
-			repeat
-				sequence
-					SetDestination_Waypoint
-					isArrived
-					Alert
+	Fallback
+		sequence
+			SetDestination_Waypoint
+			isArrived
+			Alert
 		StopAlerting

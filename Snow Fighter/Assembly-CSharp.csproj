@@ -199,7 +199,6 @@
     <Compile Include="Assets\BehaviorBricks\Test\ChamgeRed.cs" />
     <Compile Include="Assets\BehaviorBricks\Test\ChangeBlue.cs" />
     <Compile Include="Assets\BehaviorBricks\Test\ChangeYellow.cs" />
-    <Compile Include="Assets\NewBehaviourScript.cs" />
     <Compile Include="Assets\PandaBehaviour\Core\PandaBehaviour.cs" />
     <Compile Include="Assets\PandaBehaviour\Examples\00_ChangeColor\Assets\MyCube.cs" />
     <Compile Include="Assets\PandaBehaviour\Examples\01_Move\Assets\Move.cs" />
@@ -489,6 +488,9 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Mobile.AndroidLogcat.Editor">
+      <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Library/ScriptAssemblies/Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
@@ -497,9 +499,6 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Mobile.AndroidLogcat.Editor">
-      <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Library/ScriptAssemblies/Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.5f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

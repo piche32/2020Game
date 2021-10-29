@@ -1712,6 +1712,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4661894272602287218, guid: 9d709994194abbf4199aac887fb6288d,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4661894273059859121, guid: 9d709994194abbf4199aac887fb6288d,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1736,6 +1741,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.pageCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4661894273296259109, guid: 9d709994194abbf4199aac887fb6288d,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 112
       objectReference: {fileID: 0}
     - target: {fileID: 4661894273296259111, guid: 9d709994194abbf4199aac887fb6288d,
         type: 3}
@@ -1791,6 +1801,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4661894273296259160, guid: 9d709994194abbf4199aac887fb6288d,
+        type: 3}
+      propertyPath: jumpPower
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4661894273296259161, guid: 9d709994194abbf4199aac887fb6288d,
+        type: 3}
+      propertyPath: throwingCoolTime
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4661894273296259167, guid: 9d709994194abbf4199aac887fb6288d,
         type: 3}

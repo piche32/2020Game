@@ -71,6 +71,7 @@ namespace Enemy.Ver2
                 SnowBallPoolingScript.Instance.ReturnObject(this.GetComponentInChildren<SnowBallScript>());
 
             this.GetComponentInChildren<Renderer>().enabled = false;
+            GetComponent<Panda.PandaBehaviour>().enabled = false;
             --StageManager.Instance.EnemyCount;
             GameObject.Find("UIManager").GetComponent<UIManager>().SetEnemyCountText();
             if (StageManager.Instance.EnemyCount == 0)
@@ -81,7 +82,7 @@ namespace Enemy.Ver2
          
 
             this.gameObject.SetActive(false);
-           // GetComponent<Panda.PandaBehaviour>().enabled = false;
+           
 
         }
     }

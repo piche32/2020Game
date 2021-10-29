@@ -60,8 +60,7 @@ public class UIManager : MonoBehaviour
 
         SetEnemyCountText();
         // enemyCount.text = StageManager.Instance.EnemyCount + " / " + StageManager.Instance.TotalEnemyCount;
-
-    }
+    } 
 
     public void SetTarget(Transform target)
     {
@@ -86,6 +85,10 @@ public class UIManager : MonoBehaviour
     public void SetEnemyCountText()
     {
         enemyCount.text = (StageManager.Instance.TotalEnemyCount - StageManager.Instance.EnemyCount) + " / " + StageManager.Instance.TotalEnemyCount;
+    }
+
+    public void Pause(bool on) {
+        Time.timeScale = on == true ? 0.0f : 1.0f;
     }
 
     //public void SetEnemyHPSlider(Slider enemyHP, float hp)
