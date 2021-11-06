@@ -43,20 +43,20 @@ public class UIManager : MonoBehaviour
         playerHP.value = playerHP.maxValue;
 
         reticle = GameObject.Find("Reticle").GetComponent<Image>();
-        if (ConsoleDebug.Instance.IsNull(this.name.ToString(), reticle.name.ToString(), (Object)reticle)) return;
+        if (ConsoleDebug.IsNull(this.name.ToString(), reticle.name.ToString(), (Object)reticle)) return;
         
             reticle.color = Color.gray;
             reticleDefaultPosition = reticle.transform.position;
         
 
         enemyHPPrefab = GameObject.Find("EnemyHP");
-        if (ConsoleDebug.Instance.IsNull(this.name.ToString(), enemyHPPrefab.name.ToString(), (Object)enemyHPPrefab)) return;
+        if (ConsoleDebug.IsNull(this.name.ToString(), enemyHPPrefab.name.ToString(), (Object)enemyHPPrefab)) return;
 
         hpCanvas = GameObject.Find("HPCanvas").GetComponent<Canvas>();
-        if (ConsoleDebug.Instance.IsNull(this.name.ToString(), hpCanvas.name.ToString(), (Object)hpCanvas)) return;
+        if (ConsoleDebug.IsNull(this.name.ToString(), hpCanvas.name.ToString(), (Object)hpCanvas)) return;
 
         enemyCount = GameObject.Find("EnemyCount").GetComponent<TextMeshProUGUI>();
-        if (ConsoleDebug.Instance.IsNull(this.name.ToString(), enemyCount.name.ToString(), (Object)enemyCount)) return;
+        if (ConsoleDebug.IsNull(this.name.ToString(), enemyCount.name.ToString(), (Object)enemyCount)) return;
 
         SetEnemyCountText();
         // enemyCount.text = StageManager.Instance.EnemyCount + " / " + StageManager.Instance.TotalEnemyCount;

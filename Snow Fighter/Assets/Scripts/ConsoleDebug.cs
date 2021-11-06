@@ -2,15 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConsoleDebug : Singleton<ConsoleDebug>
+public class ConsoleDebug : MonoBehaviour
 {
-    public enum Type
-    {
-        Null,
-        Num
-    }
-
-    public bool IsNull(string scriptName, string objectName, Object obj)
+    public static bool IsNull(string scriptName, string objectName, Object obj)
     {
         if (obj == null)
         {

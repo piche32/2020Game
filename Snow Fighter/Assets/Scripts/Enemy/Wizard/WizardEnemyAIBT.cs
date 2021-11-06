@@ -40,7 +40,7 @@ namespace Enemy.Ver2
                 particle.Stop();
             }
 
-            
+
         }
 
 
@@ -61,49 +61,43 @@ namespace Enemy.Ver2
                 dir.y = this.transform.position.y;
                 dir = dir.normalized;
 
-                //Enemy와 Player 간의 각도
-                float angle = Vector3.Angle(dir, new Vector3(transform.forward.x, dir.y, transform.forward.z));
-
-                if (targetDelta.magnitude > 3f) //일정 거리만큼 멀리 있으면 player쪽으로 회전한다.
-                {
-                    if (angle > 120f || angle < -120.0f) { Task.current.Fail(); return; }
-                    if (angle > 0.1f || angle < -0.1f)
-                    {
-                        Vector3 look = Vector3.Slerp(this.transform.forward, dir, Time.deltaTime * 6.0f);
-                        this.transform.rotation = Quaternion.LookRotation(look, Vector3.up);
-                    }
-                    else
-                        Task.current.Succeed();
-
-                }
-                else
-                {
-                    if (angle > 5.0f || angle < -5.0f)
-                    {
-                        Vector3 look = Vector3.Slerp(this.transform.forward, dir, Time.deltaTime * 6.0f);
-                        this.transform.rotation = Quaternion.LookRotation(look, Vector3.up);
-                    }
-                    else
-                        Task.current.Succeed();
-                }
                 if (Task.isInspected)
                     Task.current.debugInfo = string.Format("angle={0}", Vector3.Angle(dir, this.transform.forward));
 
+                //Enemy와 Player 간의 각도
+                float angle = Vector3.Angle(dir, new Vector3(transform.forward.x, dir.y, transform.forward.z));
+
+                if (targetDelta.magnitude < attackDist/10) {
+                    transform.LookAt(player.transform.position);
+                    Task.current.Succeed(); 
+                }
+                if (angle > 0.01f || angle < -0.01f)
+                {
+                    Vector3 look = Vector3.Slerp(this.transform.forward, dir, Time.deltaTime * 6.0f);
+                    this.transform.rotation = Quaternion.LookRotation(look, Vector3.up);
+                }
+                else
+                {
+                    Task.current.Succeed(); 
+                }
             }
+            else
+                Task.current.Fail();
         }
 
 
         [Task]
         public void Attack()
         {
-            if (animator.GetBool("isAttacking"))
+             if (animator.GetBool("isAttacking"))
             {
-                animator.SetBool("isAttacking", false);
 
                 if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Attack")
                     || (animator.GetCurrentAnimatorStateInfo(1).IsName("Attack")
                     && animator.GetCurrentAnimatorStateInfo(1).normalizedTime > 0.9f))
                 {
+                    animator.SetBool("isAttacking", false);
+
                     skillParticle.GetComponent<ParticleSystem>().Stop();
                     ParticleSystem[] particles;
                     particles = skillParticle.GetComponentsInChildren<ParticleSystem>();
@@ -115,13 +109,14 @@ namespace Enemy.Ver2
                     Task.current.Succeed();
                 }
             }
-            else
+                else
             { //공격 중이 아닐 때,
                 if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Attack")) //공격 애니메이션 실행 아닐 떄
                 {
                     animator.SetBool("isAttacking", true);
                     Invoke("HitPlayer", attackDelayTime);
                     animator.SetTrigger("Attack");
+                    Task.current.Succeed();
                 }
 
             }
@@ -151,6 +146,12 @@ namespace Enemy.Ver2
         }
 
         [Task]
+        public bool IsAttacking()
+        {
+            return animator.GetBool("isAttacking");
+        }
+
+        [Task]
         public void StopAttacking()
         {
             skillParticle.GetComponent<ParticleSystem>().Stop();
@@ -170,10 +171,11 @@ namespace Enemy.Ver2
         public void Alert()
         {
             if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Alert")) animator.SetTrigger("Alert");
-            if (animator.GetBool("isAlerting")) return;
-            animator.SetBool("isAlerting", true);
-            animator.applyRootMotion = true;
-
+            if (!animator.GetBool("isAlerting")) 
+            {
+                animator.SetBool("isAlerting", true);
+                animator.applyRootMotion = true;
+            }
 
             Task.current.Succeed();
         }

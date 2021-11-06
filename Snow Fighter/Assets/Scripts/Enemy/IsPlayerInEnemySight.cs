@@ -15,6 +15,8 @@ public class IsPlayerInEnemySight : MonoBehaviour
     PlayerScript player = null;
 
     SphereCollider coll = null;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +25,9 @@ public class IsPlayerInEnemySight : MonoBehaviour
         player = GameObject.Find("Player").GetComponent<PlayerScript>();
         if (player == null)
             Debug.LogError("[IsPlayerInEnemeySight.cs]There is no player.");
+
     }
+
 
     private void OnTriggerStay(Collider other)
     {
@@ -61,12 +65,12 @@ public class IsPlayerInEnemySight : MonoBehaviour
         {
             Vector3 dir = player.transform.position - this.transform.position;
             dir.y = 0.0f;
-            if(dir.magnitude > coll.radius)
+            if (dir.magnitude > coll.radius)
+            { 
                 isPlayerInEnemySight = false;
+            }
 
             //   Debug.Break();
         }
-
-
     }
 }

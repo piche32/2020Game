@@ -21,7 +21,7 @@ namespace Enemy.Ver2
         [SerializeField] float defaultStoppingDist = 1.5f;
         [SerializeField] float attackStoppingDist = 1.5f;
 
-        [SerializeField] float attackDist = 5.0f;
+        [SerializeField] protected float attackDist = 5.0f;
         //IsPlayerInEnemySight enemyAttackSight = null;
         IsPlayerInEnemySight enemyFollowSight = null;
         protected virtual void Start()
@@ -61,7 +61,7 @@ namespace Enemy.Ver2
                         ret = true;
                 }
                 else if (type == "Follow")
-                    ret = enemyFollowSight._IsPlayerInEnemySight;
+                { ret = enemyFollowSight._IsPlayerInEnemySight; }
             }
             return ret;
         }
@@ -89,10 +89,11 @@ namespace Enemy.Ver2
         }
 
         [Task]
-        public bool StartNvAgent()
+        public void StartNvAgent()
         {
             nvAgent.isStopped = false;
-            return true;
+            Task.current.Succeed();
+
         }
 
         int waypointArrayIndex

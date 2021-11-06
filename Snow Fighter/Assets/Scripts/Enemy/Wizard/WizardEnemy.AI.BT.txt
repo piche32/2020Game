@@ -11,15 +11,15 @@ tree("Attack")
 	//Otherwise forget about it.
 	fallback
 		//Attack the enemy if visible.
-		while
+		sequence
 			IsPlayerInSight("Attack")
-			sequence
-				SetDestination_Player
-				Stop
-				Wait(0.5)
-				AimAt_Target
-				Wait(0.1)
-				Attack
+			StopAlerting
+			SetDestination_Player
+			Stop
+			Wait(0.5)
+			AimAt_Target
+			Wait(0.1)
+			Attack
 		sequence
 			StopAttacking
 			Fail
@@ -29,6 +29,7 @@ tree("Follow")
 		while
 			IsPlayerInSight("Follow")
 			sequence
+				StopAlerting
 				SetDestination_Player
 				Wait(0.1)
 				StartNvAgent

@@ -8,8 +8,6 @@ public class PlayerScript : MonoBehaviour
 
     UIManager UI = null;
 
-    GameObject enemy;
-
    
     [SerializeField] float maxHP = 100.0f;
  //   [SerializeField] float powerIncrease = 1.0f;
@@ -51,11 +49,6 @@ public class PlayerScript : MonoBehaviour
         {
             Debug.LogError(string.Format("[{0}: {1}]There's no UI Manager.", this.gameObject.name.ToString(), this.name.ToString()));
             return;
-        }
-        enemy = GameObject.FindGameObjectWithTag("Enemy");
-        if (enemy == null)
-        {
-            Debug.Log("Can not find Enemy.");
         }
 
         if (sightCamTrans == null)

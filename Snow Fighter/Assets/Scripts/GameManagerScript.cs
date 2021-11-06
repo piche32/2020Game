@@ -110,6 +110,7 @@ public class GameManagerScript : Singleton<GameManagerScript>
         {
             score = 0;
             totalEnemyCount = 0;
+            totalEnemyCount = 0;
             enemyCount = 0;
             attackedCount = 0;
             runningTime = 0.0f;

@@ -87,7 +87,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100937838430079374}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17e43e7170fb45b4b81dcd16d0ff55d9, type: 3}
   m_Name: 
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100937838430079374}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e36f7924f6a3bd4bb895851beaad19f, type: 3}
   m_Name: 
@@ -123,6 +123,7 @@ MonoBehaviour:
   waypointPath: {fileID: 0}
   defaultStoppingDist: 1.5
   attackStoppingDist: 1.5
+  attackDist: 5
 --- !u!114 &6382551258649387881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +131,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100937838430079374}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc282dca476e4324281b46546863644f, type: 3}
   m_Name: 
@@ -143,7 +144,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100937838430079374}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62032c1e3df26554ca1d3997573d4a4d, type: 3}
   m_Name: 
@@ -235,6 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DIST: 20
+  REALIZEDDIST: 10
   SIGHTANGLE: 180
 --- !u!1 &941827036609116216
 GameObject:
@@ -325,6 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DIST: 5
+  REALIZEDDIST: 10
   SIGHTANGLE: 300
 --- !u!135 &941827036269196920
 SphereCollider:

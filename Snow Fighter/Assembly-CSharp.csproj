@@ -64,6 +64,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Assets\AurynSky\WinterArena\Scripts\ChestDemo.cs" />
+    <Compile Include="Assets\Assets\AurynSky\WinterArena\Scripts\Rotator.cs" />
     <Compile Include="Assets\Assets\Flooded_Grounds\PostProcessing\Runtime\Attributes\GetSetAttribute.cs" />
     <Compile Include="Assets\Assets\Flooded_Grounds\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
     <Compile Include="Assets\Assets\Flooded_Grounds\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />
@@ -406,6 +408,7 @@
     <None Include="Assets\Assets\Flooded_Grounds\PostProcessing\Resources\Shaders\DiskKernels.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Assets\Flooded_Grounds\PostProcessing\Resources\Bluenoise64\COPYING.txt" />
+    <None Include="Assets\Assets\AurynSky\WinterArena\READ ME.txt" />
     <None Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Shaders\ChromaticAberrationShader.shader" />
     <None Include="Assets\Assets\Flooded_Grounds\PostProcessing\Editor Resources\UI\Trackball.shader" />
     <None Include="Assets\PandaBehaviour\Examples\00_ChangeColor\Assets\ChangeColor.BT.txt" />
