@@ -19,7 +19,7 @@ public class HealingItem : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
+        //Debug.Log(other.name);
         if (other.CompareTag("Player"))
         {
             other.GetComponentInParent<PlayerScript>().setHP(healingAmount);

@@ -100,7 +100,8 @@ public class PlayerAttack : MonoBehaviour
 
         StageManager.Instance.setAttackedCount();
 
-        SoundController.Instance.PlaySFX("playerAttack", 0.8f, 1.8f);
+        EventContainer.Instance.Events["OnPlayerAttack"].Invoke();
+       // SoundController.Instance.PlaySFX("playerAttack", 0.8f, 1.8f);
 
 
         #region targeting code not used

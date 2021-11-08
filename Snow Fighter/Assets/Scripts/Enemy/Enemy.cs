@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEngine.Events;
+
 namespace Enemy.Ver2
 {
     [RequireComponent(typeof(NavMeshAgent))]
@@ -62,7 +64,7 @@ namespace Enemy.Ver2
             if(hpSlider != null)
                 hpSlider.GetComponent<EnemyHPScript>().SetEnemyHPSlider(hp);
 
-            SoundController.Instance.PlaySFX("enemyAttacked");
+            //SoundController.Instance.PlaySFX("enemyAttacked");
         }
 
         public void Die()

@@ -214,7 +214,6 @@ public class PlayerSightScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Enemy" || other.name == "FollowColl" || other.name == "AttackColl") return;
-
         target = other.transform;
         if (!isTargetInSight(other.transform))
         {
@@ -229,7 +228,6 @@ public class PlayerSightScript : MonoBehaviour
         target = null;
         UI.SetTarget(null);
     }
-
 }
 
 #region check target not used
