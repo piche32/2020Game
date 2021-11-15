@@ -11,12 +11,13 @@ namespace Enemy.Ver2
     [RequireComponent(typeof(RagdollChanger))]
     public class Enemy : MonoBehaviour
     {
-        NavMeshAgent nvAgent = null;
-        PlayerScript player = null;
-        Animator animator = null;
+        protected NavMeshAgent nvAgent = null;
+        protected PlayerScript player = null;
+        protected Animator animator = null;
 
         [SerializeField]float maxHP = 1.0f;
-        float hp = 1.0f;
+        public float MaxHP { get { return maxHP; } }
+        protected float hp = 1.0f;
         public float HP { get { return hp; } }
 
         //HPBar
@@ -27,14 +28,16 @@ namespace Enemy.Ver2
         public float Damage { get { return damage; } }
 
         // Start is called before the first frame update
-        void Start()
+        protected virtual void Start()
         {
             player = GameObject.Find("Player").GetComponent<PlayerScript>();
             if (player == null)
                 Debug.LogError("[Enemy.cs]Can't Find PlayerScript.");
             nvAgent = GetComponent<NavMeshAgent>();
-            animator = GetComponentInChildren<Animator>();
-
+            animator = this.GetComponent<Animator>();
+            if(animator == null)
+                animator = GetComponentInChildren<Animator>();
+            ConsoleDebug.IsNull(this.name, this.gameObject.name, animator);
             hp = maxHP;
             hpSlider = GameObject.Instantiate(GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().EnemyHPPrefab.GetComponent<Slider>());
             hpSlider.GetComponent<EnemyHPScript>().enabled = true;

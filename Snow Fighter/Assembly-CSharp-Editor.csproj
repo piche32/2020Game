@@ -78,7 +78,6 @@
     <Compile Include="Assets\Assets\NatureStarterKit2\Editor\ImageEffects\SunShaftsEditor.cs" />
     <Compile Include="Assets\Assets\NatureStarterKit2\Editor\ImageEffects\TonemappingEditor.cs" />
     <Compile Include="Assets\Assets\NatureStarterKit2\Editor\ImageEffects\VignetteAndChromaticAberrationEditor.cs" />
-    <Compile Include="Assets\BehaviorBricks\Editor\BehaviorExecutorEditor.cs" />
     <Compile Include="Assets\PandaBehaviour\Core\Editor\CreatePandaScriptMenu.cs" />
     <Compile Include="Assets\PandaBehaviour\Core\Editor\PandaBehaviourEditor.cs" />
     <Reference Include="UnityEditor.TestRunner">
@@ -323,12 +322,6 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="BBEditor">
-      <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Assets/BehaviorBricks/Editor/Bin/BBEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="BehaviorBricks">
-      <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Assets/BehaviorBricks/Runtime/BehaviorBricks.dll</HintPath>
     </Reference>
     <Reference Include="PandaBehaviour">
       <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Assets/PandaBehaviour/Core/PandaBehaviour.dll</HintPath>

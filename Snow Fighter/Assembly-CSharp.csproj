@@ -106,52 +106,6 @@
     <Compile Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\Twirl.cs" />
     <Compile Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\VignetteAndChromaticAberration.cs" />
     <Compile Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Scripts\Vortex.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Animation\PlayAnimation.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Audio\PlaySound.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Basic\SetBool.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Basic\SetFloat.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Basic\SetInt.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Basic\SetVector3.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Basic\WaitForSeconds.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Basic\toggleBool.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\AddComponent.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\ClosestGameObjectFromList.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\ClosestGameObjectWithTag.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\Destroy.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\FindGameObjectByName.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\FindGameObjectByTag.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\GetComponent.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\Instantiate.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\LookAt.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\SendMessage.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\GameObject\SetActive.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Navigation\MoveToGameObject.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Navigation\MoveToPosition.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Navigation\MoveToRandomPosition.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Physics\ApplyForce.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Physics\FromMouseToWorld.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Physics\SetVelocity.cs" />
-    <Compile Include="Assets\BehaviorBricks\Actions\System\Vector3\GetRandomInArea.cs" />
-    <Compile Include="Assets\BehaviorBricks\BehaviorExecutor.cs" />
-    <Compile Include="Assets\BehaviorBricks\BrickAsset.cs" />
-    <Compile Include="Assets\BehaviorBricks\Conditions\System\Basic\CheckBool.cs" />
-    <Compile Include="Assets\BehaviorBricks\Conditions\System\Basic\CheckButton.cs" />
-    <Compile Include="Assets\BehaviorBricks\Conditions\System\Basic\CheckKey.cs" />
-    <Compile Include="Assets\BehaviorBricks\Conditions\System\Basic\CheckMouseButton.cs" />
-    <Compile Include="Assets\BehaviorBricks\Conditions\System\Perception\IsTargetClose.cs" />
-    <Compile Include="Assets\BehaviorBricks\Conditions\System\Perception\IsTargetCloseAndInSight.cs" />
-    <Compile Include="Assets\BehaviorBricks\Conditions\System\Perception\IsTargetInSight.cs" />
-    <Compile Include="Assets\BehaviorBricks\Samples\ProgrammersQuickStartGuide\Done\DoneBulletScript.cs" />
-    <Compile Include="Assets\BehaviorBricks\Samples\ProgrammersQuickStartGuide\Done\DoneDayNightCycle.cs" />
-    <Compile Include="Assets\BehaviorBricks\Samples\ProgrammersQuickStartGuide\Done\DoneIsNight.cs" />
-    <Compile Include="Assets\BehaviorBricks\Samples\ProgrammersQuickStartGuide\Done\DoneShoot.cs" />
-    <Compile Include="Assets\BehaviorBricks\Samples\ProgrammersQuickStartGuide\Done\DoneShootOnce.cs" />
-    <Compile Include="Assets\BehaviorBricks\Samples\ProgrammersQuickStartGuide\Done\DoneSleepForever.cs" />
-    <Compile Include="Assets\BehaviorBricks\Samples\QuickStartGuide\Done\Resources\MassSpawner.cs" />
-    <Compile Include="Assets\BehaviorBricks\Samples\QuickStartGuide\Done\Resources\Spawner.cs" />
-    <Compile Include="Assets\BehaviorBricks\Test\ChamgeRed.cs" />
-    <Compile Include="Assets\BehaviorBricks\Test\ChangeBlue.cs" />
-    <Compile Include="Assets\BehaviorBricks\Test\ChangeYellow.cs" />
     <Compile Include="Assets\PandaBehaviour\Core\PandaBehaviour.cs" />
     <Compile Include="Assets\PandaBehaviour\Examples\00_ChangeColor\Assets\MyCube.cs" />
     <Compile Include="Assets\PandaBehaviour\Examples\01_Move\Assets\Move.cs" />
@@ -172,17 +126,11 @@
     <Compile Include="Assets\PandaBehaviour\Examples\03_Shooter\Assets\WaypointPath.cs" />
     <Compile Include="Assets\Scripts\AttackingTest.cs" />
     <Compile Include="Assets\Scripts\AttackingTestDurability.cs" />
-    <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Attack.cs" />
-    <Compile Include="Assets\Scripts\Behavior Tree\Enemy\CheckHP.cs" />
-    <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Died.cs" />
-    <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Follow.cs" />
-    <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Idle.cs" />
-    <Compile Include="Assets\Scripts\Behavior Tree\Enemy\Search.cs" />
-    <Compile Include="Assets\Scripts\Behavior Tree\Enemy\WasAttackedOrFollowed.cs" />
-    <Compile Include="Assets\Scripts\Behavior Tree\_IsTargetCloseAndInSight.cs" />
     <Compile Include="Assets\Scripts\ConsoleDebug.cs" />
     <Compile Include="Assets\Scripts\Data\DataController.cs" />
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Boss\Boss.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Boss\BossAI.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAIBT.cs" />
     <Compile Include="Assets\Scripts\Enemy\EnemyAttack.cs" />
@@ -316,6 +264,7 @@
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularSmooth.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\Scripts\Enemy\Boss\Boss.AI.txt" />
     <None Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Shaders\MotionBlur.shader" />
@@ -352,7 +301,6 @@
     <None Include="Assets\Scripts\Enemy\not used\Panda BT\EnemyBT.txt" />
     <None Include="Assets\PandaBehaviour\Examples\03_Shooter\Assets\AI.BT.lib.txt" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
-    <None Include="Assets\BehaviorBricks\readme.txt" />
     <None Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Luminance.shader" />
     <None Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
     <None Include="Assets\Assets\NatureStarterKit2\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\NFAA.shader" />
@@ -575,9 +523,6 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.5f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
-    </Reference>
-    <Reference Include="BehaviorBricks">
-      <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Assets/BehaviorBricks/Runtime/BehaviorBricks.dll</HintPath>
     </Reference>
     <Reference Include="PandaBehaviour">
       <HintPath>D:/Mine/Homework/3_2/Graduate/2/Snow Fighter/Assets/PandaBehaviour/Core/PandaBehaviour.dll</HintPath>

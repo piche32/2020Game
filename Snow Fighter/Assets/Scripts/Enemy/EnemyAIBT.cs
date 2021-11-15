@@ -8,18 +8,18 @@ namespace Enemy.Ver2
 {
     public class EnemyAIBT : MonoBehaviour
     {
-        Enemy self = null;
+        protected Enemy self = null;
         protected PlayerScript player = null;
 
-        NavMeshAgent nvAgent = null;
-        // Animator animator = null;
+        protected NavMeshAgent nvAgent = null;
+        protected Animator animator = null;
 
         public WaypointPath waypointPath;
         int waypointIndex;
         Vector3 destination;
 
-        [SerializeField] float defaultStoppingDist = 1.5f;
-        [SerializeField] float attackStoppingDist = 1.5f;
+        [SerializeField] protected float defaultStoppingDist = 1.5f;
+        [SerializeField] protected float attackStoppingDist = 1.5f;
 
         [SerializeField] protected float attackDist = 5.0f;
         //IsPlayerInEnemySight enemyAttackSight = null;
@@ -40,6 +40,10 @@ namespace Enemy.Ver2
             //enemyAttackSight = this.transform.Find("AttackColl").GetComponent<IsPlayerInEnemySight>();
             enemyFollowSight = this.transform.Find("FollowColl").GetComponent<IsPlayerInEnemySight>();
 
+            animator = this.GetComponent<Animator>();
+            if (animator == null)
+                animator = GetComponentInChildren<Animator>();
+            ConsoleDebug.IsNull(this.name, this.gameObject.name, animator);
         }
 
         /// <summary>
@@ -152,9 +156,9 @@ namespace Enemy.Ver2
         public bool isArrived()
         {
             bool ret = false;
-            Vector3 dest = this.transform.position;
-            dest.y = this.transform.position.y;
-            float d = Vector3.Distance(dest, destination);
+            Vector3 pos = this.transform.position;
+            pos.y = this.transform.position.y;
+            float d = Vector3.Distance(pos, destination);
             //if (d < 5.0f) 원본
             if (d <= nvAgent.stoppingDistance + 1.0f) //1.0f은 offset
                 ret = true;
@@ -212,6 +216,50 @@ namespace Enemy.Ver2
             self.Die();
             Task.current.Succeed();
         }
+
+        /// <summary>
+        /// 타겟 쪽으로 살짝 몸을 트는 함수
+        /// 타겟이 가까이 있을 땐 집요하게 몸을 튼다.
+        /// </summary>
+        [Task]
+        public virtual void AimAt_Target()
+        {
+            if (player != null)
+            {
+                var targetDelta = (player.transform.position - this.transform.position);
+
+                Vector3 dir = Vector3.zero; //Enemy와 Player 간의 방향 벡터
+                dir.x = player.transform.position.x - this.transform.position.x;
+                dir.z = player.transform.position.z - this.transform.position.z;
+                dir.y = this.transform.position.y;
+                dir = dir.normalized;
+
+                if (Task.isInspected)
+                    Task.current.debugInfo = string.Format("angle={0}", Vector3.Angle(dir, this.transform.forward));
+
+                //Enemy와 Player 간의 각도
+                float angle = Vector3.Angle(dir, new Vector3(transform.forward.x, dir.y, transform.forward.z));
+
+                if (targetDelta.magnitude < attackDist / 10)
+                {
+                    transform.LookAt(player.transform.position);
+                    Task.current.Succeed();
+                }
+                if (angle > 0.01f || angle < -0.01f)
+                {
+                    Vector3 look = Vector3.Slerp(this.transform.forward, dir, Time.deltaTime * 6.0f);
+                    Vector3 lookDelta = look - this.transform.rotation.eulerAngles;
+                    this.transform.rotation = Quaternion.LookRotation(look, Vector3.up);
+                }
+                else
+                {
+                    Task.current.Succeed();
+                }
+            }
+            else
+                Task.current.Fail();
+        }
+
 
     }
 
