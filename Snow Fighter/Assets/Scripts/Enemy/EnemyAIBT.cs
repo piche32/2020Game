@@ -16,7 +16,7 @@ namespace Enemy.Ver2
 
         public WaypointPath waypointPath;
         int waypointIndex;
-        Vector3 destination;
+        protected Vector3 destination;
 
         [SerializeField] protected float defaultStoppingDist = 1.5f;
         [SerializeField] protected float attackStoppingDist = 1.5f;
@@ -43,7 +43,7 @@ namespace Enemy.Ver2
             animator = this.GetComponent<Animator>();
             if (animator == null)
                 animator = GetComponentInChildren<Animator>();
-            ConsoleDebug.IsNull(this.name, this.gameObject.name, animator);
+            ConsoleDebug.IsNull(this.name, "animator", animator);
         }
 
         /// <summary>
@@ -73,12 +73,14 @@ namespace Enemy.Ver2
         [Task]
         public bool SetDestination_Player()
         {
+            nvAgent.isStopped = false;
             bool ret = false;
             nvAgent.stoppingDistance = attackStoppingDist;
             ret = SetDestination(player.transform.position);
             return ret;
         }
 
+        
         /// <summary>
         /// NaviMesh Stop
         /// </summary>
@@ -169,7 +171,7 @@ namespace Enemy.Ver2
         }
 
         [Task]
-        bool NextWaypoint()
+        protected bool NextWaypoint()
         {
             if (waypointPath != null)
             {

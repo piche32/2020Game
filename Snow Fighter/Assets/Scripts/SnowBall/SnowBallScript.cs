@@ -151,8 +151,12 @@ public class SnowBallScript : MonoBehaviour
 
     public float offset = 2.0f; //디폴트 눈 던지는 높이
 
+    SnowParticlePooling particles;
     Coroutine projectileCoroutine;
-
+    private void Awake()
+    {
+        particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
+    }
     private void OnEnable()
     {
         time = 0.0f;
@@ -240,14 +244,15 @@ public class SnowBallScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-       // Debug.Log(other.name.ToString());
+        if (other.name == "<multi>wall") return;
+        if (other.name == "FollowColl" || other.name == "AttackColl") return;
+        if (other.name == "Sight Camera") return;
+        // Debug.Log(other.name.ToString());
         if (other.tag != null || other.tag != "")
         {
-            if (other.name == "<multi>wall") return;
             if (shooter.tag == other.tag) return;
             if (other.transform.parent != null) if (shooter.tag == other.transform.parent.tag) return;
-            if (other.name == "FollowColl" || other.name == "AttackColl") return;
-            if (other.name == "Sight Camera") return;
+            
             if (shooter.tag == "Enemy" && other.tag == "Player")
             {
                 PlayerScript player = other.transform.GetComponent<PlayerScript>();
@@ -269,11 +274,7 @@ public class SnowBallScript : MonoBehaviour
             {
                 other.transform.GetComponent<AttackingTest>().Hit(damage);
             }
-
         }
-
-        SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
-
         GameObject destroyedEffect = particles.GetObject();
         destroyedEffect.transform.position = transform.position;
         //destroyedEffect.transform.LookAt(destroyedEffect.transform.position - Vector3.Normalize(transform.forward));

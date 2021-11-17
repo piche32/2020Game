@@ -4,7 +4,7 @@ tree("BeAlive")
 		tree("Patrol")
 
 tree("Attack")
-	fallback
+	fallback 
 		fallback
 			tree("Roll")
 			tree("Throw")
@@ -21,7 +21,15 @@ tree("Attack")
 tree("Roll")
 	while
 		isRoll
-		Roll
+		Sequence
+			SetDestination_Player("Roll")
+			Wait(0.1)
+			isArrived
+			Stop
+			AimAt_Target
+			MakeASnowBall
+			Wait(0.1)
+			Roll
 		
 tree("Throw")
 	while
@@ -38,3 +46,5 @@ tree("Patrol")
 	sequence
 		SetDestination_Waypoint
 		isArrived
+		TakeARest
+

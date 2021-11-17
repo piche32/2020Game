@@ -23,13 +23,32 @@ namespace Enemy.Ver2
         [Task]
         public bool isPunch;
 
-        [Range(0.0f, 1.0f)] public float probabilityOfRoll;
-        [Range(0.0f, 1.0f)] public float probabilityOfThrow;
-        [Range(0.0f, 1.0f)] public float probabilityOfPunch;
+        [SerializeField] [Range(0.0f, 1.0f)] float probabilityOfRoll;
+        [SerializeField] [Range(0.0f, 1.0f)] float probabilityOfThrow;
+        [SerializeField] [Range(0.0f, 1.0f)] float probabilityOfPunch;
 
+        [SerializeField] float rollDamage = 50.0f;
+        [SerializeField] float throwDamage = 30.0f;
+        [SerializeField] float punchDamage = 10.0f;
+
+
+        public float ThrowStoppingDist;
+        public float RollStoppingDist;
+
+        float time;
+        public float restTime = 5.0f;
+        [Task]
+        public bool isRest;
+
+        public BossSnowBall snowball;
+        public Transform snowStart;
+
+        public float rollPower;
+       // public Transform sight;
         protected override void Start()
         {
-            base.Start();    
+            base.Start();
+            ConsoleDebug.IsNull(this.name, "snowball", snowball);
         }
 
         void ResetActionBool()
@@ -37,6 +56,7 @@ namespace Enemy.Ver2
             isRoll = false;
             isThrow = false;
             isPunch = false;
+            isRest = false;
         }
 
         [Task]
@@ -44,11 +64,11 @@ namespace Enemy.Ver2
         {
             ResetActionBool();
             float number = Random.Range(0.0f, 1.0f);
-            if(number <= probabilityOfRoll)
+            if (number <= probabilityOfRoll)
             {
                 isRoll = true;
             }
-            else if(number <= probabilityOfRoll + probabilityOfThrow)
+            else if (number <= probabilityOfRoll + probabilityOfThrow)
             {
                 isThrow = true;
             }
@@ -60,34 +80,71 @@ namespace Enemy.Ver2
         }
 
         [Task]
+        void MakeASnowBall()
+        {
+            //손 위치에 만들기
+            snowball.init(snowStart, rollDamage);
+
+            Task.current.Succeed();
+        }
+
+        [Task]
+        void RollSnowball()
+        {
+            snowball.Roll(this.transform.forward, rollPower, destination);
+            //sight.position = destination;
+        }
+
+        bool isRollSnow = false;
+        [Task]
         void Roll()
         {
+            //애니메이션 실행
             if (!animator.GetBool("isRoll"))
             {
-                animator.SetBool("isRoll", true);
-              //  Task.current.Succeed();
+                if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Roll")
+                    || (animator.GetCurrentAnimatorStateInfo(1).IsName("Roll") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f))
+                {
+                    animator.SetBool("isRoll", true);
+                    animator.SetTrigger("Roll");
+                    //animator.applyRootMotion = false;
+                    isRollSnow = false;
+                    return;
+                }
+            }
+
+            if (!isRollSnow && animator.GetCurrentAnimatorStateInfo(1).IsName("Roll") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.3f)
+            {
+                RollSnowball();
+                isRollSnow = true;
+            }
+
+            if (animator.GetBool("isRoll") && animator.GetCurrentAnimatorStateInfo(1).IsName("Roll") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 1.0f)
+            {
+                animator.SetBool("isRoll", false);
+                //animator.applyRootMotion = true;
+
+                isRoll = false;
+                Task.current.Succeed();
                 return;
             }
 
-            if(animator.GetCurrentAnimatorStateInfo(1).IsName("Roll") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.9f)
-            {
-                animator.SetBool("isRoll", false);
-                isRoll = false;
-                Task.current.Succeed();
-            }
+            
+
+            //공 굴리기
         }
-        
-         [Task]
+
+        [Task]
         void Throw()
         {
             if (!animator.GetBool("isThrow"))
             {
                 animator.SetBool("isThrow", true);
-              //  Task.current.Succeed();
+                //  Task.current.Succeed();
                 return;
             }
 
-            if(animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.9f)
+            if (animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.9f)
             {
                 animator.SetBool("isThrow", false);
                 isThrow = false;
@@ -101,11 +158,11 @@ namespace Enemy.Ver2
             if (!animator.GetBool("isPunch"))
             {
                 animator.SetBool("isPunch", true);
-            //    Task.current.Succeed();
+                //    Task.current.Succeed();
                 return;
             }
 
-            if(animator.GetCurrentAnimatorStateInfo(1).IsName("Punch") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.9f)
+            if (animator.GetCurrentAnimatorStateInfo(1).IsName("Punch") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.9f)
             {
                 animator.SetBool("isPunch", false);
                 isPunch = false;
@@ -122,6 +179,7 @@ namespace Enemy.Ver2
             SetDestination(player.transform.position);
         }
 
+
         /// <summary>
         /// 타겟 쪽으로 살짝 몸을 트는 함수
         /// 타겟이 가까이 있을 땐 집요하게 몸을 튼다.
@@ -135,5 +193,54 @@ namespace Enemy.Ver2
                 Task.current.Succeed();
             }
         }
+
+        [Task]
+        void TakeARest()
+        {
+            if (!isRest)
+            {
+                isRest = true;
+                nvAgent.isStopped = true;
+                time = 0.0f;
+                Task.current.Succeed();
+                return;
+            }
+
+            time += Time.deltaTime;
+            if (Task.isInspected)
+                Task.current.debugInfo = string.Format("t-{0:0.00}", time);
+
+            if (time > restTime)
+            {
+                isRest = false;
+                nvAgent.isStopped = false;
+                time = 0.0f;
+                NextWaypoint();
+                Task.current.Succeed();
+                return;
+            }
+        }
+
+        [Task]
+        public bool SetDestination_Player(string AttackType)
+        {
+            nvAgent.isStopped = false;
+            bool ret = false;
+
+            switch (AttackType)
+            {
+                case "Roll":
+                    nvAgent.stoppingDistance = RollStoppingDist;
+                    break;
+
+                case "Throw":
+                    nvAgent.stoppingDistance = ThrowStoppingDist;
+                    break;
+            }
+
+            ret = SetDestination(player.transform.position);
+            return ret;
+        }
+
     }
 }

@@ -37,7 +37,7 @@ namespace Enemy.Ver2
             animator = this.GetComponent<Animator>();
             if(animator == null)
                 animator = GetComponentInChildren<Animator>();
-            ConsoleDebug.IsNull(this.name, this.gameObject.name, animator);
+            ConsoleDebug.IsNull(this.name, "animator", animator);
             hp = maxHP;
             hpSlider = GameObject.Instantiate(GameObject.FindGameObjectWithTag("UI").GetComponent<UIManager>().EnemyHPPrefab.GetComponent<Slider>());
             hpSlider.GetComponent<EnemyHPScript>().enabled = true;
@@ -83,8 +83,6 @@ namespace Enemy.Ver2
             {
                 GameManagerScript.Instance.Success();
             }
-
-         
 
             this.gameObject.SetActive(false);
            

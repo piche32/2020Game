@@ -163,6 +163,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerSightScript.cs" />
     <Compile Include="Assets\Scripts\QuaternionTest.cs" />
     <Compile Include="Assets\Scripts\SingleTon.cs" />
+    <Compile Include="Assets\Scripts\SnowBall\BossSnowBall.cs" />
     <Compile Include="Assets\Scripts\SnowBall\EnemySnowball.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowBallPoolingScript.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowBallScript.cs" />
