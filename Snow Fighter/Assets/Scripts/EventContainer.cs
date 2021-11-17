@@ -20,7 +20,7 @@ public class EventContainer : Singleton<EventContainer>
         events = new Dictionary<string, UnityEvent>();
 
         AddEvent("OnPlayerAttack");
-        AddEvent("OnPlayerAttacked");
-
+        AddEvent("OnPlayerDamaged");
+        AddEvent("OnPlayerIced");
     }
 }

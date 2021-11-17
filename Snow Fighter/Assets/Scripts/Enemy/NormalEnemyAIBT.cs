@@ -107,6 +107,8 @@ public class NormalEnemyAIBT : MonoBehaviour
             {
                 player.damaged(-damage);
 
+               // EventContainer.Instance.Events["OnPlayerDamaged"].Invoke();
+
                 //                player.setHP(-damage);
             }
         }

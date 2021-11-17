@@ -27,7 +27,9 @@ namespace Enemy.Ver2
                 {
                     lateAttacktime = Time.time;
                     player.damaged(-damage);
-           //         player.setHP(-damage);
+
+             //       EventContainer.Instance.Events["OnPlayerDamaged"].Invoke();
+                    //         player.setHP(-damage);
                 }
             }
         }

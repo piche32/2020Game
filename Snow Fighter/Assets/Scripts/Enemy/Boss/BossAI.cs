@@ -6,14 +6,6 @@ using Panda;
 namespace Enemy.Ver2
 {
 
-    enum KindOfAttacks
-    {
-        Roll = 0,
-        Throw,
-        Punch,
-        Num
-    }
-
     public class BossAI : EnemyAIBT
     {
         [Task]
@@ -44,6 +36,7 @@ namespace Enemy.Ver2
         public Transform snowStart;
 
         public float rollPower;
+        public float throwPower;
        // public Transform sight;
         protected override void Start()
         {
@@ -80,20 +73,16 @@ namespace Enemy.Ver2
         }
 
         [Task]
-        void MakeASnowBall()
+        void MakeASnowBall(string attackType)
         {
+            if(attackType == "Roll")
             //손 위치에 만들기
-            snowball.init(snowStart, rollDamage);
-
+                snowball.init(attackType, snowStart, rollDamage);
+            if (attackType == "Throw")
+                snowball.init(attackType, snowStart, throwDamage);
             Task.current.Succeed();
         }
 
-        [Task]
-        void RollSnowball()
-        {
-            snowball.Roll(this.transform.forward, rollPower, destination);
-            //sight.position = destination;
-        }
 
         bool isRollSnow = false;
         [Task]
@@ -102,20 +91,21 @@ namespace Enemy.Ver2
             //애니메이션 실행
             if (!animator.GetBool("isRoll"))
             {
-                if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Roll")
-                    || (animator.GetCurrentAnimatorStateInfo(1).IsName("Roll") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f))
-                {
+               // if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Roll")
+              //      || (animator.GetCurrentAnimatorStateInfo(1).IsName("Roll") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f))
+               // {
                     animator.SetBool("isRoll", true);
-                    animator.SetTrigger("Roll");
+                //    animator.SetTrigger("Roll");
                     //animator.applyRootMotion = false;
                     isRollSnow = false;
                     return;
-                }
+              //  }
             }
 
-            if (!isRollSnow && animator.GetCurrentAnimatorStateInfo(1).IsName("Roll") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.3f)
+            if (!isRollSnow && animator.GetCurrentAnimatorStateInfo(1).IsName("Roll")
+                && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.3f)
             {
-                RollSnowball();
+                snowball.Roll(this.transform.forward, rollPower, destination);
                 isRollSnow = true;
             }
 
@@ -128,20 +118,25 @@ namespace Enemy.Ver2
                 Task.current.Succeed();
                 return;
             }
-
-            
-
-            //공 굴리기
         }
 
+        bool isThrowSnow = false;
         [Task]
         void Throw()
         {
             if (!animator.GetBool("isThrow"))
             {
                 animator.SetBool("isThrow", true);
+                isThrowSnow = false;
                 //  Task.current.Succeed();
                 return;
+            }
+
+            if(!isThrowSnow && animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") &&
+                animator.GetCurrentAnimatorStateInfo(1).normalizedTime > 0.55f)
+            {
+                snowball.Throw(this.transform.forward, throwPower);
+                isThrowSnow = true;
             }
 
             if (animator.GetCurrentAnimatorStateInfo(1).IsName("Throw") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.9f)
@@ -149,6 +144,7 @@ namespace Enemy.Ver2
                 animator.SetBool("isThrow", false);
                 isThrow = false;
                 Task.current.Succeed();
+                return;
             }
         }
 

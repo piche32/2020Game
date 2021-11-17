@@ -25,5 +25,12 @@ namespace Enemy.Ver2
             HpSlider.GetComponent<EnemyHPScript>().InitEnemyHPSlider(this.transform, MaxHP);
         }
 
+        private void OnCollisionEnter(Collision collision)
+        {
+            if(collision.transform.tag == "Player")
+            {
+                player.GetComponent<PlayerScript>().damaged(-Damage);
+            }
+        }
     }
 }

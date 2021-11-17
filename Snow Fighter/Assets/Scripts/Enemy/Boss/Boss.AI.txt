@@ -27,14 +27,22 @@ tree("Roll")
 			isArrived
 			Stop
 			AimAt_Target
-			MakeASnowBall
+			MakeASnowBall("Roll")
 			Wait(0.1)
 			Roll
 		
 tree("Throw")
 	while
 		isThrow
-		Throw
+		Sequence
+			SetDestination_Player("Throw")
+			Wait(0.1)
+			isArrived
+			Stop
+			AimAt_Target
+			MakeASnowBall("Throw")
+			Wait(0.1)
+			Throw
 
 tree("Punch")
 	while

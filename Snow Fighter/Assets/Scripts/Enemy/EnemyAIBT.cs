@@ -73,8 +73,9 @@ namespace Enemy.Ver2
         [Task]
         public bool SetDestination_Player()
         {
-            nvAgent.isStopped = false;
             bool ret = false;
+            if (!nvAgent.enabled) return ret;
+            nvAgent.isStopped = false;
             nvAgent.stoppingDistance = attackStoppingDist;
             ret = SetDestination(player.transform.position);
             return ret;

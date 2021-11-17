@@ -65,7 +65,7 @@ public class SoundController : MonoBehaviour
             PlaySFX("playerAttack", 0.8f, 1.8f);
         });
         
-        EventContainer.Instance.Events["OnPlayerAttacked"].AddListener(()=> {
+        EventContainer.Instance.Events["OnPlayerDamaged"].AddListener(()=> {
             PlaySFX("playerAttacked", 6.5f, 7.5f);
         });
         

@@ -7,11 +7,15 @@ public class PlayerMoveScript : MonoBehaviour
     [SerializeField]
     private JoyStickScript mJoyStick;
 
-    [SerializeField] private float moveSpeed = 10.0f;
-    [SerializeField] private float jumpPower = 10.0f;
+    [SerializeField] private float defaultMoveSpeed = 10.0f;
+    [SerializeField] private float defaultJumpPower = 10.0f;
 
+    float moveSpeed;
+    float jumpPower;
     PlayerScript playerSc;
     Rigidbody rb;
+
+    [SerializeField] private float stunTime = 1.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -19,8 +23,23 @@ public class PlayerMoveScript : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         playerSc = player.GetComponent<PlayerScript>();
         rb = player.GetComponent<Rigidbody>();
+
+        moveSpeed = defaultMoveSpeed;
+        jumpPower = defaultJumpPower;
+
+        EventContainer.Instance.Events["OnPlayerIced"].AddListener(() =>
+        {
+            moveSpeed = 0.0f;
+            jumpPower = 0.0f;
+            Invoke("StunOff", stunTime);
+        });
     }
 
+    void StunOff()
+    {
+        moveSpeed = defaultMoveSpeed;
+        jumpPower = defaultJumpPower;
+    }
     // Update is called once per frame
     void Update()
     {

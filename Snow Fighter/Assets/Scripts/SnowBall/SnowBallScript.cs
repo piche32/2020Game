@@ -257,7 +257,7 @@ public class SnowBallScript : MonoBehaviour
             {
                 PlayerScript player = other.transform.GetComponent<PlayerScript>();
                 player.damaged(-damage);
-                EventContainer.Instance.Events["OnPlayerAttacked"].Invoke();
+                //     EventContainer.Instance.Events["OnPlayerDamaged"].Invoke();
                 //SoundController.Instance.PlaySFX("playerAttacked", 6.0f, 7.0f);
                 //player.setHP(-damage);
             }

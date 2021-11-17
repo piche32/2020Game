@@ -26,6 +26,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]float throwingCoolTime = 0.5f;
     float throwingTime;
 
+    [SerializeField] private float stunTime = 1.0f;
+    bool isStun;
     // Start is called before the first frame update
 
     void Start()
@@ -41,9 +43,18 @@ public class PlayerAttack : MonoBehaviour
         animator = this.GetComponent<Animator>();
 
         throwingTime = 0.0f;
+        isStun = false;
 
+        EventContainer.Instance.Events["OnPlayerIced"].AddListener(() => {
+            isStun = true;
+            Invoke("StunOff", stunTime);
+        });
     }
 
+    void StunOff()
+    {
+        isStun = false;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -63,6 +74,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void ReadyToThrow()
     {
+        if (isStun) return;
         //카메라 회전 시 버튼 작동 막기
         if (playerSc.SightCamTrans.GetComponent<PlayerSightScript>().IsCameraRotating) return;
 

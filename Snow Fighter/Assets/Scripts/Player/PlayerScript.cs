@@ -74,9 +74,9 @@ public class PlayerScript : MonoBehaviour
     public void damaged(float damage)
     {
         setHP(damage);
-        playerDamaged.OnDamagedImage();
+       // playerDamaged.OnDamagedImage();
         // SoundController.Instance.PlaySFX("playerAttacked", 6.5f, 7.5f);
-        EventContainer.Instance.Events["OnPlayerAttacked"].Invoke();
+        EventContainer.Instance.Events["OnPlayerDamaged"].Invoke();
     }
 
     void checkHp()

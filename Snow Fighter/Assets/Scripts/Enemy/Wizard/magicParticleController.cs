@@ -30,7 +30,8 @@ public class magicParticleController : MonoBehaviour
         {
             lateAttackTime = Time.time;
             player.damaged(-damage);
-           // player.setHP(-damage);
+            // EventContainer.Instance.Events["OnPlayerDamaged"].Invoke();
+            // player.setHP(-damage);
             for (int i = 0; i < numEnter; i++)
             {
                 ParticleSystem.Particle temp = enter[i];
