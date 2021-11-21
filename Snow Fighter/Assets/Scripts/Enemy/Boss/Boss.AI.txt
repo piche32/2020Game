@@ -12,12 +12,11 @@ tree("Attack")
 		sequence
 			IsPlayerInSight("Attack")
 			DecideHowToAttack
-			SetDestination_Player
-			Wait(0.1)
-			Stop
-			Wait(0.1)
-			AimAt_Target
-
+			//SetDestination_Player
+			//Wait(0.1)
+			//Stop
+			//Wait(0.1)
+			//AimAt_Target
 tree("Roll")
 	while
 		isRoll
@@ -47,7 +46,13 @@ tree("Throw")
 tree("Punch")
 	while
 		isPunch
-		Punch
+		Sequence
+			Wait(0.1)
+			FollowPlayer
+			Stop
+			Wait(0.1)
+			AimAt_Target
+			Punch
 
 
 tree("Patrol")

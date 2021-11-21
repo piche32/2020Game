@@ -164,6 +164,7 @@
     <Compile Include="Assets\Scripts\QuaternionTest.cs" />
     <Compile Include="Assets\Scripts\SingleTon.cs" />
     <Compile Include="Assets\Scripts\SnowBall\BossSnowBall.cs" />
+    <Compile Include="Assets\Scripts\SnowBall\BossSnowBallPooling.cs" />
     <Compile Include="Assets\Scripts\SnowBall\BossSnowballEffect.cs" />
     <Compile Include="Assets\Scripts\SnowBall\EnemySnowball.cs" />
     <Compile Include="Assets\Scripts\SnowBall\SnowBallPoolingScript.cs" />

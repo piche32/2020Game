@@ -9,7 +9,7 @@ public class BossSnowballEffect : MonoBehaviour
     {
         if (other.transform.tag != "Player") return;
         PlayerScript player = other.transform.GetComponent<PlayerScript>();
-        //Player.damaged(-damage);
+        player.damaged(-damage);
         EventContainer.Instance.Events["OnPlayerIced"].Invoke();
     }
 }

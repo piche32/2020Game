@@ -229,7 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b67860ffa19fa4abe27fb2523da211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 5
 --- !u!114 &51674105 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2405252955268418609, guid: 9d709994194abbf4199aac887fb6288d,
@@ -739,6 +739,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &394619036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 394619038}
+  - component: {fileID: 394619037}
+  m_Layer: 0
+  m_Name: BossSnowballs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &394619037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394619036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f49dac0e4816a649ae12638883a046f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 9084020593890927153}
+  amount: 5
+--- !u!4 &394619038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394619036}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 167.42188, y: 80.59912, z: 118.914185}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &401828806
 PrefabInstance:
@@ -2644,7 +2689,7 @@ PrefabInstance:
     - target: {fileID: 4661894273296259111, guid: 9d709994194abbf4199aac887fb6288d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 172.46
+      value: 175.41
       objectReference: {fileID: 0}
     - target: {fileID: 4661894273296259111, guid: 9d709994194abbf4199aac887fb6288d,
         type: 3}
@@ -2654,7 +2699,7 @@ PrefabInstance:
     - target: {fileID: 4661894273296259111, guid: 9d709994194abbf4199aac887fb6288d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 116.97
+      value: 120.12
       objectReference: {fileID: 0}
     - target: {fileID: 4661894273296259111, guid: 9d709994194abbf4199aac887fb6288d,
         type: 3}
@@ -2695,6 +2740,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4661894273296259162, guid: 9d709994194abbf4199aac887fb6288d,
+        type: 3}
+      propertyPath: maxHP
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 4661894273296259167, guid: 9d709994194abbf4199aac887fb6288d,
         type: 3}
@@ -4002,7 +4052,13 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Mutant:Hips'\n\tTransform 'Mutant:LeftToeBase'\n\tTransform
+    'Mutant:LeftLeg'\n\tTransform 'Mutant:RightToeBase'\n\tTransform 'Mutant:RightHandThumb2'\n\tTransform
+    'Mutant:RightForeArm'\n\tTransform 'Mutant:LeftUpLeg'\n\tTransform 'Mutant:RightShoulder'\n\tTransform
+    'Mutant:RightHand'\n\tTransform 'Mutant:RightFoot'\n\tand more ...\n\tFrom animation
+    clip 'Look Around'\n\tFrom animation clip 'Look Around'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -4071,7 +4127,7 @@ MonoBehaviour:
   - isFoldout: 1
     breakPoints: 
     breakPointStatuses: 
-    collapsedLines: 2d0000002e0000002f0000003000000031000000320000003300000034000000350000003600000037000000380000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000120000001300000014000000
+    collapsedLines: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000120000001300000014000000
     btScript: 
 --- !u!4 &2009247798948939988
 Transform:
@@ -4224,7 +4280,13 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Mutant:Hips'\n\tTransform 'Mutant:LeftToeBase'\n\tTransform
+    'Mutant:LeftLeg'\n\tTransform 'Mutant:RightToeBase'\n\tTransform 'Mutant:RightHandThumb2'\n\tTransform
+    'Mutant:RightForeArm'\n\tTransform 'Mutant:LeftUpLeg'\n\tTransform 'Mutant:RightShoulder'\n\tTransform
+    'Mutant:RightHand'\n\tTransform 'Mutant:RightFoot'\n\tand more ...\n\tFrom animation
+    clip 'Look Around'\n\tFrom animation clip 'Look Around'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -4247,20 +4309,23 @@ MonoBehaviour:
   isRoll: 0
   isThrow: 0
   isPunch: 0
-  probabilityOfRoll: 0
-  probabilityOfThrow: 1
-  probabilityOfPunch: 0
+  probabilityOfRoll: 0.15
+  probabilityOfThrow: 0.3
+  probabilityOfPunch: 0.55
   rollDamage: 50
   throwDamage: 30
   punchDamage: 10
+  normalDamage: 5
   ThrowStoppingDist: 5
   RollStoppingDist: 10
   restTime: 5
+  followTime: 2
   isRest: 0
-  snowball: {fileID: 9084020593890927154}
+  snowballs: {fileID: 0}
   snowStart: {fileID: 1699478412}
   rollPower: 30
   throwPower: 10
+  punchPower: 3000
 --- !u!23 &4948848450182711836
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4471,7 +4536,7 @@ GameObject:
   - component: {fileID: 6337949608856934470}
   - component: {fileID: 9084020593890927154}
   m_Layer: 0
-  m_Name: Snowboll(Boss)
+  m_Name: Snowball(Boss)
   m_TagString: EnemySnowBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

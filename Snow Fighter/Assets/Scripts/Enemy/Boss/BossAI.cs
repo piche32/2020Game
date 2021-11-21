@@ -22,6 +22,7 @@ namespace Enemy.Ver2
         [SerializeField] float rollDamage = 50.0f;
         [SerializeField] float throwDamage = 30.0f;
         [SerializeField] float punchDamage = 10.0f;
+        [SerializeField] float normalDamage = 5.0f;
 
 
         public float ThrowStoppingDist;
@@ -29,14 +30,17 @@ namespace Enemy.Ver2
 
         float time;
         public float restTime = 5.0f;
+        public float followTime = 5.0f;
         [Task]
         public bool isRest;
 
-        public BossSnowBall snowball;
+        public BossSnowBallPooling snowballs;
+        BossSnowBall snowball;
         public Transform snowStart;
 
         public float rollPower;
         public float throwPower;
+        public float punchPower;
        // public Transform sight;
         protected override void Start()
         {
@@ -75,6 +79,12 @@ namespace Enemy.Ver2
         [Task]
         void MakeASnowBall(string attackType)
         {
+            snowball = snowballs.GetObject().GetComponent<BossSnowBall>();
+            if(snowball == null)
+            {
+                Task.current.Fail();
+                return;
+            }
             if(attackType == "Roll")
             //손 위치에 만들기
                 snowball.init(attackType, snowStart, rollDamage);
@@ -106,6 +116,7 @@ namespace Enemy.Ver2
                 && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.3f)
             {
                 snowball.Roll(this.transform.forward, rollPower, destination);
+                snowball = null;
                 isRollSnow = true;
             }
 
@@ -136,6 +147,7 @@ namespace Enemy.Ver2
                 animator.GetCurrentAnimatorStateInfo(1).normalizedTime > 0.55f)
             {
                 snowball.Throw(this.transform.forward, throwPower);
+                snowball = null;
                 isThrowSnow = true;
             }
 
@@ -148,16 +160,32 @@ namespace Enemy.Ver2
             }
         }
 
+        bool canPunch = false;
         [Task]
         void Punch()
         {
             if (!animator.GetBool("isPunch"))
             {
                 animator.SetBool("isPunch", true);
+                canPunch = true;
                 //    Task.current.Succeed();
                 return;
             }
-
+            if (canPunch && animator.GetCurrentAnimatorStateInfo(1).IsName("Punch") &&
+                animator.GetCurrentAnimatorStateInfo(1).normalizedTime > 0.30f)
+            {
+                canPunch = false;
+                Debug.Log(Vector3.Distance(player.transform.position, this.transform.position));
+                if (Vector3.Distance(player.transform.position, this.transform.position) <= attackStoppingDist + 0.5f)
+                {
+                    player.damaged(-punchDamage);
+                    //플레이어 밀려나기
+                    Vector3 dir = player.transform.position - this.transform.position;
+                    //dir.y = player.transform.position.y;
+                    dir = dir.normalized;
+                    player.punched(dir, punchPower);
+                }
+            }
             if (animator.GetCurrentAnimatorStateInfo(1).IsName("Punch") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.9f)
             {
                 animator.SetBool("isPunch", false);
@@ -215,6 +243,7 @@ namespace Enemy.Ver2
                 Task.current.Succeed();
                 return;
             }
+            Task.current.Succeed();
         }
 
         [Task]
@@ -232,11 +261,49 @@ namespace Enemy.Ver2
                 case "Throw":
                     nvAgent.stoppingDistance = ThrowStoppingDist;
                     break;
+                default:
+                    nvAgent.stoppingDistance = attackStoppingDist;
+                    break;
             }
 
             ret = SetDestination(player.transform.position);
             return ret;
         }
 
+        bool isFollow = false;
+        [Task]
+        void FollowPlayer()
+        {
+            SetDestination_Player();
+            if (isArrived())
+            {
+                isFollow = false;
+                Task.current.Succeed();
+                return;
+            }
+            if (!isFollow)
+            {
+                time = 0.0f;
+                isFollow = true;
+                return;
+            }
+            time += Time.deltaTime;
+            if(time > followTime)
+            {
+                isFollow = false;
+                Task.current.Succeed();
+                return;
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.transform.tag == "Player")
+            {
+                if(!isPunch)
+                    player.damaged(-normalDamage);
+                
+            }
+        }
     }
 }

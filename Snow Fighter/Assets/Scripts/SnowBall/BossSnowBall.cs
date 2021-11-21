@@ -17,7 +17,7 @@ public class BossSnowBall : MonoBehaviour
     bool isThrow = false;
 
     float time = 0.0f;
-    float destroyTime = 5.0f;
+    float destroyTime = 3.0f;
     float damage = 0.0f;
 
     Rigidbody rb = null;
@@ -38,7 +38,7 @@ public class BossSnowBall : MonoBehaviour
     Transform snowStart;
 
     public Transform sight;
-    
+
     private void Start()
     {
         attackType = AttackType.None; 
@@ -52,6 +52,7 @@ public class BossSnowBall : MonoBehaviour
         coll = this.GetComponent<SphereCollider>();
 
         snowStart = null;
+
     }
 
     private void Update()
@@ -61,6 +62,7 @@ public class BossSnowBall : MonoBehaviour
             if (time > destroyTime)
             {
                 this.disabled();
+
                 return;
             }
             time += Time.deltaTime;

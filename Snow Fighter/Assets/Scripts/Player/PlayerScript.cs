@@ -79,6 +79,11 @@ public class PlayerScript : MonoBehaviour
         EventContainer.Instance.Events["OnPlayerDamaged"].Invoke();
     }
 
+    public void punched(Vector3 dir, float power)
+    {
+        rb.AddForce(dir * power);
+    }
+
     void checkHp()
     {
         if (hp <= 0)
@@ -95,5 +100,4 @@ public class PlayerScript : MonoBehaviour
         checkHp();
         UI.SetPlayerHPSlider(hp);
     }
-
 }
