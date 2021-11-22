@@ -17,6 +17,7 @@ public enum StageNum
     Tutorial,
     Stage1,
     Stage2,
+    Stage3,
     Num,
 }
 
@@ -55,7 +56,7 @@ public class GameManagerScript : Singleton<GameManagerScript>
     public void Gameover()
     {
         preStage = stage;
-        stage = 1;
+        stage = (int)StageNum.GameOver;
 
         DataController.Instance.gameData.ChangeStage(stage);
         SceneManager.LoadScene(stage);

@@ -11,7 +11,6 @@ public class BossSnowBallPooling : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        prefab = GameObject.Find("SnowBall");
         for (int i = 0; i < amount; i++)
         {
             snowballs.Enqueue(CreateNewObject());
@@ -23,7 +22,6 @@ public class BossSnowBallPooling : MonoBehaviour
         var newObj = Instantiate(prefab);
         newObj.SetActive(false);
         newObj.transform.SetParent(transform);
-        newObj.transform.GetComponentInChildren<Collider>().isTrigger = true;
         return newObj;
     }
 

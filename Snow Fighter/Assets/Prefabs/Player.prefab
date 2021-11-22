@@ -3326,6 +3326,7 @@ MonoBehaviour:
   maxPower: 200
   addedPower: 1
   throwingCoolTime: 1
+  stunTime: 1
 --- !u!114 &4661894273296259160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3339,8 +3340,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mJoyStick: {fileID: 4661894272073067533}
-  moveSpeed: 4
-  jumpPower: 10
+  defaultMoveSpeed: 10
+  defaultJumpPower: 10
+  stunTime: 1
 --- !u!114 &6756484114629062629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3354,8 +3356,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashColor: {r: 1, g: 0, b: 0, a: 0.5019608}
+  icedColor: {r: 0, g: 0.8, b: 1, a: 0.5}
   flashSpeed: 5
   flashTime: 0.5
+  stunTime: 1
 --- !u!136 &4661894273296259104
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4706,6 +4710,7 @@ GameObject:
   - component: {fileID: 4661894273744060155}
   - component: {fileID: 4661894273744060154}
   - component: {fileID: 4661894273744060153}
+  - component: {fileID: 6557574904230217452}
   - component: {fileID: 4661894273744060152}
   m_Layer: 2
   m_Name: Sight Camera
@@ -4798,6 +4803,27 @@ MonoBehaviour:
   minX: -10
   targetingDist: 10
   offset: 10
+--- !u!114 &6557574904230217452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4661894273744060158}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9044ef733a99ffa4aa7a986bb5e9a7f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FrostAmount: 0.5
+  EdgeSharpness: 1
+  minFrost: 0
+  maxFrost: 1
+  seethroughness: 0.2
+  distortion: 0.1
+  Frost: {fileID: 2800000, guid: 210743b88c99bcf45b28c3a4a4a3e178, type: 3}
+  FrostNormals: {fileID: 2800000, guid: 065247d136abaa042a330ab6a7b030fc, type: 3}
+  Shader: {fileID: 4800000, guid: db8aebe950ae3794aae5ed890f38549b, type: 3}
 --- !u!135 &4661894273744060152
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7625,6 +7651,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8136b1e72f22ba64a8de0ec17bd1fc24, type: 3}
+--- !u!1 &2405252956054948409 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7853511377744059273, guid: 8136b1e72f22ba64a8de0ec17bd1fc24,
+    type: 3}
+  m_PrefabInstance: {fileID: 5592461578482045360}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2405252955568773877 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7853511378296097605, guid: 8136b1e72f22ba64a8de0ec17bd1fc24,
@@ -7634,12 +7666,6 @@ GameObject:
 --- !u!224 &2405252956054948414 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7853511377744059278, guid: 8136b1e72f22ba64a8de0ec17bd1fc24,
-    type: 3}
-  m_PrefabInstance: {fileID: 5592461578482045360}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2405252956054948409 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7853511377744059273, guid: 8136b1e72f22ba64a8de0ec17bd1fc24,
     type: 3}
   m_PrefabInstance: {fileID: 5592461578482045360}
   m_PrefabAsset: {fileID: 0}

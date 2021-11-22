@@ -49,6 +49,10 @@ public class StageManager : Singleton<StageManager>
             for (int i = 0; i < childIdx; i++)
                 if (enemys.transform.GetChild(i).gameObject.activeSelf) totalEnemyCount++;
         }
+        if(totalEnemyCount == 0)
+        {
+            if (GameObject.Find("Boss") != null) totalEnemyCount = 1;
+        }
         enemyCount = totalEnemyCount;
         runningTime = 0.0f;
         attackedCount = 0;

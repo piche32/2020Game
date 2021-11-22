@@ -39,7 +39,9 @@ public class BossSnowBall : MonoBehaviour
 
     public Transform sight;
 
-    private void Start()
+    [SerializeField] BossSnowBallPooling snowballs;
+
+    private void Awake()
     {
         attackType = AttackType.None; 
         rb = this.GetComponent<Rigidbody>();
@@ -53,6 +55,8 @@ public class BossSnowBall : MonoBehaviour
 
         snowStart = null;
 
+        ConsoleDebug.IsNull(transform.name, "snowballs", snowballs);
+
     }
 
     private void Update()
@@ -63,6 +67,7 @@ public class BossSnowBall : MonoBehaviour
             {
                 this.disabled();
 
+                snowballs.ReturnObject(this.gameObject);
                 return;
             }
             time += Time.deltaTime;
@@ -73,6 +78,7 @@ public class BossSnowBall : MonoBehaviour
             if (particle.isStopped)
             {
                 particleObj.SetActive(false);
+                snowballs.ReturnObject(this.gameObject);
             }
         }
 

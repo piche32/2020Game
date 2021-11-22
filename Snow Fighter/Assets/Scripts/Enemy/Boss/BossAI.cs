@@ -14,7 +14,8 @@ namespace Enemy.Ver2
         public bool isThrow;
         [Task]
         public bool isPunch;
-
+        [Task]
+        bool isAttack;
         [SerializeField] [Range(0.0f, 1.0f)] float probabilityOfRoll;
         [SerializeField] [Range(0.0f, 1.0f)] float probabilityOfThrow;
         [SerializeField] [Range(0.0f, 1.0f)] float probabilityOfPunch;
@@ -45,7 +46,8 @@ namespace Enemy.Ver2
         protected override void Start()
         {
             base.Start();
-            ConsoleDebug.IsNull(this.name, "snowball", snowball);
+            isAttack = false;
+            //ConsoleDebug.IsNull(this.name, "snowball", snowball);
         }
 
         void ResetActionBool()
@@ -54,6 +56,21 @@ namespace Enemy.Ver2
             isThrow = false;
             isPunch = false;
             isRest = false;
+
+            animator.SetBool("isRest", false);
+        }
+
+        [Task]
+        void CheckAttack()
+        {
+            if (isAttack)
+            {
+                Task.current.Succeed();
+                return;
+            }
+
+            isAttack = IsPlayerInSight("Attack");
+            Task.current.Complete(isAttack);
         }
 
         [Task]
@@ -175,7 +192,6 @@ namespace Enemy.Ver2
                 animator.GetCurrentAnimatorStateInfo(1).normalizedTime > 0.30f)
             {
                 canPunch = false;
-                Debug.Log(Vector3.Distance(player.transform.position, this.transform.position));
                 if (Vector3.Distance(player.transform.position, this.transform.position) <= attackStoppingDist + 0.5f)
                 {
                     player.damaged(-punchDamage);
@@ -221,25 +237,20 @@ namespace Enemy.Ver2
         [Task]
         void TakeARest()
         {
-            if (!isRest)
+            if (!animator.GetBool("isRest"))
             {
                 isRest = true;
                 nvAgent.isStopped = true;
-                time = 0.0f;
+                animator.SetBool("isRest", true);
                 Task.current.Succeed();
                 return;
             }
-
-            time += Time.deltaTime;
-            if (Task.isInspected)
-                Task.current.debugInfo = string.Format("t-{0:0.00}", time);
-
-            if (time > restTime)
+            if (animator.GetCurrentAnimatorStateInfo(1).IsName("Rest") && animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.9f)
             {
                 isRest = false;
                 nvAgent.isStopped = false;
-                time = 0.0f;
                 NextWaypoint();
+                animator.SetBool("isRest", false);
                 Task.current.Succeed();
                 return;
             }
@@ -302,8 +313,13 @@ namespace Enemy.Ver2
             {
                 if(!isPunch)
                     player.damaged(-normalDamage);
-                
+                isAttack = true;
             }
+            if(collision.gameObject.layer == LayerMask.NameToLayer("PlayerSnowBall"))
+            {
+                isAttack = true;
+            }
+
         }
     }
 }

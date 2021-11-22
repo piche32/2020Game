@@ -11,13 +11,15 @@ public class PlayerDamaged : MonoBehaviour
     [SerializeField] float flashSpeed = 5.0f;
     [SerializeField] float flashTime = 0.5f;
     [SerializeField] float stunTime = 1f;
-    
 
-    float time = 0.0f;
+    FrostEffect frostEffect;
+    
 
     void Start()
     {
         damageImage = this.transform.Find("Sight Camera").transform.Find("Canvas").transform.Find("DamageImage").GetComponent<Image>();
+        frostEffect = this.GetComponentInChildren<FrostEffect>();
+        frostEffect.enabled = false ;
         EventContainer.Instance.Events["OnPlayerDamaged"].AddListener(() => {
             if (damageImage == null) return;
             damageImage.color = flashColor;
@@ -25,17 +27,31 @@ public class PlayerDamaged : MonoBehaviour
             StartCoroutine(Damaged());
         });
         EventContainer.Instance.Events["OnPlayerIced"].AddListener(() => {
-            if (damageImage == null) return;
-            damageImage.color = icedColor;
-            Invoke("StunOff", stunTime);
+            StartCoroutine(Iced());
 
         });
     }
 
-    void StunOff()
+    IEnumerator Iced()
     {
-        damageImage.color = Color.clear;
+        frostEffect.enabled = true;
+        frostEffect.FrostAmount = 0.3f;
+        float time = 0.0f;
+        yield return null;
+        while(time < stunTime)
+        {
+            if (stunTime * 0.8f > time)
+                frostEffect.FrostAmount += 0.05f;
+            else
+                frostEffect.FrostAmount -= 0.2f;
+            yield return new WaitForSeconds(0.1f);
+
+            time += 0.1f;
+        }
+        frostEffect.enabled = false;
+        yield return null;
     }
+
     public void OnDamagedImage()
     {
         StartCoroutine(Damaged());
@@ -43,7 +59,7 @@ public class PlayerDamaged : MonoBehaviour
 
     IEnumerator Damaged()
     {
-        time = 0.0f;
+        float time = 0.0f;
 
         while (time < flashTime) {
             time += Time.deltaTime;
