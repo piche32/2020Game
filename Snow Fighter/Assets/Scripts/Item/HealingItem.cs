@@ -25,11 +25,7 @@ public class HealingItem : MonoBehaviour
             other.GetComponentInParent<PlayerScript>().setHP(healingAmount);
             Destroy(this.gameObject);
         }
-        else if (other.CompareTag("Enemy"))
-        {
-            other.GetComponentInParent<EnemyAIScript>().Hp += healingAmount;
-            Destroy(this.gameObject);
-        }
+        
     }
 
 }

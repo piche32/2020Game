@@ -16,7 +16,7 @@ public class WizardEnemy : MonoBehaviour
         {
             GameObject enemys = GameObject.Find("Enemys");
             int childIdx = enemys.transform.childCount;
-            for(int i = 0; i < childIdx; i++)
+            for (int i = 0; i < childIdx; i++)
             {
                 GameObject enemy = enemys.transform.GetChild(i).gameObject;
                 if (enemy != null && enemy.activeSelf)
@@ -29,6 +29,9 @@ public class WizardEnemy : MonoBehaviour
                     }
                 }
             }
+            StageManager.Instance.EnemyCount = 0;
+            GameObject.Find("UIManager").GetComponent<UIManager>().SetEnemyCountText();
+            GameManagerScript.Instance.Success();
         }
     }
 }

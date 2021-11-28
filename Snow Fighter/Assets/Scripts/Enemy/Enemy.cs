@@ -63,10 +63,11 @@ namespace Enemy.Ver2
             hp -= damage;
             //animator.Play("Hit", 1);
             //animator.Play("Hit", 0);
-            //animator.SetTrigger("Hit");
+            animator.SetTrigger("Hit");
             if(hpSlider != null)
                 hpSlider.GetComponent<EnemyHPScript>().SetEnemyHPSlider(hp);
 
+            EventContainer.Instance.Events["OnEnemyAttacked"].Invoke();
             //SoundController.Instance.PlaySFX("enemyAttacked");
         }
 

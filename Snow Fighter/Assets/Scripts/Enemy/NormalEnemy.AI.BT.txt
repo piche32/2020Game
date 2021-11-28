@@ -19,7 +19,7 @@ tree("Attack")
 				//Stop
 				SetDestination_Player
 				Wait(0.5)
-				AimAt_Target
+				//AimAt_Target
 				Wait(0.3)
 				Attack
 		Fail

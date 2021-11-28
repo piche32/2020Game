@@ -1,8 +1,8 @@
 tree("Root")
 	//Root behaviour for all enemy: Be alive or die.
 	parallel
-		repeat mute tree("BeAlive")
 		repeat mute tree("Die")
+		repeat mute tree("BeAlive")
 
 
 tree("Die")

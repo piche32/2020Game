@@ -9,20 +9,20 @@ tree("BeAlive")
 tree("Attack")
 	//When the enemy is visible, attack it,
 	//Otherwise forget about it.
-	fallback
+	//fallback
 		//Attack the enemy if visible.
-		sequence
-			IsPlayerInSight("Attack")
-			StopAlerting
-			SetDestination_Player
-			Stop
-			Wait(0.5)
-			AimAt_Target
-			Wait(0.1)
-			Attack
-		sequence
-			StopAttacking
-			Fail
+	sequence
+		IsPlayerInSight("Attack")
+		StopAlerting
+		SetDestination_Player
+		Stop
+		//Wait(0.5)
+			//AimAt_Target
+		Wait(0.1)
+		Attack
+		//sequence
+			//StopAttacking
+			//Fail
 
 tree("Follow")
 	fallback

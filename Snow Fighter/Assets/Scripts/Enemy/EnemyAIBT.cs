@@ -24,6 +24,11 @@ namespace Enemy.Ver2
         [SerializeField] protected float attackDist = 5.0f;
         //IsPlayerInEnemySight enemyAttackSight = null;
         IsPlayerInEnemySight enemyFollowSight = null;
+
+        [Task]
+        protected bool isAttack;
+
+        [SerializeField] protected float rotateSpeed = 2.0f;
         protected virtual void Start()
         {
 
@@ -44,6 +49,17 @@ namespace Enemy.Ver2
             if (animator == null)
                 animator = GetComponentInChildren<Animator>();
             ConsoleDebug.IsNull(this.name, "animator", animator);
+            isAttack = false;
+        }
+
+        protected virtual void Update()
+        {
+            if (isAttack)
+            {
+                Vector3 dir = player.transform.position - this.transform.position;
+
+                this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * rotateSpeed);
+            }
         }
 
         /// <summary>
@@ -78,9 +94,9 @@ namespace Enemy.Ver2
             nvAgent.isStopped = false;
             nvAgent.stoppingDistance = attackStoppingDist;
             ret = SetDestination(player.transform.position);
+            isAttack = ret;
             return ret;
         }
-
         
         /// <summary>
         /// NaviMesh Stop
@@ -200,6 +216,7 @@ namespace Enemy.Ver2
             GetComponent<Collider>().isTrigger = false;
             //GetComponent<Collider>().enabled = false;
             nvAgent.enabled = false;
+            //nvAgent.isStopped = true;
             //animator.enabled = false;
             GetComponent<RagdollChanger>().ChangeRagdoll();
             GetComponent<Collider>().isTrigger = true;
@@ -214,7 +231,7 @@ namespace Enemy.Ver2
         }
 
         [Task]
-        protected void Die()
+        protected virtual void Die()
         {
             self.Die();
             Task.current.Succeed();

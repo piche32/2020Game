@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SnowParticlePooling : MonoBehaviour
+public class SnowParticlePooling : Singleton<SnowParticlePooling>
 {
-    [SerializeField] GameObject particle = null;
+    protected SnowParticlePooling() { }
+    GameObject particle = null;
     [SerializeField] int amount = 30;
     Queue<GameObject> particles = new Queue<GameObject>();
     // Start is called before the first frame update
@@ -12,7 +13,8 @@ public class SnowParticlePooling : MonoBehaviour
     {
         if(particle == null)
         {
-            Debug.LogError("Snow Particle is missing.");
+            particle = Resources.Load<GameObject>("Prefabs/SnowParticle");
+            ConsoleDebug.IsNull(this.name, "particle", particle);
         }
 
         for (int i = 0; i < amount; i++)

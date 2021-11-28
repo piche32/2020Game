@@ -20,8 +20,20 @@ public class SuccessStage : MonoBehaviour
 
         enemyCount.text = "Kill: " + GameManagerScript.Instance.TotalEnemyCount;
         attackedCount.text = "Attack: " + GameManagerScript.Instance.AttackedCount;
-        time.text = "Time: " + (int)GameManagerScript.Instance.RunningTime;
+        SetTime((int)GameManagerScript.Instance.RunningTime);
         score.text = GameManagerScript.Instance.Score.ToString();
     }
 
+    void SetTime(int runningTime)
+    {
+        int hour = runningTime / 3600;
+        int min;
+        int sec;
+        runningTime %= 3600;
+        min = runningTime / 60;
+        runningTime %= 60;
+        sec = runningTime;
+
+        time.text = string.Format("Time: {0: 00}:{1:00}:{2:00}", hour, min, sec);
+    }
 }

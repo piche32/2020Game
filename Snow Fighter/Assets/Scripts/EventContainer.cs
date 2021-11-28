@@ -22,5 +22,6 @@ public class EventContainer : Singleton<EventContainer>
         AddEvent("OnPlayerAttack");
         AddEvent("OnPlayerDamaged");
         AddEvent("OnPlayerIced");
+        AddEvent("OnEnemyAttacked");
     }
 }

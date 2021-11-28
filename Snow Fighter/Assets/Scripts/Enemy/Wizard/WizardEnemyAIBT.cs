@@ -15,7 +15,7 @@ namespace Enemy.Ver2
 
         [SerializeField] float attackDelayTime = 3.0f;
 
-        [SerializeField] float rotateSpeed = 1.0f;
+        //[SerializeField] float rotateSpeed = 1.0f;
         // Start is called before the first frame update
         protected override void Start()
         {
@@ -39,12 +39,16 @@ namespace Enemy.Ver2
                 particle.Clear();
                 particle.Stop();
             }
-
-
         }
 
-
-       
+        protected override void Update()
+        {
+            base.Update();
+            if (CheckHP() && isAttack)
+            {
+                StopAttacking();
+            }
+        }
 
         [Task]
         public void Attack()
@@ -52,9 +56,9 @@ namespace Enemy.Ver2
              if (animator.GetBool("isAttacking"))
             {
 
-                if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Attack")
-                    || (animator.GetCurrentAnimatorStateInfo(1).IsName("Attack")
-                    && animator.GetCurrentAnimatorStateInfo(1).normalizedTime > 0.9f))
+                //if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Attack")
+                 if(animator.GetCurrentAnimatorStateInfo(1).IsName("Attack")
+                    && animator.GetCurrentAnimatorStateInfo(1).normalizedTime > 0.9f)
                 {
                     animator.SetBool("isAttacking", false);
 
@@ -71,13 +75,13 @@ namespace Enemy.Ver2
             }
                 else
             { //공격 중이 아닐 때,
-                if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Attack")) //공격 애니메이션 실행 아닐 떄
-                {
+              //  if (!animator.GetCurrentAnimatorStateInfo(1).IsName("Attack")) //공격 애니메이션 실행 아닐 떄
+              //  {
                     animator.SetBool("isAttacking", true);
                     Invoke("HitPlayer", attackDelayTime);
                     animator.SetTrigger("Attack");
-                    Task.current.Succeed();
-                }
+                   // Task.current.Succeed();
+               // }
 
             }
         }
@@ -88,12 +92,12 @@ namespace Enemy.Ver2
             {
                 skillParticle.transform.position = attackPoint.position + skillOffset;
                 skillParticle.GetComponent<ParticleSystem>().Play();
-                Vector3 target = player.transform.position;
+                /*Vector3 target = player.transform.position;
                 target.y += 0.5f;
                 Vector3 dir = target - skillParticle.transform.position;
 
                 dir = dir.normalized;
-                skillParticle.transform.rotation = Quaternion.LookRotation(dir, skillParticle.transform.up);
+                skillParticle.transform.rotation = Quaternion.LookRotation(dir, skillParticle.transform.up);*/
 
                 ParticleSystem[] particles;
                 particles = skillParticle.GetComponentsInChildren<ParticleSystem>();
@@ -111,7 +115,6 @@ namespace Enemy.Ver2
             return animator.GetBool("isAttacking");
         }
 
-        [Task]
         public void StopAttacking()
         {
             skillParticle.GetComponent<ParticleSystem>().Stop();
@@ -124,7 +127,6 @@ namespace Enemy.Ver2
                 particle.Clear();
                 particle.Stop();
             }
-            Task.current.Succeed();
         }
 
         [Task]
@@ -166,6 +168,13 @@ namespace Enemy.Ver2
             Task.current.Succeed();
         }
 
-       
+       /*[Task]
+       protected override void Die()
+        {
+            StageManager.Instance.EnemyCount = 0;
+            GameObject.Find("UIManager").GetComponent<UIManager>().SetEnemyCountText();
+            GameManagerScript.Instance.Success();
+            base.Die();
+        }*/
     }
 }

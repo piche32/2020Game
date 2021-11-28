@@ -35,7 +35,7 @@ public class Stage1Story : MonoBehaviour
                 break;
 
             case 1:
-                tmp.text = "눈이 내리면서 마을 곳곳에\n검은 사람들이 나타났다.";
+                tmp.text = "눈이 내리면서 마을 곳곳에\n낯선 사람들이 나타났다.";
                 if (time > 3.0f)
                 {
                     time = 0.0f;

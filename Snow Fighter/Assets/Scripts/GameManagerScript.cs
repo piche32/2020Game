@@ -18,6 +18,7 @@ public enum StageNum
     Stage1,
     Stage2,
     Stage3,
+    Clear,
     Num,
 }
 
@@ -64,8 +65,7 @@ public class GameManagerScript : Singleton<GameManagerScript>
 
     public void Success()
     {
-        StageManager s = GameObject.Find("(singleton) StageManager").GetComponent<StageManager>();
-        s.setScore();
+        StageManager s = StageManager.Instance;
 
         score = s.Score;
         totalEnemyCount = s.TotalEnemyCount;
@@ -74,7 +74,10 @@ public class GameManagerScript : Singleton<GameManagerScript>
         runningTime = s.RunningTime;
 
         preStage = stage;
-        stage = 2;
+        if (stage != (int)StageNum.Stage3)
+            stage = (int)StageNum.Success;
+        else
+            stage = (int)StageNum.Clear;
 
         DataController.Instance.gameData.ChangeStage(preStage+1);
         SceneManager.LoadScene(stage);
@@ -131,7 +134,7 @@ public class GameManagerScript : Singleton<GameManagerScript>
         stage = swap + 1;
 
         //마지막까지 다 깼을 경우
-        if(stage >= (int)StageNum.Num)
+        if(stage >= (int)StageNum.Clear)
         {
             preStage = (int)StageNum.None;
             stage--;

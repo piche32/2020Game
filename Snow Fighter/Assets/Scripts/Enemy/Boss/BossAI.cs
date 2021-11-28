@@ -14,8 +14,8 @@ namespace Enemy.Ver2
         public bool isThrow;
         [Task]
         public bool isPunch;
-        [Task]
-        bool isAttack;
+        //[Task]
+        //bool isAttack;
         [SerializeField] [Range(0.0f, 1.0f)] float probabilityOfRoll;
         [SerializeField] [Range(0.0f, 1.0f)] float probabilityOfThrow;
         [SerializeField] [Range(0.0f, 1.0f)] float probabilityOfPunch;
@@ -26,28 +26,39 @@ namespace Enemy.Ver2
         [SerializeField] float normalDamage = 5.0f;
 
 
-        public float ThrowStoppingDist;
-        public float RollStoppingDist;
+        [SerializeField] float ThrowStoppingDist;
+        [SerializeField] float RollStoppingDist;
 
         float time;
-        public float restTime = 5.0f;
-        public float followTime = 5.0f;
+        [SerializeField] float restTime = 5.0f;
+        [SerializeField] float followTime = 5.0f;
         [Task]
-        public bool isRest;
+        [SerializeField] bool isRest;
 
-        public BossSnowBallPooling snowballs;
+        [SerializeField] BossSnowBallPooling snowballs;
         BossSnowBall snowball;
-        public Transform snowStart;
+        [SerializeField] Transform snowStart;
 
-        public float rollPower;
-        public float throwPower;
-        public float punchPower;
+        [SerializeField] float rollPower;
+        [SerializeField] float throwPower;
+        [SerializeField] float punchPower;
+
        // public Transform sight;
         protected override void Start()
         {
             base.Start();
             isAttack = false;
             //ConsoleDebug.IsNull(this.name, "snowball", snowball);
+        }
+
+        protected override void Update()
+        {
+            if (isAttack)
+            {
+                Vector3 dir = player.transform.position - this.transform.position;
+
+                this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * rotateSpeed);
+            }
         }
 
         void ResetActionBool()
@@ -224,7 +235,7 @@ namespace Enemy.Ver2
         /// 타겟 쪽으로 살짝 몸을 트는 함수
         /// 타겟이 가까이 있을 땐 집요하게 몸을 튼다.
         /// </summary>
-        [Task]
+        /*[Task]
         public override void AimAt_Target()
         {
             if (player != null)
@@ -232,6 +243,46 @@ namespace Enemy.Ver2
                 transform.LookAt(player.transform.position);
                 Task.current.Succeed();
             }
+        }*/
+
+        float preAngle = -1.0f;
+        float angle = -1.0f;
+        [Task]
+        public override void AimAt_Target()
+        {
+            if (player != null)
+            {
+                var targetDelta = (player.transform.position - this.transform.position);
+
+                Vector3 dir = player.transform.position - this.transform.position;
+               
+                dir = dir.normalized;
+
+                if (Task.isInspected)
+                    Task.current.debugInfo = string.Format("angle={0}", Vector3.Angle(dir, this.transform.forward));
+
+                //Enemy와 Player 간의 각도
+                if (angle >= 0) preAngle = angle;
+                angle = Vector3.Angle(dir, new Vector3(transform.forward.x, dir.y, transform.forward.z));
+
+                if (targetDelta.magnitude < attackDist / 10)
+                {
+                    transform.LookAt(player.transform.position);
+                    Task.current.Succeed();
+                }
+                if (angle > 0.01f || angle < -0.01f)
+                {
+                    Vector3 look = Vector3.Slerp(this.transform.forward, dir, Time.deltaTime * 6.0f);
+                    Vector3 lookDelta = look - this.transform.rotation.eulerAngles;
+                    this.transform.rotation = Quaternion.LookRotation(look, Vector3.up);
+                }
+                else
+                {
+                    Task.current.Succeed();
+                }
+            }
+            else
+                Task.current.Fail();
         }
 
         [Task]
@@ -260,9 +311,10 @@ namespace Enemy.Ver2
         [Task]
         public bool SetDestination_Player(string AttackType)
         {
-            nvAgent.isStopped = false;
             bool ret = false;
 
+            nvAgent.isStopped = false;
+            
             switch (AttackType)
             {
                 case "Roll":
@@ -320,6 +372,12 @@ namespace Enemy.Ver2
                 isAttack = true;
             }
 
+        }
+
+        protected override void Die()
+        {
+            this.GetComponent<PandaBehaviour>().enabled = false;
+            base.Die();
         }
     }
 }

@@ -10,8 +10,7 @@ public class SnowParticle : MonoBehaviour
     {
        if(transform.GetComponent<ParticleSystem>().isStopped && gameObject.activeSelf) //파티클 실행 끝
         {
-            SnowParticlePooling particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
-            particles.ReturnObject(this.gameObject);
+            SnowParticlePooling.Instance.ReturnObject(this.gameObject);
         }
     }
 }

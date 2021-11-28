@@ -5,14 +5,13 @@ using UnityEngine.UI;
 
 public class AttackingTest : MonoBehaviour
 {
-    float durability;
+    [SerializeField] float durability = 100.0f;
     [SerializeField] GameObject obj;
     AttackingTestDurability durabilityUI;
 
     // Start is called before the first frame update
     void Start()
     {
-        durability = 100.0f;
         durabilityUI = GetComponent<AttackingTestDurability>();
         durabilityUI.Init(durability);
 
@@ -32,7 +31,8 @@ public class AttackingTest : MonoBehaviour
         if (durability <= 0)
         {
             Destroy(this.gameObject);
-            GameObject.Find("UIManager").GetComponent<TutorialUI>().isObjDestroyed = true;
+            TutorialUI tutorialUI = GameObject.Find("UIManager").GetComponent<TutorialUI>();
+            if(tutorialUI != null) tutorialUI.isObjDestroyed = true;
             obj.SetActive(true);
         }
     }

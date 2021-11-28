@@ -153,9 +153,10 @@ public class SnowBallScript : MonoBehaviour
 
     SnowParticlePooling particles;
     Coroutine projectileCoroutine;
-    private void Awake()
+
+    private void Start()
     {
-        particles = GameObject.Find("SnowParticles").GetComponent<SnowParticlePooling>();
+        particles = SnowParticlePooling.Instance;
     }
     private void OnEnable()
     {
@@ -236,9 +237,12 @@ public class SnowBallScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
-        //필드 밖으로 떨어졌을 경우, 삭제
-        if(time > 30) SnowBallPoolingScript.Instance.ReturnObject(this);
+        if (isFired)
+        {
+            time += Time.deltaTime;
+            //필드 밖으로 떨어졌을 경우, 삭제
+            if (time > 10) SnowBallPoolingScript.Instance.ReturnObject(this);
+        }
 
     }
 
@@ -247,6 +251,7 @@ public class SnowBallScript : MonoBehaviour
         if (other.name == "<multi>wall") return;
         if (other.name == "FollowColl" || other.name == "AttackColl") return;
         if (other.name == "Sight Camera") return;
+        if (other.name == "EffectArea") return;
         // Debug.Log(other.name.ToString());
         if (other.tag != null || other.tag != "")
         {
@@ -337,12 +342,14 @@ public class SnowBallScript : MonoBehaviour
 
             return finalVelocity;
         }
-        else finalVelocity = shooter.transform.forward * power/2 + shooter.transform.up * power/2;
+        else
+        {
+            finalVelocity = shooter.transform.forward * power / 2 + shooter.transform.up * power / 2;
 
-        shooterVel = shooter.GetComponent<Rigidbody>().velocity;
-        finalVelocity += shooterVel;
-        //finalVelocity += Vector3.up * offset;
-
+            shooterVel = shooter.GetComponent<Rigidbody>().velocity;
+            finalVelocity += shooterVel;
+            //finalVelocity += Vector3.up * offset;
+        }
         return finalVelocity;
     }
 
@@ -355,6 +362,7 @@ public class SnowBallScript : MonoBehaviour
     {
         Vector3 velocity = GetVelocity();
         SetVelocity(velocity);
+        isFired = true;
     }
 
 }

@@ -1,7 +1,9 @@
 tree("BeAlive")
-	fallback
-		tree("Attack")
-		tree("Patrol")
+	sequence
+		not CheckHP
+		fallback
+			tree("Attack")
+			tree("Patrol")
 
 tree("Attack")
 	fallback 
@@ -22,7 +24,7 @@ tree("Roll")
 			Wait(0.1)
 			isArrived
 			Stop
-			AimAt_Target
+			//AimAt_Target
 			MakeASnowBall("Roll")
 			Wait(0.1)
 			Roll
@@ -35,7 +37,7 @@ tree("Throw")
 			Wait(0.1)
 			isArrived
 			Stop
-			AimAt_Target
+			//AimAt_Target
 			MakeASnowBall("Throw")
 			Wait(0.1)
 			Throw
@@ -48,7 +50,7 @@ tree("Punch")
 			FollowPlayer
 			Stop
 			Wait(0.1)
-			AimAt_Target
+			//AimAt_Target
 			Punch
 
 
