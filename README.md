@@ -16,7 +16,7 @@
 - 필드의 적을 다 처치해야 성공
 - 보스까지 쓰러뜨리면 게임 클리어
 
-### 효과음
+## 효과음
 - button: 448086__breviceps__normal-click(출처: [https://studio.youtube.com/channel/UC-D2y5Gv4GVVdgS6Jn2VBcQ/music])
 - playerAttack: 413030__soundsforhim__throwing-clothes-on-the-floor-2(출처: [https://freesound.org/]
 - enemyAttacked: 420250__redroxpeterpepper__monster-attack(출처: https://freesound.org/)
